@@ -61,7 +61,7 @@
   - [ ] ***Read:*** <br>
   &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical, user
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical, 
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical, user
   
 **MANAGER RESTAURANT**
   - [ ] ***Read:*** <br>
