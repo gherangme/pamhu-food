@@ -11,7 +11,7 @@
 - [References](#references)
 
 ## Description
-- Application help user to create and manage food order, feedback for food quality.
+- Application help Vietnamese people to create and manage food order, feedback for food quality.
 - This project started from 03-2022 to present.
 
 ## Preview Screenshot
