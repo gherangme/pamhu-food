@@ -46,7 +46,7 @@ public class CustomSecurityConfig {
                     .antMatchers("/api/v1/login/**",
                             "/api/v1/food/**", "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
                             "/signup", "/login", "/403", "/cdn-cgi/**",
-                            "/home", "/food", "/restaurant", "/restaurant-detail", "/cart")
+                            "/home", "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout")
                         .permitAll() // Cho phép truy cập
                     .antMatchers("/", "/resources/**", "/static/**", "/oauth/**",
                             "/**/*.css.map", "/**/*.css", "/**/*.js","/**/*.js.map", "/","/**/*.png","/**/*.jpg", "/**/*.woff2")

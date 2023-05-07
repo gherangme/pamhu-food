@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="icon" type="image/png" href="/static/img/logo.png">
     <title>Osahan Eat - Online Food Ordering Website HTML Template</title>
 
     <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -206,150 +206,151 @@
 
 
                 <div class="container-fluid pb-4">
-
-                    <div class="d-flex align-items-center justify-content-between mb-3 mt-2">
-                        <h5 class="mb-0">Your cart</h5>
-                    </div>
-                    <p class="mb-2">All items</p>
+                    <div class="row">
+                        <div class="col-md-4 order-md-2 mb-4">
+                          <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Your cart</span>
+                            <span class="badge badge-secondary badge-pill" id="number-item"></span>
+                          </h4>
+                          <ul class="list-group mb-3" id="list-food">
+<!--                            <li class="list-group-item d-flex justify-content-between lh-condensed">-->
+<!--                              <div>-->
+<!--                                <h6 class="my-0">Product name</h6>-->
+<!--                                <small class="text-muted">Brief description</small>-->
+<!--                              </div>-->
+<!--                              <span class="text-muted">$12</span>-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item d-flex justify-content-between lh-condensed">-->
+<!--                              <div>-->
+<!--                                <h6 class="my-0">Second product</h6>-->
+<!--                                <small class="text-muted">Brief description</small>-->
+<!--                              </div>-->
+<!--                              <span class="text-muted">$8</span>-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item d-flex justify-content-between lh-condensed">-->
+<!--                              <div>-->
+<!--                                <h6 class="my-0">Third item</h6>-->
+<!--                                <small class="text-muted">Brief description</small>-->
+<!--                              </div>-->
+<!--                              <span class="text-muted">$5</span>-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item d-flex justify-content-between bg-light" id="get-promote">-->
+<!--                              <div class="text-success">-->
+<!--                                <h6 class="my-0">Promo code</h6>-->
+<!--                                <small>EXAMPLECODE</small>-->
+<!--                              </div>-->
+<!--                              <span class="text-success">-$5</span>-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item d-flex justify-content-between">-->
+<!--                              <span>Total (VND)</span>-->
+<!--                              <strong id="totalPrice"></strong>-->
+<!--                            </li>-->
+                          </ul>
                     
-                    <section class="h-100 gradient-custom">
-                        <div class="container py-5">
-                          <div class="row d-flex justify-content-center my-4">
-                            <div class="col-md-8">
-                              <div class="card mb-4">
-                                <div class="card-header py-3">
-                                  <h5 class="mb-0" id="number-items"></h5>
-                                </div>
-                                <div class="card-body" id="show-item">
-                      
-<!--                                   <hr class="my-4" /> -->
-                      
-                                  <!-- Single item -->
-<!--                                  <div class="row">-->
-<!--                                    <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">-->
-<!--                                      &lt;!&ndash; Image &ndash;&gt;-->
-<!--                                      <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">-->
-<!--                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/13a.webp"-->
-<!--                                          class="w-100" />-->
-<!--                                        <a href="#!">-->
-<!--                                          <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>-->
-<!--                                        </a>-->
-<!--                                      </div>-->
-<!--                                      &lt;!&ndash; Image &ndash;&gt;-->
-<!--                                    </div>-->
-<!--                      -->
-<!--                                    <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">-->
-<!--                                      &lt;!&ndash; Data &ndash;&gt;-->
-<!--                                      <p><strong>Name</strong></p>-->
-<!--                                      <p>Cate</p>-->
-<!--                                      <p>Code</p>-->
-<!--                      -->
-<!--                                      <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"-->
-<!--                                        title="Remove item">-->
-<!--                                        <i class="fas fa-trash"></i>-->
-<!--                                      </button>-->
-<!--                                      <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"-->
-<!--                                        title="Move to the wish list">-->
-<!--                                        <i class="fas fa-heart"></i>-->
-<!--                                      </button>-->
-<!--                                      &lt;!&ndash; Data &ndash;&gt;-->
-<!--                                    </div>-->
-<!--                                    -->
-<!--                                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">-->
-<!--                                        <p style="text-align: center;">Quantity</p>-->
-<!--                                            <div>-->
-<!--                                                &lt;!&ndash; Quantity &ndash;&gt;-->
-<!--                                                <div class="d-flex mb-4" style="max-width: 300px">-->
-<!--                                                    <button class="btn btn-primary px-3 me-2"-->
-<!--                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-->
-<!--                                                    <i class="fas fa-minus"></i>-->
-<!--                                                    </button>-->
-<!--                                -->
-<!--                                                    <div class="form-outline">-->
-<!--                                                        -->
-<!--                                                    <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control" />-->
-<!--                                                    -->
-<!--                                                    </div>-->
-<!--                                -->
-<!--                                                    <button class="btn btn-primary px-3 ms-2"-->
-<!--                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">-->
-<!--                                                    <i class="fas fa-plus"></i>-->
-<!--                                                    </button>-->
-<!--                                            </div>-->
-<!--                                      </div>-->
-<!--                                      &lt;!&ndash; Quantity &ndash;&gt;-->
-<!--                      -->
-<!--                                      &lt;!&ndash; Price &ndash;&gt;-->
-<!--                                      <p class="text-start text-md-center">-->
-<!--                                        <strong>$17.99</strong>-->
-<!--                                      </p>-->
-<!--                                      &lt;!&ndash; Price &ndash;&gt;-->
-<!--                                    </div>-->
-<!--                                  </div>-->
-                                  <!-- Single item -->
-                                </div>
-                              </div>
-                              <div class="card mb-4">
-                                <div class="card-body">
-                                  <p><strong>Expected shipping delivery</strong></p>
-                                  <p class="mb-0">12.10.2020 - 14.10.2020</p>
-                                </div>
-                              </div>
-                              <div class="card mb-4 mb-lg-0">
-                                <div class="card-body">
-                                  <p><strong>We accept</strong></p>
-                                  <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                                    alt="Visa" />
-                                  <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                                    alt="American Express" />
-                                  <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                                    alt="Mastercard" />
-                                  <img class="me-2" width="45px"
-                                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
-                                    alt="PayPal acceptance mark" />
-                                </div>
+                          <form class="card p-2">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Promo code">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-secondary">Redeem</button>
                               </div>
                             </div>
-                            <div class="col-md-4">
-                              <div class="card mb-4">
-                                <div class="card-header py-3">
-                                  <h5 class="mb-0">Summary</h5>
-                                </div>
-                                <div class="card-body">
-                                  <ul class="list-group list-group-flush" id="totalPrice">
-<!--                                    <li-->
-<!--                                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">-->
-<!--                                      Products-->
-<!--                                      <span>$53.98</span>-->
-<!--                                    </li>-->
-<!--                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">-->
-<!--                                      Shipping-->
-<!--                                      <span>Gratis</span>-->
-<!--                                    </li>-->
-<!--                                    <li-->
-<!--                                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">-->
-<!--                                      <div>-->
-<!--                                        <strong>Total amount</strong>-->
-<!--                                        <strong>-->
-<!--                                          <p class="mb-0">(including VAT)</p>-->
-<!--                                        </strong>-->
-<!--                                      </div>-->
-<!--                                      <span><strong>$53.98</strong></span>-->
-<!--                                    </li>-->
-                                  </ul>
-                      
-                                  <button type="button" class="btn btn-primary btn-lg btn-block" id="checkout-button">
-                                    Go to checkout
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          </form>
                         </div>
-                    </section>
+                        <div class="col-md-8 order-md-1">
+                          <h4 class="mb-3">Billing address</h4>
+                          <form class="needs-validation" novalidate>
+                            <div class="">
+                              <div class="mb-3">
+                                <label for="fullName">Full name</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                  Valid first name is required.
+                                </div>
+                              </div>
+                            </div>
+                    
+                            <div class="mb-3">
+                              <label for="username">Username</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
+                                </div>
+                                <input type="text" class="form-control" id="username" placeholder="Username" required>
+                                <div class="invalid-feedback" style="width: 100%;">
+                                  Your username is required.
+                                </div>
+                              </div>
+                            </div>
+                    
+                            <div class="mb-3">
+                              <label for="address">Address</label>
+                              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                              <div class="invalid-feedback">
+                                Please enter your shipping address.
+                              </div>
+                            </div>
+                    
+                            <div class="mb-3">
+                                <label for="phone">Phone</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="0123456789" required>
+                                <div class="invalid-feedback">
+                                  Please enter your phone.
+                                </div>
+                              </div>
+                    
+                            <hr class="mb-4">
+                    
+                            <h4 class="mb-3">Payment</h4>
+                    
+                            <div class="d-block my-3">
+                              <div class="custom-control custom-radio">
+                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                <label class="custom-control-label" for="credit">Cod</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                <label class="custom-control-label" for="paypal">PayPal</label>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <label for="cc-name">Name on card</label>
+                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                <small class="text-muted">Full name as displayed on card</small>
+                                <div class="invalid-feedback">
+                                  Name on card is required
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label for="cc-number">Credit card number</label>
+                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                <div class="invalid-feedback">
+                                  Credit card number is required
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-3 mb-3">
+                                <label for="cc-expiration">Expiration</label>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                <div class="invalid-feedback">
+                                  Expiration date required
+                                </div>
+                              </div>
+                              <div class="col-md-3 mb-3">
+                                <label for="cc-cvv">CVV</label>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <div class="invalid-feedback">
+                                  Security code required
+                                </div>
+                              </div>
+                            </div>
+                            <hr class="mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                          </form>
+                        </div>
+                      </div>
+                    
                 </div>
 
             </div>
@@ -1172,7 +1173,7 @@
     </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script type="text/javascript" th:src="@{/static/js/cart.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/checkout.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/signin.js}"></script>
 
     <script data-cfasync="false" src="/static/../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

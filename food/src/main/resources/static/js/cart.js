@@ -7,6 +7,38 @@ $(document).ready(function () {
         },
         success: function (data) {
             console.log(data.data)
+            let totalPrice = 0;
+            for (const i in data.data) {
+                totalPrice += data.data[i]["price"] * data.data[i]["amount"]
+            }
+
+            const numberItem = data.data.length
+            if (numberItem < 2) {
+                $('#number-items').html('Cart - '+numberItem+' item')
+            } else {
+                $('#number-items').html('Cart - '+numberItem+' items')
+            }
+            const htmlTotalPrice = `<li
+                                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                      Products
+                                      <span>${totalPrice} VND</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                      Shipping
+                                      <span>Gratis</span>
+                                    </li>
+                                    <li
+                                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                      <div>
+                                        <strong>Total amount</strong>
+                                        <strong>
+                                          <p class="mb-0">(including VAT)</p>
+                                        </strong>
+                                      </div>
+                                      <span><strong>${totalPrice} VND</strong></span>
+                                    </li>`
+            $('#totalPrice').append(htmlTotalPrice)
+
             for (const i in data.data) {
                 const html = `<div class="row remove-${data.data[i]["id"]}">
                                     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
@@ -160,6 +192,35 @@ $(document).ready(function () {
                         console.log('that bai')
                     }
                 })
+            })
+            $('#checkout-button').click(function (e) {
+                e.preventDefault()
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/user/checkout/postInforCheckout',
+                    type: 'POST',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: {'token': token, 'price': totalPrice},
+                    success: function (data) {window.location.href="/checkout"},
+                    error: function (xhr, status, error) {
+                        const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                                        Vui lòng đăng nhập trước khi thực hiện thao tác này.
+                                      </div>`
+                        $('.add-category').append(alertCustom)
+
+                        $('.custom-alert').css({
+                            'position': 'fixed',
+                            'top': 0,
+                            'left': 0,
+                            'width': '100%',
+                            'z-index': '9999'
+                        });
+
+                        // Set time out
+                        setTimeout(function(){
+                            $(".alert").remove();
+                        }, 3000);
+                    }
+                });
             })
         },
         error: function (xhr, status, error) {

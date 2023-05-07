@@ -57,8 +57,7 @@ public class UserCartController {
             responseData.setData(cartService.getListFoods(idFood, getUserNameByToken));
             responseData.setDesc("Lấy thành công thông tin food");
         } else {
-            responseData.setDesc("Lấy thất bại thông tin food");
-            responseData.setStatusCode(400);
+            responseData.setData(cartService.getListFoods(idFood, getUserNameByToken));
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
@@ -85,6 +84,11 @@ public class UserCartController {
     public ResponseEntity<?> deleteOrderItem(@PathVariable("id") int id) {
         ResponseData responseData = new ResponseData();
         boolean isSuccess = cartService.deleteItemOder(id, getUserNameByToken);
+
+        if (id == idFood) {
+            idFood = 0;
+        }
+
         if (isSuccess) {
             responseData.setData(true);
             responseData.setDesc("Xoá thành công");

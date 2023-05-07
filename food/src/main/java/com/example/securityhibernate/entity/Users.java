@@ -28,6 +28,9 @@ public class Users {
     @Column(name = "avatar")
     private String avatar;
 
+    @Column(name = "phone")
+    private String phone;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;
@@ -43,6 +46,14 @@ public class Users {
 
     @OneToMany(mappedBy = "users")
     private Set<RatingRestaurant> listRatingRestaurant;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getAvatar() {
         return avatar;

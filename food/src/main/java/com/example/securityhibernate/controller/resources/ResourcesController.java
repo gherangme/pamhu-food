@@ -46,4 +46,9 @@ public class ResourcesController {
         return "/cart";
     }
 
+    @GetMapping("/checkout")
+    public String checkout() {
+        return "/checkout";
+    }
+
 }

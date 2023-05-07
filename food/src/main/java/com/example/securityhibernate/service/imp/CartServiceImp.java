@@ -39,8 +39,11 @@ public class CartServiceImp implements CartService {
             Food food = foodRepository.findById(idFood);
             FoodDTO foodDTO = new FoodDTO();
             if (orderItem != null) {
-                setFoodDTO(food, foodDTO, orderItem.getAmount());
-                list.add(foodDTO);
+
+                if (food != null) {
+                    setFoodDTO(food, foodDTO, orderItem.getAmount());
+                    list.add(foodDTO);
+                }
 
                 for (OrderItem orderItem1: orderItemList) {
                     if (orderItem1.getFood().getId() != idFood) {
@@ -51,8 +54,11 @@ public class CartServiceImp implements CartService {
                     }
                 }
             } else {
-                setFoodDTO(food, foodDTO, 1);
-                list.add(foodDTO);
+
+                if (food != null) {
+                    setFoodDTO(food, foodDTO, 1);
+                    list.add(foodDTO);
+                }
 
                 for (OrderItem orderItem1: orderItemList) {
                     if (orderItem1.getFood().getId() != idFood) {

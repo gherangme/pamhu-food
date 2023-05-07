@@ -34,7 +34,6 @@ public class JwtUtilsHelpers {
                 .setExpiration(expiredDate) //Set time
                 .compact();
 
-        System.out.println("Token: "+jwt);
         return jwt;
     }
 
