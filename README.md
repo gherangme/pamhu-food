@@ -15,10 +15,9 @@
 - This project started from 03-2022 to present.
 
 ## Preview Screenshot
-- Updating
 <div>
-  <!--<img src="https://raw.githubusercontent.com/gherangme/crm-app/main/pic/Preview%20Screenshot.png"><br><br>
-  <img src="https://raw.githubusercontent.com/gherangme/crm-app/main/pic/Preview.png">-->
+  <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%201.png"><br><br>
+  <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%202.png">
 </div>
 
 ## Video Demo
