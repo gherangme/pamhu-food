@@ -28,7 +28,7 @@
 **1. Backend**
   - Java 11
   - Spring Boot 2.7
-  - Spring MVC model
+  - Spring MVC Model
   - Spring Data, Hibernate
   - Spring Security
 
