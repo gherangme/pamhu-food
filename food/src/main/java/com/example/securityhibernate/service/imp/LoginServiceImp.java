@@ -20,28 +20,6 @@ public class LoginServiceImp implements LoginService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean addUser(String username, String password, String role) {
-
-        try {
-            Users users = new Users();
-            users.setUsername(username);
-            users.setPassword(passwordEncoder.encode(password));
-            users.setRole(role);
-
-            Roles roles = new Roles();
-            roles.setId(3);
-            users.setRoles(roles);
-
-            userRepository.save(users);
-
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error addUser service" + e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
     public boolean checkLogin(String username, String password) {
         return passwordEncoder.matches(password, userRepository.findByUsername(username).getPassword());
     }

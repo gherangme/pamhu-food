@@ -56,15 +56,4 @@ public class LoginController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> addUser(@RequestParam String username,
-                                     @RequestParam String password,
-                                     @RequestParam String role) {
-        if (loginService.addUser(username, password, role)) {
-            return new ResponseEntity<>("Them thanh cong", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Them that bai", HttpStatus.OK);
-        }
-    }
-
 }

@@ -1,29 +1,12 @@
 package com.example.securityhibernate.dto;
 
-public class UserDTO {
+public class CheckoutDTO {
 
-    private int id;
     private String fullName;
     private String username;
-    private String password;
     private String address;
     private String phone;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private double totalPrice;
 
     public String getFullName() {
         return fullName;
@@ -55,5 +38,13 @@ public class UserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

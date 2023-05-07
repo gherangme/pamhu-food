@@ -51,4 +51,14 @@ public class ResourcesController {
         return "/checkout";
     }
 
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
+    @GetMapping("/otp")
+    public String otp() {
+        return "otp";
+    }
+
 }

@@ -43,10 +43,10 @@ public class CustomSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/api/v1/login/**",
+                    .antMatchers("/api/v1/login/**", "/api/v1/signup/**",
                             "/api/v1/food/**", "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
                             "/signup", "/login", "/403", "/cdn-cgi/**",
-                            "/home", "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout")
+                            "/home", "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout", "/signup", "/otp")
                         .permitAll() // Cho phép truy cập
                     .antMatchers("/", "/resources/**", "/static/**", "/oauth/**",
                             "/**/*.css.map", "/**/*.css", "/**/*.js","/**/*.js.map", "/","/**/*.png","/**/*.jpg", "/**/*.woff2")

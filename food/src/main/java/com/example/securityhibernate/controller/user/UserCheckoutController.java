@@ -1,8 +1,12 @@
 package com.example.securityhibernate.controller.user;
 
+import com.example.securityhibernate.dto.CheckoutDTO;
+import com.example.securityhibernate.dto.EmailDTO;
 import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.CartService;
 import com.example.securityhibernate.service.CheckoutService;
+import com.example.securityhibernate.service.EmailService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +31,9 @@ public class UserCheckoutController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/postInforCheckout")
     public ResponseEntity<?> postInforCheckout(@RequestParam String token, @RequestParam double price) {
@@ -56,6 +63,30 @@ public class UserCheckoutController {
         list.add(responseData1);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PutMapping("/checkout")
+    public ResponseEntity<?> checkout(@RequestBody CheckoutDTO checkoutDTO) {
+        ResponseData responseData = new ResponseData();
+        int isSuccess = checkoutService.checkout(checkoutDTO);
+        if (isSuccess != 0) {
+            responseData.setDesc("Đặt hàng thành công, vui lòng kiểm tra mã đơn hàng trong email của bạn");
+            responseData.setData(sendEmailCheckout(isSuccess, checkoutDTO));
+        } else {
+            responseData.setData(false);
+            responseData.setDesc("Đặt hàng thất bại");
+        }
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+
+    // Send mail checkout
+    private String sendEmailCheckout(int isSucces, CheckoutDTO checkoutDTO) {
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setRecipient(checkoutDTO.getUsername());
+        emailDTO.setSubject("[Pamhu Food]");
+        emailDTO.setMsgBody("Cảm ơn khách hàng " + checkoutDTO.getFullName() + " đã sử dụng Pamhu Food. Mã đơn hàng " +
+                "của bạn là #" + isSucces);
+        return emailService.sendSimpleMail(emailDTO);
     }
 
 }

@@ -39,6 +39,51 @@ $(document).ready(function () {
             //                   </div>
             //                   <span class="text-success">-$5</span>`
             // $('#get-promote').val(htmlPromote)
+
+            $('#checkout-button').click(function (e) {
+                e.preventDefault()
+                const fullName = $('#fullName').val(),
+                username = $('#username').val(),
+                address = $('#address').val(),
+                phone = $('#phone').val()
+                console.log(fullName + username + address + phone + parseFloat(data[1].desc))
+                const jsonData = {
+                    fullName: fullName,
+                    username: username,
+                    address: address,
+                    phone: phone,
+                    totalPrice: parseFloat(data[1].desc)
+                }
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/user/checkout/checkout',
+                    type: 'PUT',
+                    headers: {'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'},
+                    data: JSON.stringify(jsonData),
+                    success: function (data) {
+                        const alertCustom = `<div class="alert alert-success custom-alert" style="text-align: center">
+                                        ${data.desc}.
+                                      </div>`
+                        $('#checkout-button').append(alertCustom)
+
+                        $('.custom-alert').css({
+                            'position': 'fixed',
+                            'top': 0,
+                            'left': 0,
+                            'width': '100%',
+                            'z-index': '9999'
+                        });
+
+                        // Set time out
+                        setTimeout(function(){
+                            $(".alert").remove();
+                        }, 5000);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('that bai')
+                    }
+                })
+            })
         }
     })
 })
