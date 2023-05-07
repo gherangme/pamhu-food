@@ -43,11 +43,11 @@
 - Gson
 - Thymeleaf
 - BCryptPasswordEncoder for Authen
-- OAuth 2.0 Google APIs (updating)
-- JavaMail (updating)
-- Paypal integration (updating)
-- Cache (updating)
-- Queue (updating)
+- JavaMail
+- OAuth 2.0 Google APIs (updating...)
+- Paypal integration (updating...)
+- Cache (updating...)
+- Queue (updating...)
 
 **4. Tool**
   - Visual Studio Code
