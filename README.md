@@ -17,7 +17,7 @@
 ## Preview Screenshot
 <div>
   <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%201.png"><br><br>
-  <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%202.png">
+  <img src="https://github.com/gherangme/pamhu-food/blob/f0f1dbba006c2ddfddbfa1b299aede262785820a/food/preview%20screenshot/checkout.png">
 </div>
 
 ## Video Demo
