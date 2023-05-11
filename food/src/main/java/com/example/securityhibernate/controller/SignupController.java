@@ -44,8 +44,6 @@ public class SignupController {
     @PostMapping("/postUserInfor")
     public ResponseEntity<?> postUserInfor(@RequestBody SignupDTO signupDTO) {
         ResponseData responseData = new ResponseData();
-        System.out.println(signupDTO.getUsername());
-        System.out.println(signupDTO);
         if (signupService.checkUser(signupDTO.getUsername())) {
             signupDTOWaitOTP = signupDTO;
             responseData.setData(emailService.sendSimpleMail(setEmailDTO(signupDTO.getUsername())));

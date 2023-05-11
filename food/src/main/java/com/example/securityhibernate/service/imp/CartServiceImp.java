@@ -2,10 +2,7 @@ package com.example.securityhibernate.service.imp;
 
 import com.example.securityhibernate.dto.CategoryDTO;
 import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.entity.Food;
-import com.example.securityhibernate.entity.OrderItem;
-import com.example.securityhibernate.entity.Orders;
-import com.example.securityhibernate.entity.Status;
+import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.entity.keys.KeyOrderItem;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.CartService;
@@ -41,47 +38,74 @@ public class CartServiceImp implements CartService {
         List<FoodDTO> list = new ArrayList<>();
 
         Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
+
+        // Check tồn tại order
         if (orders != null) {
             OrderItem orderItem = orderItemRepository.findByFood_IdAndOrders_Id(idFood, orders.getId());
             List<OrderItem> orderItemList = orderItemRepository.findByOrders_Id(orders.getId());
 
             Food food = foodRepository.findById(idFood);
             FoodDTO foodDTO = new FoodDTO();
-            if (orderItem != null) {
 
-                if (food != null) {
-                    setFoodDTO(food, foodDTO, orderItem.getAmount());
-                    list.add(foodDTO);
-                }
+            // Check idRes có giống idRes trong order hay không
+            if (orders.getRestaurant().getId() == idRes) {
 
-                for (OrderItem orderItem1: orderItemList) {
-                    if (orderItem1.getFood().getId() != idFood) {
-                        food = foodRepository.findById(orderItem1.getFood().getId());
-                        FoodDTO foodDTO1 = new FoodDTO();
-                        setFoodDTO(food, foodDTO1, orderItem1.getAmount());
-                        list.add(foodDTO1);
+                // Check orderItem tồn tại
+                if (orderItem != null) {
+
+                    // Check food có tồn tại trong orderItem hay không
+                    if (food != null) {
+                        setFoodDTO(food, foodDTO, orderItem.getAmount());
+                        list.add(foodDTO);
+                    }
+
+                    // Lấy thông tin orderItem
+                    for (OrderItem orderItem1 : orderItemList) {
+                        if (orderItem1.getFood().getId() != idFood) {
+                            food = foodRepository.findById(orderItem1.getFood().getId());
+                            FoodDTO foodDTO1 = new FoodDTO();
+                            setFoodDTO(food, foodDTO1, orderItem1.getAmount());
+                            list.add(foodDTO1);
+                        }
+                    }
+                } else {
+
+                    // Thêm food mới
+                    if (food != null) {
+                        setFoodDTO(food, foodDTO, 1);
+                        list.add(foodDTO);
+                    }
+
+                    // Lấy thông tin orderItem
+                    for (OrderItem orderItem1 : orderItemList) {
+                        if (orderItem1.getFood().getId() != idFood) {
+                            food = foodRepository.findById(orderItem1.getFood().getId());
+                            FoodDTO foodDTO1 = new FoodDTO();
+                            setFoodDTO(food, foodDTO1, orderItem1.getAmount());
+                            list.add(foodDTO1);
+                        }
                     }
                 }
             } else {
 
-                if (food != null) {
-                    setFoodDTO(food, foodDTO, 1);
-                    list.add(foodDTO);
-                }
-
-                for (OrderItem orderItem1: orderItemList) {
-                    if (orderItem1.getFood().getId() != idFood) {
-                        food = foodRepository.findById(orderItem1.getFood().getId());
-                        FoodDTO foodDTO1 = new FoodDTO();
-                        setFoodDTO(food, foodDTO1, orderItem1.getAmount());
-                        list.add(foodDTO1);
+                // Kiểm tra orderItem có đang chứa food hay không
+                if (orderItemRepository.findByOrders_Id(orders.getId()).size() > 0) {
+                    return null;
+                } else {
+                    orders.setRestaurant(restaurantRepository.findById(idRes));
+                    ordersRepository.save(orders);
+                    if (food != null) {
+                        setFoodDTO(food, foodDTO, 1);
+                        list.add(foodDTO);
                     }
                 }
             }
 
         } else {
 
+            // Tạo Order và OrderItem mới
             if (idRes != 0) {
+
                 // Create Orders
                 Orders order = new Orders();
                 order.setUsers(userRepository.findByUsername(username));
@@ -96,7 +120,6 @@ public class CartServiceImp implements CartService {
                 orderItem.setOrders(order);
                 orderItem.setAmount(1);
                 orderItem.setPrice(food.getPrice());
-
                 KeyOrderItem keyOrderItem = new KeyOrderItem();
                 keyOrderItem.setOrderId(order.getId());
                 keyOrderItem.setFoodId(idFood);
@@ -112,6 +135,7 @@ public class CartServiceImp implements CartService {
         return list;
     }
 
+    // Delete orderItem
     @Override
     public boolean deleteItemOder(int idFood, String username) {
         Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);

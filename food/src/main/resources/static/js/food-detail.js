@@ -3,7 +3,7 @@ let idRestaurant = 0;
 $(document).ready(function () {
     $.ajax({
         method: 'GET',
-        url: `http://localhost:8080/api/v1/food-detail/GetFoodById`,
+        url: `http://localhost:8080/api/v1/food-detail/getFoodById`,
     }).done(function (data) {
 
         idRestaurant = data[2].data

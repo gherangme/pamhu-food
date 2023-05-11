@@ -42,6 +42,7 @@ public class RestaurantServiceImp implements RestaurantService {
             restaurantDTO.setImage(restaurant.getImage());
             restaurantDTO.setAddress(restaurant.getAddress());
 
+            // Set rating restaurant
             List<RatingRestaurant> ratingRestaurant = ratingRestaurantRepository.findByRestaurant_Id(restaurant.getId());
             float star = 0;
             for (RatingRestaurant ratingRestaurant1: ratingRestaurant) {
@@ -49,6 +50,7 @@ public class RestaurantServiceImp implements RestaurantService {
             }
             restaurantDTO.setRating(star / ratingRestaurant.size());
 
+            // Set cate res
             List<CategoryRestaurant> list1 = categoryRestaurantRepository
                     .findAllByRestaurant_Id(restaurant.getId());
             if (list1.size()<2) {
@@ -56,6 +58,7 @@ public class RestaurantServiceImp implements RestaurantService {
                         .findById(list1.get(0).getCategory().getId()).getName());
             }
 
+            // Set infor Coupon
             Coupon coupon = couponRepository.findById(restaurant.getCoupon().getId());
             CouponDTO couponDTO = new CouponDTO();
             couponDTO.setId(coupon.getId());

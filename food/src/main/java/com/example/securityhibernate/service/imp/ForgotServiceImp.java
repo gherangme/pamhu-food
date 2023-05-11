@@ -24,7 +24,7 @@ public class ForgotServiceImp implements ForgotService {
     }
 
     @Override
-    public boolean changPassword(String username, String password) {
+    public boolean changePassword(String username, String password) {
         try {
             Users users = userRepository.findByUsername(username);
             users.setPassword(passwordEncoder.encode(password));

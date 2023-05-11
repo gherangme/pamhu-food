@@ -6,52 +6,52 @@ $(document).ready(function () {
             'Authorization': 'Bearer ' + token
         },
         success: function (data) {
-
-            $.ajax({
-                url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
-                type: 'POST',
-                data: {'token': token},
-                success: function (data) {
-                    if (data.statusCode === 200) {
-                        const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
+            if (data.data != null) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
+                    type: 'POST',
+                    data: {'token': token},
+                    success: function (data) {
+                        if (data.statusCode === 200) {
+                            const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
                     <p class="mb-0 text-white-50 small"><a id="logout" href="/home"
                                                            class="__cf_email__"
                                                            data-cfemail="1a7f627b776a767f5a7d777b737634797577">[logout]</a>
                     </p>`
-                        $('#infor-user').append(htmlInforUser)
-                    } else {
-                        const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
+                            $('#infor-user').append(htmlInforUser)
+                        } else {
+                            const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
                     <p class="mb-0 text-white-50 small"><a href="/login"
                                                            class="__cf_email__"
                                                            data-cfemail="1a7f627b776a767f5a7d777b737634797577">[login]</a>
                     </p>`
-                        $('#infor-user').append(htmlInforUser)
+                            $('#infor-user').append(htmlInforUser)
+                        }
+
+                        $('#logout').click(function (e) {
+                            e.preventDefault()
+                            token = null;
+                            localStorage.removeItem('token');
+                            window.location.href = "/home"
+                        })
                     }
+                })
 
-                    $('#logout').click(function (e) {
-                        e.preventDefault()
-                        token = null;
-                        localStorage.removeItem('token');
-                        window.location.href="/home"
-                    })
+                console.log(data.data)
+
+                const numberItem = data.data.length
+                if (numberItem < 2) {
+                    $('#number-items').html('Cart - ' + numberItem + ' item')
+                } else {
+                    $('#number-items').html('Cart - ' + numberItem + ' items')
                 }
-            })
 
-            console.log(data.data)
+                let totalPrice = 0;
+                for (const i in data.data) {
+                    totalPrice += data.data[i]["price"] * data.data[i]["amount"]
+                }
 
-            const numberItem = data.data.length
-            if (numberItem < 2) {
-                $('#number-items').html('Cart - '+numberItem+' item')
-            } else {
-                $('#number-items').html('Cart - '+numberItem+' items')
-            }
-
-            let totalPrice = 0;
-            for (const i in data.data) {
-                totalPrice += data.data[i]["price"] * data.data[i]["amount"]
-            }
-
-            const htmlTotalPrice = `<li
+                const htmlTotalPrice = `<li
                                       class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                       Products
                                       <span>${totalPrice} VND</span>
@@ -70,10 +70,10 @@ $(document).ready(function () {
                                       </div>
                                       <span><strong>${totalPrice} VND</strong></span>
                                     </li>`
-            $('#totalPrice').append(htmlTotalPrice)
+                $('#totalPrice').append(htmlTotalPrice)
 
-            for (const i in data.data) {
-                const html = `<div class="row remove-${data.data[i]["id"]}">
+                for (const i in data.data) {
+                    const html = `<div class="row remove-${data.data[i]["id"]}">
                                     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                                       <!-- Image -->
                                       <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
@@ -138,125 +138,133 @@ $(document).ready(function () {
                                     </div>
                                   </div>
                                   `
-                $('#show-item').append(html)
+                    $('#show-item').append(html)
 
-                // Xoá <hr> cuối cho đẹp
-                if (i != data.data.length - 1) {
-                    const htmlHr = `<hr class="my-4" />`
-                    $('#show-item').append(htmlHr)
+                    // Xoá <hr> cuối cho đẹp
+                    if (i != data.data.length - 1) {
+                        const htmlHr = `<hr class="my-4" />`
+                        $('#show-item').append(htmlHr)
+                    }
                 }
-            }
 
-            $('.delete-order-item').click(function (e) {
-                e.preventDefault()
-                const idFood = $(this).val()
+                $('.delete-order-item').click(function (e) {
+                    e.preventDefault()
+                    const idFood = $(this).val()
 
-                // var formData = new FormData();
-                // formData.append('idFood', idFood);
+                    // var formData = new FormData();
+                    // formData.append('idFood', idFood);
 
-                $.ajax({
-                    type: 'DELETE',
-                    url: 'http://localhost:8080/api/v1/user/cart/deleteOrderItem/' + idFood,
-                    headers: {'Authorization': 'Bearer ' + token},
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                    $.ajax({
+                        type: 'DELETE',
+                        url: 'http://localhost:8080/api/v1/user/cart/deleteOrderItem/' + idFood,
+                        headers: {'Authorization': 'Bearer ' + token},
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
                                         Xoá thành công.
                                       </div>`
-                        $('.delete-order-item').append(alertCustom)
-                        $('.remove-'+idFood).remove()
-                        $('.custom-alert').css({
-                            'position': 'fixed',
-                            'top': 0,
-                            'left': 0,
-                            'width': '100%',
-                            'z-index': '9999'
-                        });
+                            $('.delete-order-item').append(alertCustom)
+                            $('.remove-' + idFood).remove()
+                            $('.custom-alert').css({
+                                'position': 'fixed',
+                                'top': 0,
+                                'left': 0,
+                                'width': '100%',
+                                'z-index': '9999'
+                            });
 
-                        // Set time out
-                        setTimeout(function(){
-                            $(".alert").remove();
-                            window.location.href="/cart"
-                        }, 2000);
-                    }
+                            // Set time out
+                            setTimeout(function () {
+                                $(".alert").remove();
+                                window.location.href = "/cart"
+                            }, 2000);
+                        }
+                    })
                 })
-            })
 
-            $('.save-order').click(function (e) {
-                e.preventDefault()
+                $('.save-order').click(function (e) {
+                    e.preventDefault()
 
-                const idFood = $(this).attr('id')
-                const amount = $('#form1-' + idFood).val()
+                    const idFood = $(this).attr('id')
+                    const amount = $('#form1-' + idFood).val()
 
-                // parseFloat() để tránh lỗi là không lấy được phần thập phân của giá trị này.
-                const price = parseFloat($('.price-' + idFood).attr('value'))
+                    // parseFloat() để tránh lỗi là không lấy được phần thập phân của giá trị này.
+                    const price = parseFloat($('.price-' + idFood).attr('value'))
 
-                const jsonData = {
-                    amount: amount,
-                    idFood: idFood,
-                    price: price,
-                }
-                $.ajax({
-                    url: 'http://localhost:8080/api/v1/user/cart/postOrderItem',
-                    type: 'POST',
-                    headers: {'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'},
-                    data: JSON.stringify(jsonData),
-                    success: function (data) {
-                        const alertCustom = `<div class="alert alert-success custom-alert" style="text-align: center">
+                    const jsonData = {
+                        amount: amount,
+                        idFood: idFood,
+                        price: price,
+                    }
+                    $.ajax({
+                        url: 'http://localhost:8080/api/v1/user/cart/postOrderItem',
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify(jsonData),
+                        success: function (data) {
+                            const alertCustom = `<div class="alert alert-success custom-alert" style="text-align: center">
                                         Cập nhật thành công.
                                       </div>`
-                        $('.save-order').append(alertCustom)
+                            $('.save-order').append(alertCustom)
 
-                        $('.custom-alert').css({
-                            'position': 'fixed',
-                            'top': 0,
-                            'left': 0,
-                            'width': '100%',
-                            'z-index': '9999'
-                        });
+                            $('.custom-alert').css({
+                                'position': 'fixed',
+                                'top': 0,
+                                'left': 0,
+                                'width': '100%',
+                                'z-index': '9999'
+                            });
 
-                        // Set time out
-                        setTimeout(function(){
-                            $(".alert").remove();
-                            window.location.href="/cart"
-                        }, 2000);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log('that bai')
-                    }
+                            // Set time out
+                            setTimeout(function () {
+                                $(".alert").remove();
+                                window.location.href = "/cart"
+                            }, 2000);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('that bai')
+                        }
+                    })
                 })
-            })
-            $('#checkout-button').click(function (e) {
-                e.preventDefault()
-                $.ajax({
-                    url: 'http://localhost:8080/api/v1/user/checkout/postInforCheckout',
-                    type: 'POST',
-                    headers: {'Authorization': 'Bearer ' + token},
-                    data: {'token': token, 'price': totalPrice},
-                    success: function (data) {window.location.href="/checkout"},
-                    error: function (xhr, status, error) {
-                        const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                $('#checkout-button').click(function (e) {
+                    e.preventDefault()
+                    $.ajax({
+                        url: 'http://localhost:8080/api/v1/user/checkout/postInforCheckout',
+                        type: 'POST',
+                        headers: {'Authorization': 'Bearer ' + token},
+                        data: {'token': token, 'price': totalPrice},
+                        success: function (data) {
+                            window.location.href = "/checkout"
+                        },
+                        error: function (xhr, status, error) {
+                            const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
                                         Vui lòng đăng nhập trước khi thực hiện thao tác này.
                                       </div>`
-                        $('.select-dish').append(alertCustom)
+                            $('.select-dish').append(alertCustom)
 
-                        $('.custom-alert').css({
-                            'position': 'fixed',
-                            'top': 0,
-                            'left': 0,
-                            'width': '100%',
-                            'z-index': '9999'
-                        });
+                            $('.custom-alert').css({
+                                'position': 'fixed',
+                                'top': 0,
+                                'left': 0,
+                                'width': '100%',
+                                'z-index': '9999'
+                            });
 
-                        // Set time out
-                        setTimeout(function(){
-                            $(".alert").remove();
-                        }, 3000);
-                    }
-                });
-            })
+                            // Set time out
+                            setTimeout(function () {
+                                $(".alert").remove();
+                            }, 3000);
+                        }
+                    });
+                })
+            } else {
+                alert('Vui lòng xoá sản phẩm trong cart của nhà hàng cũ trước khi chuyển sang nhà hàng mới')
+                window.location.href="/home"
+            }
         },
         error: function (xhr, status, error) {
 

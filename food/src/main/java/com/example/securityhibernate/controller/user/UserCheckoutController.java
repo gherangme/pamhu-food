@@ -31,16 +31,14 @@ public class UserCheckoutController {
     private JwtUtilsHelpers jwtUtilsHelpers;
 
     @Autowired
-    private CartService cartService;
-
-    @Autowired
     private EmailService emailService;
 
     @Autowired
     private PromotionService promotionService;
 
     @PostMapping("/postInforCheckout")
-    public ResponseEntity<?> postInforCheckout(@RequestParam String token, @RequestParam double price) {
+    public ResponseEntity<?> postInforCheckout(@RequestParam String token,
+                                               @RequestParam double price) {
         ResponseData responseData = new ResponseData();
         System.out.println(token);
         if (token != null) {
@@ -54,7 +52,8 @@ public class UserCheckoutController {
     }
 
     @PutMapping("/putVoucher")
-    private ResponseEntity<?> putVoucher(@RequestParam String promotionCode, @RequestParam int idRes) {
+    private ResponseEntity<?> putVoucher(@RequestParam String promotionCode,
+                                         @RequestParam int idRes) {
         List<ResponseData> list = new ArrayList<>();
         ResponseData responseData = new ResponseData();
         responseData.setData(checkoutService.getUserByUsername(getUserNameByToken));
@@ -67,14 +66,14 @@ public class UserCheckoutController {
         System.out.println(promotion);
         if (promotion != 0) {
             totalPrice -= promotion;
-            responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
+            responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
             list.add(responseData1);
 
             responseData2.setData(Double.toString(totalPrice));
             responseData2.setDesc("Giảm giá thành công");
             list.add(responseData2);
         } else {
-            responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
+            responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
             list.add(responseData1);
 
             responseData2.setData(Double.toString(totalPrice));
@@ -95,7 +94,7 @@ public class UserCheckoutController {
         list.add(responseData);
 
         ResponseData responseData1 = new ResponseData();
-        responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
+        responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
         list.add(responseData1);
 
         ResponseData responseData2 = new ResponseData();

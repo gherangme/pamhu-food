@@ -36,12 +36,15 @@ public class UserCartController {
     }
 
     @PostMapping("/postIdFood")
-    public ResponseEntity<?> addItemToCart(@RequestParam int idFoodByUser, @RequestParam int idResByUser, @RequestParam String token) {
-        System.out.println(token + idFoodByUser);
+    public ResponseEntity<?> addItemToCart(@RequestParam int idFoodByUser,
+                                           @RequestParam int idResByUser,
+                                           @RequestParam String token) {
         ResponseData responseData = new ResponseData();
+
         idFood = idFoodByUser;
         idRes = idResByUser;
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
+
         if (idFood != 0) {
             responseData.setData(idFood);
             responseData.setDesc("Lấy thành công id food");

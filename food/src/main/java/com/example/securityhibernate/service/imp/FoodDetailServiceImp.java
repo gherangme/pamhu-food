@@ -24,6 +24,8 @@ public class FoodDetailServiceImp implements FoodDetailService {
 
     @Override
     public FoodDTO getFoodById(int id) {
+
+        // Lấy thông tin food
         Food food = foodRepository.findById(id);
         FoodDTO foodDTO = new FoodDTO();
         foodDTO.setId(food.getId());
@@ -36,6 +38,7 @@ public class FoodDetailServiceImp implements FoodDetailService {
         categoryDTO.setName(food.getCategoryRestaurant().getCategory().getName());
         foodDTO.setCategoryDTO(categoryDTO);
 
+        // Lấy thông tin đánh giá food
         List<RatingFood> ratingFoodList = ratingFoodRepository.findAllByFood_Id(food.getId());
         if (ratingFoodList.size() > 0) {
             foodDTO.setRatingNumber(ratingFoodList.size());

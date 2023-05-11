@@ -30,7 +30,7 @@ public class ForgotController {
     public ResponseEntity<?> changePassword(@RequestParam String password, @RequestParam String OTPByUser) {
         ResponseData responseData = new ResponseData();
         if (OTP.equals(OTPByUser)) {
-            responseData.setData(forgotService.changPassword(email, password));
+            responseData.setData(forgotService.changePassword(email, password));
             responseData.setDesc("Thay đổi mật khẩu thành công, vui lòng đăng nhập lại");
         } else {
             responseData.setDesc("OTP không hợp lệ");

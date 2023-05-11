@@ -43,19 +43,21 @@ public class FoodServiceImp implements FoodService {
             foodDTO.setImage(food.getImage());
             foodDTO.setPrice(food.getPrice());
 
+            // Set cate DTO
             CategoryDTO categoryDTO = new CategoryDTO();
             categoryDTO.setName(categoryRepository.findById(food
                     .getCategoryRestaurant().getCategory().getId()).getName());
             foodDTO.setCategoryDTO(categoryDTO);
 
+            // Set res DTO
             RestaurantDTO restaurantDTO = new RestaurantDTO();
             Restaurant restaurant = restaurantRepository.findById(food.getCategoryRestaurant().getRestaurant().getId());
             restaurantDTO.setId(restaurant.getId());
             restaurantDTO.setName(restaurant.getName());
             foodDTO.setRestaurantDTO(restaurantDTO);
 
+            // Set rating food
             List<RatingFood> ratingFoodList = ratingFoodRepository.findAllByFood_Id(food.getId());
-
             if (ratingFoodList.size() > 0) {
                 foodDTO.setRatingNumber(ratingFoodList.size());
                 float star = 0;

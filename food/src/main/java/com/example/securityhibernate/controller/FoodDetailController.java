@@ -25,9 +25,9 @@ public class FoodDetailController {
     private RatingFoodService ratingFoodService;
 
     @PostMapping("/postIdFoodDetail")
-    public ResponseEntity<?> postIdFoodDetail(@RequestParam int id, @RequestParam int idResByUser) {
+    public ResponseEntity<?> postIdFoodDetail(@RequestParam int id,
+                                              @RequestParam int idResByUser) {
         ResponseData responseData = new ResponseData();
-        System.out.println("id food "+id+" idRes "+idResByUser);
         if (id != 0) {
             idFood = id;
             idRes = idResByUser;
@@ -38,8 +38,8 @@ public class FoodDetailController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    @GetMapping("/GetFoodById")
-    public ResponseEntity<?> GetFoodById() {
+    @GetMapping("/getFoodById")
+    public ResponseEntity<?> getFoodById() {
         List<ResponseData> list = new ArrayList<>();
         ResponseData responseData = new ResponseData();
         ResponseData responseData1 = new ResponseData();
