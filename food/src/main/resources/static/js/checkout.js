@@ -1,3 +1,4 @@
+let totalPriceFinal = 0;
 $(document).ready(function () {
     $.ajax({
         url: 'http://localhost:8080/api/v1/user/checkout/getInforCheckout',
@@ -6,6 +7,7 @@ $(document).ready(function () {
             'Authorization': 'Bearer ' + token
         },
         success: function (data) {
+
             console.log(data)
             $('#fullName').val(data[0].data["fullName"])
             $('#username').val(data[0].data["username"])
@@ -30,35 +32,52 @@ $(document).ready(function () {
                               <strong id="totalPrice"></strong>
                             </li>`
             $('#list-food').append(htmlTotalPrice)
-            $('#totalPrice').html(parseFloat(data[1].desc))
-
-            // Promote coupon làm sau
-            // const htmlPromote = `<div class="text-success">
-            //                     <h6 class="my-0">Promo code</h6>
-            //                     <small>EXAMPLECODE</small>
-            //                   </div>
-            //                   <span class="text-success">-$5</span>`
-            // $('#get-promote').val(htmlPromote)
+            $('#totalPrice').html(parseFloat(data[2].data))
+            totalPriceFinal = parseFloat(data[2].data)
+            $('#voucher-btn').click(function () {
+                const voucher = $('#code-voucher').val();
+                console.log(voucher);
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/user/checkout/putVoucher',
+                    type: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    data: {'promotionCode': voucher, 'idRes': idRestaurant},
+                    success: function (data) {
+                        console.log(data);
+                        const totalPriceAfterVoucher = parseInt(data[2].data);
+                        totalPriceFinal = totalPriceAfterVoucher;
+                        if (data[2].statusCode == 200) {
+                            $('#totalPrice').val(totalPriceAfterVoucher); // sửa đổi giá trị của ô input
+                        } else {
+                            alert(data[2].desc);
+                        }
+                    }
+                });
+            });
 
             $('#checkout-button').click(function (e) {
                 e.preventDefault()
                 const fullName = $('#fullName').val(),
-                username = $('#username').val(),
-                address = $('#address').val(),
-                phone = $('#phone').val()
+                    username = $('#username').val(),
+                    address = $('#address').val(),
+                    phone = $('#phone').val()
                 console.log(fullName + username + address + phone + parseFloat(data[1].desc))
                 const jsonData = {
                     fullName: fullName,
                     username: username,
                     address: address,
                     phone: phone,
-                    totalPrice: parseFloat(data[1].desc)
+                    totalPrice: totalPriceFinal
                 }
                 $.ajax({
                     url: 'http://localhost:8080/api/v1/user/checkout/checkout',
                     type: 'PUT',
-                    headers: {'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'},
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
                     data: JSON.stringify(jsonData),
                     success: function (data) {
                         const alertCustom = `<div class="alert alert-success custom-alert" style="text-align: center">
@@ -75,7 +94,7 @@ $(document).ready(function () {
                         });
 
                         // Set time out
-                        setTimeout(function(){
+                        setTimeout(function () {
                             $(".alert").remove();
                         }, 5000);
                     },

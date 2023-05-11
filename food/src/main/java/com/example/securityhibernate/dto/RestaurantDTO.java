@@ -8,7 +8,7 @@ public class RestaurantDTO {
     private String address;
     private String image;
     private String cate = "Nhiều loại";
-    private String freeShip;
+    private CouponDTO couponDTO;
 
     public String getCate() {
         return cate;
@@ -18,12 +18,12 @@ public class RestaurantDTO {
         this.cate = cate;
     }
 
-    public String getFreeShip() {
-        return freeShip;
+    public CouponDTO getCouponDTO() {
+        return couponDTO;
     }
 
-    public void setFreeShip(String freeShip) {
-        this.freeShip = freeShip;
+    public void setCouponDTO(CouponDTO couponDTO) {
+        this.couponDTO = couponDTO;
     }
 
     public int getId() {

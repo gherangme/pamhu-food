@@ -14,7 +14,7 @@ public class CustomUserDetailsSerializer implements JsonSerializer<CustomUserDet
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("username", src.getUsername());
         jsonObject.addProperty("password", src.getPassword());
-        jsonObject.addProperty("role", src.getUser().getRole());
+        jsonObject.addProperty("role", src.getUser().getRoles().getRoleName());
         // Add other properties as needed
         return jsonObject;
     }

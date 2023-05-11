@@ -5,6 +5,7 @@ import com.example.securityhibernate.dto.FoodDTO;
 import com.example.securityhibernate.dto.RestaurantDTO;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.entity.RatingFood;
+import com.example.securityhibernate.entity.Restaurant;
 import com.example.securityhibernate.repository.CategoryRepository;
 import com.example.securityhibernate.repository.FoodRepository;
 import com.example.securityhibernate.repository.RatingFoodRepository;
@@ -48,8 +49,9 @@ public class FoodServiceImp implements FoodService {
             foodDTO.setCategoryDTO(categoryDTO);
 
             RestaurantDTO restaurantDTO = new RestaurantDTO();
-            restaurantDTO.setName(restaurantRepository.findById(food
-                    .getCategoryRestaurant().getRestaurant().getId()).getName());
+            Restaurant restaurant = restaurantRepository.findById(food.getCategoryRestaurant().getRestaurant().getId());
+            restaurantDTO.setId(restaurant.getId());
+            restaurantDTO.setName(restaurant.getName());
             foodDTO.setRestaurantDTO(restaurantDTO);
 
             List<RatingFood> ratingFoodList = ratingFoodRepository.findAllByFood_Id(food.getId());

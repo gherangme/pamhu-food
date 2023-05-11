@@ -3,9 +3,11 @@ package com.example.securityhibernate.service.imp;
 import com.example.securityhibernate.dto.CheckoutDTO;
 import com.example.securityhibernate.dto.UserDTO;
 import com.example.securityhibernate.entity.Orders;
+import com.example.securityhibernate.entity.Status;
 import com.example.securityhibernate.entity.Users;
 import com.example.securityhibernate.repository.OrderItemRepository;
 import com.example.securityhibernate.repository.OrdersRepository;
+import com.example.securityhibernate.repository.StatusRepository;
 import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.CheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class CheckoutServiceImp implements CheckoutService {
 
     @Autowired
     private OrdersRepository ordersRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     @Override
     public UserDTO getUserByUsername(String username) {
@@ -43,10 +48,11 @@ public class CheckoutServiceImp implements CheckoutService {
             users.setPhone(checkoutDTO.getPhone());
             userRepository.save(users);
 
-            Orders orders = ordersRepository.findByStatusAndUsers_Username("1", checkoutDTO.getUsername());
-            System.out.println(orders);
+            Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, checkoutDTO.getUsername());
             orders.setTotalPrice(checkoutDTO.getTotalPrice());
-            orders.setStatus("2");
+            Status status = statusRepository.findById(2);
+            orders.setStatus(status);
+
             ordersRepository.save(orders);
 
             return orders.getId();

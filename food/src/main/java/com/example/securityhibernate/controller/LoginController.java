@@ -56,4 +56,17 @@ public class LoginController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    @PostMapping("/getInforUserByToken")
+    public ResponseEntity<?> getInforUserByToken(@RequestParam String token) {
+        ResponseData responseData = new ResponseData();
+
+        if (!loginService.getFullNameByToken(token).equals("Guess")) {
+            responseData.setData(loginService.getFullNameByToken(token));
+        } else {
+            responseData.setData(loginService.getFullNameByToken(token));
+            responseData.setStatusCode(400);
+        }
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+
 }

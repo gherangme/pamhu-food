@@ -6,11 +6,38 @@ $(document).ready(function () {
             'Authorization': 'Bearer ' + token
         },
         success: function (data) {
+
+            $.ajax({
+                url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
+                type: 'POST',
+                data: {'token': token},
+                success: function (data) {
+                    if (data.statusCode === 200) {
+                        const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
+                    <p class="mb-0 text-white-50 small"><a id="logout" href="/home"
+                                                           class="__cf_email__"
+                                                           data-cfemail="1a7f627b776a767f5a7d777b737634797577">[logout]</a>
+                    </p>`
+                        $('#infor-user').append(htmlInforUser)
+                    } else {
+                        const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
+                    <p class="mb-0 text-white-50 small"><a href="/login"
+                                                           class="__cf_email__"
+                                                           data-cfemail="1a7f627b776a767f5a7d777b737634797577">[login]</a>
+                    </p>`
+                        $('#infor-user').append(htmlInforUser)
+                    }
+
+                    $('#logout').click(function (e) {
+                        e.preventDefault()
+                        token = null;
+                        localStorage.removeItem('token');
+                        window.location.href="/home"
+                    })
+                }
+            })
+
             console.log(data.data)
-            let totalPrice = 0;
-            for (const i in data.data) {
-                totalPrice += data.data[i]["price"] * data.data[i]["amount"]
-            }
 
             const numberItem = data.data.length
             if (numberItem < 2) {
@@ -18,6 +45,12 @@ $(document).ready(function () {
             } else {
                 $('#number-items').html('Cart - '+numberItem+' items')
             }
+
+            let totalPrice = 0;
+            for (const i in data.data) {
+                totalPrice += data.data[i]["price"] * data.data[i]["amount"]
+            }
+
             const htmlTotalPrice = `<li
                                       class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                       Products
@@ -144,7 +177,8 @@ $(document).ready(function () {
                         // Set time out
                         setTimeout(function(){
                             $(".alert").remove();
-                        }, 3000);
+                            window.location.href="/cart"
+                        }, 2000);
                     }
                 })
             })
@@ -186,7 +220,8 @@ $(document).ready(function () {
                         // Set time out
                         setTimeout(function(){
                             $(".alert").remove();
-                        }, 3000);
+                            window.location.href="/cart"
+                        }, 2000);
                     },
                     error: function (xhr, status, error) {
                         console.log('that bai')
@@ -205,7 +240,7 @@ $(document).ready(function () {
                         const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
                                         Vui lòng đăng nhập trước khi thực hiện thao tác này.
                                       </div>`
-                        $('.add-category').append(alertCustom)
+                        $('.select-dish').append(alertCustom)
 
                         $('.custom-alert').css({
                             'position': 'fixed',

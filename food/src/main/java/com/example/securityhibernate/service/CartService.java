@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CartService {
 
-    List<FoodDTO> getListFoods(int idFood,  String username);
+    List<FoodDTO> getListFoods(int idFood, int idRes, String username);
     boolean deleteItemOder(int idFood, String username);
 
 }

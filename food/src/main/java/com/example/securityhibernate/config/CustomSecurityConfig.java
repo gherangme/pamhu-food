@@ -43,19 +43,23 @@ public class CustomSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/api/v1/login/**", "/api/v1/signup/**",
-                            "/api/v1/food/**", "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
-                            "/signup", "/login", "/403", "/cdn-cgi/**",
-                            "/home", "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout", "/signup", "/otp")
-                        .permitAll() // Cho phép truy cập
-                    .antMatchers("/", "/resources/**", "/static/**", "/oauth/**",
+                                    // Link api
+                    .antMatchers("/api/v1/login/**", "/api/v1/signup/**", "/api/v1/forgot/**",
+                            "/api/v1/food/**", "/api/v1/food-detail/**", "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
+                                    // Link resources
+                            "/401", "/403", "/404", "/signup", "/login", "/home", "/food", "/restaurant",
+                            "/restaurant-detail", "/cart", "/checkout", "/signup", "/otp", "/forgot", "/forgot-otp", "/food-detail",
+                            "/manager")
+                        .permitAll()
+                    .antMatchers("/", "/resources/**", "/static/**", "/oauth/**", "/cdn-cgi/**",
                             "/**/*.css.map", "/**/*.css", "/**/*.js","/**/*.js.map", "/","/**/*.png","/**/*.jpg", "/**/*.woff2")
                         .permitAll()
+
                     .antMatchers("/api/v1/admin/**")
-                        .hasRole("ADMIN") // admin mới đc truy cập
+                        .hasRole("ADMIN")
                     .antMatchers("/api/v1/manager/**")
-                        .hasAnyRole("ADMIN", "MANAGER") // Admin và manager được truy cập
-                    .anyRequest().authenticated(); // Cần phải xác thực mới được truy cập
+                        .hasAnyRole("ADMIN", "MANAGER")
+                    .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(customFilterJwt, UsernamePasswordAuthenticationFilter.class);
 

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,11 +31,17 @@ public class RestaurantDetailController {
 
     @GetMapping("/getRestaurantById")
     public ResponseEntity<?> getRestaurantById() {
+        List<ResponseData> list = new ArrayList<>();
         ResponseData responseData = new ResponseData();
         responseData.setData(restaurantDetailService.getRestaurantDetailById(idRes));
         responseData.setDesc("Lấy thành công res detail");
+        list.add(responseData);
+        ResponseData responseData1 = new ResponseData();
+        responseData1.setData(idRes);
+        responseData1.setDesc("Lấy thành công id res");
+        list.add(responseData1);
 
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 }

@@ -18,7 +18,7 @@ public class RatingRestaurant {
     private Restaurant restaurant;
 
     @Column(name = "star")
-    private float star;
+    private int star;
 
     @Column(name = "comment")
     private String comment;
@@ -47,11 +47,11 @@ public class RatingRestaurant {
         this.restaurant = restaurant;
     }
 
-    public float getStar() {
+    public int getStar() {
         return star;
     }
 
-    public void setStar(float star) {
+    public void setStar(int star) {
         this.star = star;
     }
 

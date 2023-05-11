@@ -22,18 +22,15 @@ public class Users {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "role")
-    private String role;
-
-    @Column(name = "avatar")
-    private String avatar;
-
     @Column(name = "phone")
     private String phone;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;
+
+    @OneToMany(mappedBy = "users")
+    private Set<Restaurant> listRestaurant;
 
     @OneToMany(mappedBy = "users")
     private Set<Orders> listOrder;
@@ -47,28 +44,20 @@ public class Users {
     @OneToMany(mappedBy = "users")
     private Set<RatingRestaurant> listRatingRestaurant;
 
+    public Set<Restaurant> getListRestaurant() {
+        return listRestaurant;
+    }
+
+    public void setListRestaurant(Set<Restaurant> listRestaurant) {
+        this.listRestaurant = listRestaurant;
+    }
+
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public Set<RatingRestaurant> getListRatingRestaurant() {

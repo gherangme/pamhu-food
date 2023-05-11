@@ -19,17 +19,22 @@ public class Restaurant {
     @Column(name = "description")
     private String desc;
 
-    @Column(name = "rating")
-    private float rating;
-
     @Column(name = "content")
     private String content;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "free_ship")
-    private boolean freeShip;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
+
+    @ManyToOne
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
+
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Orders> listOrders;
 
     @OneToMany(mappedBy = "category")
     private Set<CategoryRestaurant> listCategoryRestaurants;
@@ -37,12 +42,28 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant")
     private Set<RatingRestaurant> listRatingRestaurant;
 
-    public boolean isFreeShip() {
-        return freeShip;
+    public Coupon getCoupon() {
+        return coupon;
     }
 
-    public void setFreeShip(boolean freeShip) {
-        this.freeShip = freeShip;
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
+
+    public Set<Orders> getListOrders() {
+        return listOrders;
+    }
+
+    public void setListOrders(Set<Orders> listOrders) {
+        this.listOrders = listOrders;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public String getImage() {
@@ -99,14 +120,6 @@ public class Restaurant {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
     }
 
     public String getContent() {

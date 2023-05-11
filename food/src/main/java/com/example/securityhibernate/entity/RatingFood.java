@@ -1,6 +1,7 @@
 package com.example.securityhibernate.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "rating_food")
 public class RatingFood {
@@ -22,6 +23,17 @@ public class RatingFood {
 
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "date")
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public int getId() {
         return id;

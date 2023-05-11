@@ -1,9 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CategaryRestaurantDTO;
-import com.example.securityhibernate.dto.CategoryDTO;
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.dto.RestaurantDetailDTO;
+import com.example.securityhibernate.dto.*;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.RestaurantDetailService;
@@ -31,6 +28,12 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
     @Autowired
     private RatingFoodRepository ratingFoodRepository;
 
+    @Autowired
+    private CouponRepository couponRepository;
+
+    @Autowired
+    private RatingRestaurantRepository ratingRestaurantRepository;
+
     // Get information restaurant detail
     @Override
     public RestaurantDetailDTO getRestaurantDetailById(int id) {
@@ -41,7 +44,21 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
         restaurantDetailDTO.setName(restaurant.getName());
         restaurantDetailDTO.setImage(restaurant.getImage());
         restaurantDetailDTO.setAddress(restaurant.getAddress());
-        restaurantDetailDTO.setRating(restaurant.getRating());
+
+        Coupon coupon = couponRepository.findById(restaurant.getCoupon().getId());
+        CouponDTO couponDTO = new CouponDTO();
+        couponDTO.setId(coupon.getId());
+        couponDTO.setName(coupon.getName());
+        couponDTO.setVoucher(coupon.getVoucher());
+        restaurantDetailDTO.setCouponDTO(couponDTO);
+
+        List<RatingRestaurant> ratingRestaurant = ratingRestaurantRepository.findByRestaurant_Id(restaurant.getId());
+        float starRes = 0;
+        for (RatingRestaurant ratingRestaurant1: ratingRestaurant) {
+            starRes += ratingRestaurant1.getStar();
+        }
+        restaurantDetailDTO.setRating(starRes / ratingRestaurant.size());
+
         restaurantDetailDTO.setDesc(restaurant.getDesc());
 
         // Set cate string

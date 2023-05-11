@@ -61,4 +61,24 @@ public class ResourcesController {
         return "otp";
     }
 
+    @GetMapping("/forgot")
+    public String forgot() {
+        return "/forgot";
+    }
+
+    @GetMapping("/forgot-otp")
+    public String forgotOTP() {
+        return "/forgot-otp";
+    }
+
+    @GetMapping("/food-detail")
+    public String ratingFood() {
+        return "/food-detail";
+    }
+
+    @GetMapping("/manager")
+    public String manager() {
+        return "/manager";
+    }
+
 }

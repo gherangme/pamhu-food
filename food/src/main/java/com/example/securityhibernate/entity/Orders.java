@@ -17,18 +17,51 @@ public class Orders {
     @Column(name = "create_date")
     private Date createDate;
 
-    @Column(name = "status")
-    private String status;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
+
+    @ManyToOne
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     @OneToMany(mappedBy = "orders")
     private Set<OrderItem> listOrderItem;
 
     @OneToMany(mappedBy = "orders")
     private Set<RatingOrder> listRatingOrder;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
     public Set<RatingOrder> getListRatingOrder() {
         return listRatingOrder;
@@ -68,14 +101,6 @@ public class Orders {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Users getUsers() {

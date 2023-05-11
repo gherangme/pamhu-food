@@ -7,6 +7,7 @@ import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.CartService;
 import com.example.securityhibernate.service.CheckoutService;
 import com.example.securityhibernate.service.EmailService;
+import com.example.securityhibernate.service.PromotionService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,9 @@ public class UserCheckoutController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private PromotionService promotionService;
+
     @PostMapping("/postInforCheckout")
     public ResponseEntity<?> postInforCheckout(@RequestParam String token, @RequestParam double price) {
         ResponseData responseData = new ResponseData();
@@ -49,6 +53,39 @@ public class UserCheckoutController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    @PutMapping("/putVoucher")
+    private ResponseEntity<?> putVoucher(@RequestParam String promotionCode, @RequestParam int idRes) {
+        List<ResponseData> list = new ArrayList<>();
+        ResponseData responseData = new ResponseData();
+        responseData.setData(checkoutService.getUserByUsername(getUserNameByToken));
+        responseData.setDesc("Lấy thành công thông tin user");
+        list.add(responseData);
+
+        ResponseData responseData1 = new ResponseData();
+        ResponseData responseData2 = new ResponseData();
+        double promotion = promotionService.checkPromotionCode(promotionCode, idRes, getUserNameByToken);
+        System.out.println(promotion);
+        if (promotion != 0) {
+            totalPrice -= promotion;
+            responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
+            list.add(responseData1);
+
+            responseData2.setData(Double.toString(totalPrice));
+            responseData2.setDesc("Giảm giá thành công");
+            list.add(responseData2);
+        } else {
+            responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
+            list.add(responseData1);
+
+            responseData2.setData(Double.toString(totalPrice));
+            responseData2.setDesc("Protion Code không hợp lệ");
+            responseData2.setStatusCode(400);
+            list.add(responseData2);
+        }
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @GetMapping("/getInforCheckout")
     public ResponseEntity<?> getInforCheckout() {
         List<ResponseData> list = new ArrayList<>();
@@ -58,9 +95,12 @@ public class UserCheckoutController {
         list.add(responseData);
 
         ResponseData responseData1 = new ResponseData();
-        responseData1.setData(cartService.getListFoods(0, getUserNameByToken));
-        responseData1.setDesc(Double.toString(totalPrice));
+        responseData1.setData(cartService.getListFoods(0, 0, getUserNameByToken));
         list.add(responseData1);
+
+        ResponseData responseData2 = new ResponseData();
+        responseData2.setData(Double.toString(totalPrice));
+        list.add(responseData2);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -84,8 +124,9 @@ public class UserCheckoutController {
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setRecipient(checkoutDTO.getUsername());
         emailDTO.setSubject("[Pamhu Food]");
-        emailDTO.setMsgBody("Cảm ơn khách hàng " + checkoutDTO.getFullName() + " đã sử dụng Pamhu Food. Mã đơn hàng " +
-                "của bạn là #" + isSucces);
+        emailDTO.setMsgBody("Mã đơn hàng " +
+                "của bạn là #" + isSucces + ", tổng số tiền là " + totalPrice + " VND. Cảm ơn khách hàng " +
+                checkoutDTO.getFullName() + " đã sử dụng Pamhu Food.");
         return emailService.sendSimpleMail(emailDTO);
     }
 

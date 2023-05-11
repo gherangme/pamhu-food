@@ -18,6 +18,7 @@ import java.util.Date;
 public class UserCartController {
 
     int idFood = 0;
+    int idRes = 0;
     String getUserNameByToken = null;
 
     @Autowired
@@ -35,9 +36,11 @@ public class UserCartController {
     }
 
     @PostMapping("/postIdFood")
-    public ResponseEntity<?> addItemToCart(@RequestParam int id, @RequestParam String token) {
+    public ResponseEntity<?> addItemToCart(@RequestParam int idFoodByUser, @RequestParam int idResByUser, @RequestParam String token) {
+        System.out.println(token + idFoodByUser);
         ResponseData responseData = new ResponseData();
-        idFood = id;
+        idFood = idFoodByUser;
+        idRes = idResByUser;
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
         if (idFood != 0) {
             responseData.setData(idFood);
@@ -54,10 +57,10 @@ public class UserCartController {
     public ResponseEntity<?> getFoodById() {
         ResponseData responseData = new ResponseData();
         if (idFood != 0) {
-            responseData.setData(cartService.getListFoods(idFood, getUserNameByToken));
+            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
             responseData.setDesc("Lấy thành công thông tin food");
         } else {
-            responseData.setData(cartService.getListFoods(idFood, getUserNameByToken));
+            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }

@@ -5,9 +5,9 @@ import com.example.securityhibernate.dto.FoodDTO;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.entity.OrderItem;
 import com.example.securityhibernate.entity.Orders;
-import com.example.securityhibernate.repository.FoodRepository;
-import com.example.securityhibernate.repository.OrderItemRepository;
-import com.example.securityhibernate.repository.OrdersRepository;
+import com.example.securityhibernate.entity.Status;
+import com.example.securityhibernate.entity.keys.KeyOrderItem;
+import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,25 @@ public class CartServiceImp implements CartService {
     private FoodRepository foodRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Autowired
     private OrdersRepository ordersRepository;
 
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
     @Override
-    public List<FoodDTO> getListFoods(int idFood, String username) {
+    public List<FoodDTO> getListFoods(int idFood, int idRes, String username) {
         List<FoodDTO> list = new ArrayList<>();
 
-        Orders orders = ordersRepository.findByStatusAndUsers_Username("1", username);
+        Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
         if (orders != null) {
             OrderItem orderItem = orderItemRepository.findByFood_IdAndOrders_Id(idFood, orders.getId());
             List<OrderItem> orderItemList = orderItemRepository.findByOrders_Id(orders.getId());
@@ -71,10 +80,33 @@ public class CartServiceImp implements CartService {
             }
 
         } else {
-            Food food = foodRepository.findById(idFood);
-            FoodDTO foodDTO = new FoodDTO();
-            setFoodDTO(food, foodDTO, 1);
-            list.add(foodDTO);
+
+            if (idRes != 0) {
+                // Create Orders
+                Orders order = new Orders();
+                order.setUsers(userRepository.findByUsername(username));
+                order.setStatus(statusRepository.findById(1));
+                order.setRestaurant(restaurantRepository.findById(idRes));
+                ordersRepository.save(order);
+
+                // Create Order Item
+                OrderItem orderItem = new OrderItem();
+                Food food = foodRepository.findById(idFood);
+                orderItem.setFood(food);
+                orderItem.setOrders(order);
+                orderItem.setAmount(1);
+                orderItem.setPrice(food.getPrice());
+
+                KeyOrderItem keyOrderItem = new KeyOrderItem();
+                keyOrderItem.setOrderId(order.getId());
+                keyOrderItem.setFoodId(idFood);
+                orderItem.setKeys(keyOrderItem);
+                orderItemRepository.save(orderItem);
+
+                FoodDTO foodDTO = new FoodDTO();
+                setFoodDTO(food, foodDTO, 1);
+                list.add(foodDTO);
+            }
         }
 
         return list;
@@ -82,7 +114,7 @@ public class CartServiceImp implements CartService {
 
     @Override
     public boolean deleteItemOder(int idFood, String username) {
-        Orders orders = ordersRepository.findByStatusAndUsers_Username("1", username);
+        Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
         if (orders != null) {
             OrderItem orderItem = orderItemRepository.findByFood_IdAndOrders_Id(idFood, orders.getId());
             try {

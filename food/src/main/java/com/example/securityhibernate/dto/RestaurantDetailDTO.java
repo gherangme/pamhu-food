@@ -12,7 +12,7 @@ public class RestaurantDetailDTO {
     private String desc;
     private String cate = "Nhiều loại";
     private List<CategoryDTO> categoryDTO;
-    private String freeShip;
+    private CouponDTO couponDTO;
     private int dishes = 0;
     private List<FoodDTO> foodDTO;
 
@@ -80,12 +80,12 @@ public class RestaurantDetailDTO {
         this.cate = cate;
     }
 
-    public String getFreeShip() {
-        return freeShip;
+    public CouponDTO getCouponDTO() {
+        return couponDTO;
     }
 
-    public void setFreeShip(String freeShip) {
-        this.freeShip = freeShip;
+    public void setCouponDTO(CouponDTO couponDTO) {
+        this.couponDTO = couponDTO;
     }
 
     public int getDishes() {

@@ -25,12 +25,12 @@ public class CustomUserDetails implements UserDetails {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         // Check admin
-        if (user.getRole().equals("ROLE_ADMIN")) {
+        if (user.getRoles().getRoleName().equals("ROLE_ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
         // Check manager
-        if (user.getRole().equals("ROLE_MANAGER")) {
+        if (user.getRoles().getRoleName().equals("ROLE_MANAGER")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
         }
 

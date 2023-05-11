@@ -40,13 +40,13 @@ public class OrderServiceImp implements OrderService {
 
             // Chuyển đổi từ LocalDate sang Date
             Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Orders orders = ordersRepository.findByStatusAndUsers_Username("1", username);
+            Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
 
             // check exist 1
             if (orders == null) {
                 Orders orders1 = new Orders();
                 orders1.setCreateDate(date);
-                orders1.setStatus("1"); // 1. Ordering, 2. Ordered, ...
+//                orders1.setStatus("1"); // 1. Ordering, 2. Ordered, ...
                 orders1.setUsers(userRepository.findByUsername(username));
                 // set total price sau
 

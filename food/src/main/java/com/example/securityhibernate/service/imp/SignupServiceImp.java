@@ -30,7 +30,7 @@ public class SignupServiceImp implements SignupService {
             users.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
             users.setAddress(signupDTO.getAddress());
             users.setPhone(signupDTO.getPhone());
-            users.setRole("ROLE_USER");
+//            users.setRole("ROLE_USER");
 
             Roles roles = new Roles();
             roles.setId(3);
