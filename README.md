@@ -12,7 +12,7 @@
 
 ## Description
 - Application help Vietnamese people to create and manage food order, feedback for food quality.
-- This project started from 03-2022 to present.
+- This project started from 13-02-2023 to present.
 
 ## Preview Screenshot
 <div>
@@ -58,9 +58,9 @@
 
 **ADMIN**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical, user
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, user
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical, user
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, user
   
 **MANAGER RESTAURANT**
   - [ ] ***Read:*** <br>
