@@ -267,7 +267,7 @@ $(document).ready(function () {
             }
         },
         error: function (xhr, status, error) {
-
+            window.location.href="/401"
         }
     });
 })

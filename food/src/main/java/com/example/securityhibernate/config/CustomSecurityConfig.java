@@ -45,11 +45,12 @@ public class CustomSecurityConfig {
                     .authorizeRequests()
                                     // Link api
                     .antMatchers("/api/v1/login/**", "/api/v1/signup/**", "/api/v1/forgot/**",
-                            "/api/v1/food/**", "/api/v1/food-detail/**", "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
+                            "/api/v1/food/**", "/api/v1/food-detail/**",
+                            "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
                                     // Link resources
                             "/401", "/403", "/404", "/signup", "/login", "/home", "/food", "/restaurant",
                             "/restaurant-detail", "/cart", "/checkout", "/signup", "/otp", "/forgot", "/forgot-otp", "/food-detail",
-                            "/manager")
+                            "/manager", "/manager-food-detail", "/manager-food-add")
                         .permitAll()
                     .antMatchers("/", "/resources/**", "/static/**", "/oauth/**", "/cdn-cgi/**",
                             "/**/*.css.map", "/**/*.css", "/**/*.js","/**/*.js.map", "/","/**/*.png","/**/*.jpg", "/**/*.woff2")

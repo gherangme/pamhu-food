@@ -21,6 +21,10 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -28,3 +32,6 @@ spring:
 
 jwt:
   privateKey: Y68oPXSNa/HHkVhcBLLcUnMfxoB1WsIROZtqAnBOuDQ=
+
+fileStorage:
+  path: /Users/phamngochung/Desktop/food/src/main/resources/static/img

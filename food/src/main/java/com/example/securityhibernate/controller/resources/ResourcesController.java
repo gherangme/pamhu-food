@@ -31,14 +31,19 @@ public class ResourcesController {
         return "403";
     }
 
+    @GetMapping("/401")
+    public String notAuthen() {
+        return "401";
+    }
+
     @GetMapping("/food")
     public String food() {
-        return "/food";
+        return "food";
     }
 
     @GetMapping("/restaurant-detail")
     public String restaurantDetail() {
-        return "/restaurant-detail";
+        return "restaurant-detail";
     }
 
     @GetMapping("/cart")
@@ -48,7 +53,7 @@ public class ResourcesController {
 
     @GetMapping("/checkout")
     public String checkout() {
-        return "/checkout";
+        return "checkout";
     }
 
     @GetMapping("/signup")
@@ -63,22 +68,32 @@ public class ResourcesController {
 
     @GetMapping("/forgot")
     public String forgot() {
-        return "/forgot";
+        return "forgot";
     }
 
     @GetMapping("/forgot-otp")
     public String forgotOTP() {
-        return "/forgot-otp";
+        return "forgot-otp";
     }
 
     @GetMapping("/food-detail")
     public String ratingFood() {
-        return "/food-detail";
+        return "food-detail";
     }
 
     @GetMapping("/manager")
     public String manager() {
-        return "/manager";
+        return "manager";
+    }
+
+    @GetMapping("/manager-food-detail")
+    public String managerFoodDetail() {
+        return "manager-food-detail";
+    }
+
+    @GetMapping("/manager-food-add")
+    public String managerFoodAdd() {
+        return "manager-food-add";
     }
 
 }

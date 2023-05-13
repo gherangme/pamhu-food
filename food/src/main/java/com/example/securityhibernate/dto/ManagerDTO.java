@@ -4,13 +4,22 @@ import java.util.List;
 
 public class ManagerDTO {
 
+    private RestaurantDetailDTO restaurantDetailDTO;
     private double totalIncome;
     private int totalOrders;
     private int totalCategorys;
     private int totalFoods;
     private List<FoodDTO> foodDTOList;
     private List<CategoryDTO> categoryDTOList;
-    private List<PromotionDTO> promotionDTOList;
+    private CouponDTO couponDTO;
+
+    public RestaurantDetailDTO getRestaurantDetailDTO() {
+        return restaurantDetailDTO;
+    }
+
+    public void setRestaurantDetailDTO(RestaurantDetailDTO restaurantDetailDTO) {
+        this.restaurantDetailDTO = restaurantDetailDTO;
+    }
 
     public double getTotalIncome() {
         return totalIncome;
@@ -60,11 +69,11 @@ public class ManagerDTO {
         this.categoryDTOList = categoryDTOList;
     }
 
-    public List<PromotionDTO> getPromotionDTOList() {
-        return promotionDTOList;
+    public CouponDTO getCouponDTO() {
+        return couponDTO;
     }
 
-    public void setPromotionDTOList(List<PromotionDTO> promotionDTOList) {
-        this.promotionDTOList = promotionDTOList;
+    public void setCouponDTO(CouponDTO couponDTO) {
+        this.couponDTO = couponDTO;
     }
 }

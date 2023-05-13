@@ -10,5 +10,7 @@ import java.util.List;
 public interface CategoryRestaurantRepository extends JpaRepository<CategoryRestaurant, Integer> {
 
     List<CategoryRestaurant> findAllByRestaurant_Id(int idRes);
+    CategoryRestaurant findById(int id);
+    CategoryRestaurant findByRestaurant_IdAndCategory_Id(int idRes, int idCate);
 
 }

@@ -49,7 +49,7 @@
             <ul class="nav navbar-right navbar-top-links">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
+                        <i class="fa fa-user fa-fw"></i><span id="name-manager"></span><b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -70,11 +70,17 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div>
-                            <p>
-                                <h1 class="page-header" style="margin-bottom: 0px;">Name Restaurant<br>
-                                </h1>
-                                Address
-                            </p>
+                            <div class="mt-n5 bg-white p-3 mb-4 rounded shadow position-relative page-header">
+                                <div class="osahan-single-top-info d-flex">
+                                    <img src="" id="img-res" style="margin-top: 10px"
+                                         class="img-fluid border p-2 mb-auto rounded brand-logo shadow-sm">
+                                    <div class="ml-3">
+                                        <h3><span class="mb-0 font-weight-bold" id="name-res"></span> <small id="address-res"> </small></h3>
+                                        <span class="text-muted p-0 mt-2 mb-2" id="des-res"> </span> <span><i class="fa fa-star text-warning"></i> <span
+                                            class="font-weight-bold text-dark" id="star-res"></span></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -89,8 +95,8 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">26</div>
-                                        <div>Total Income</div>
+                                        <div class="huge" id="total-income-res"></div>
+                                        <div>Total Income (VND)</div>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +118,7 @@
                                         <i class="fa fa-shopping-cart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">12</div>
+                                        <div class="huge" id="total-order-res"></div>
                                         <div>Total Orders</div>
                                     </div>
                                 </div>
@@ -135,8 +141,8 @@
                                         <i class="fa fa-tasks fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">124</div>
-                                        <div>Total Categorys</div>
+                                        <div class="huge" id="total-category-res"></div>
+                                        <div>Total Category</div>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +164,7 @@
                                         <i class="fa fa-product-hunt fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">13</div>
+                                        <div class="huge" id="total-food-res"></div>
                                         <div>Total Foods</div>
                                     </div>
                                 </div>
@@ -178,131 +184,186 @@
                 <div class="row">
 
                     <!-- /.col-lg-4 -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-product-hunt fa-fw"></i> All Foods
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-comment fa-fw"></i> New Comment
-                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-tasks fa-fw"></i> New Task
-                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                        <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                        <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                        <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                        <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-money fa-fw"></i> Payment Received
-                                        <span class="pull-right text-muted small"><em>Yesterday</em>
-                                        </span>
-                                    </a>
+                                <div class="list-group" id="list-food">
+<!--                                    <a href="#" class="list-group-item"> New Comment-->
+<!--                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+<!--                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-envelope fa-fw"></i> Message Sent-->
+<!--                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-tasks fa-fw"></i> New Task-->
+<!--                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted-->
+<!--                                        <span class="pull-right text-muted small"><em>11:32 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!-->
+<!--                                        <span class="pull-right text-muted small"><em>11:13 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding-->
+<!--                                        <span class="pull-right text-muted small"><em>10:57 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed-->
+<!--                                        <span class="pull-right text-muted small"><em>9:49 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-money fa-fw"></i> Payment Received-->
+<!--                                        <span class="pull-right text-muted small"><em>Yesterday</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
                                 </div>
                                 <!-- /.list-group -->
-                                <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                                <a class="btn btn-default btn-block add-new-food">Add New Food</a>
                             </div>
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel .chat-panel -->
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-tasks fa-fw"></i> All Categorys
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-comment fa-fw"></i> New Comment
-                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-tasks fa-fw"></i> New Task
-                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                        <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                        <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                        <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                        <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-money fa-fw"></i> Payment Received
-                                        <span class="pull-right text-muted small"><em>Yesterday</em>
-                                        </span>
-                                    </a>
+                                <div class="list-group" id="list-cate">
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-comment fa-fw"></i> New Comment-->
+<!--                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+<!--                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-envelope fa-fw"></i> Message Sent-->
+<!--                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-tasks fa-fw"></i> New Task-->
+<!--                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted-->
+<!--                                        <span class="pull-right text-muted small"><em>11:32 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!-->
+<!--                                        <span class="pull-right text-muted small"><em>11:13 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding-->
+<!--                                        <span class="pull-right text-muted small"><em>10:57 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed-->
+<!--                                        <span class="pull-right text-muted small"><em>9:49 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-money fa-fw"></i> Payment Received-->
+<!--                                        <span class="pull-right text-muted small"><em>Yesterday</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
                                 </div>
                                 <!-- /.list-group -->
-                                <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+<!--                                <a href="#" class="btn btn-default btn-block">Add New Category</a>-->
                             </div>
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel .chat-panel -->
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-gift fa-fw"></i> All Orders
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="list-group" id="list-orders">
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+<!--                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-envelope fa-fw"></i> Message Sent-->
+<!--                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-tasks fa-fw"></i> New Task-->
+<!--                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted-->
+<!--                                        <span class="pull-right text-muted small"><em>11:32 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!-->
+<!--                                        <span class="pull-right text-muted small"><em>11:13 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding-->
+<!--                                        <span class="pull-right text-muted small"><em>10:57 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed-->
+<!--                                        <span class="pull-right text-muted small"><em>9:49 AM</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+<!--                                    <a href="#" class="list-group-item">-->
+<!--                                        <i class="fa fa-money fa-fw"></i> Payment Received-->
+<!--                                        <span class="pull-right text-muted small"><em>Yesterday</em>-->
+<!--                                        </span>-->
+<!--                                    </a>-->
+                                </div>
+                                <!-- /.list-group -->
+<!--                                <a href="#" class="btn btn-default btn-block">Change Promotion</a>-->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel .chat-panel -->
+                    </div>
+                    <div class="col-lg-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-gift fa-fw"></i> All Promotions
@@ -310,54 +371,53 @@
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-comment fa-fw"></i> New Comment
-                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                                    <a href="#" class="list-group-item"> <span id="name-coupon"></span>
+                                        <span class="pull-right text-muted small"><em id="price-coupon"></em>
                                         </span>
                                     </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-tasks fa-fw"></i> New Task
-                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                        <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                        <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                        <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                        <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-money fa-fw"></i> Payment Received
-                                        <span class="pull-right text-muted small"><em>Yesterday</em>
-                                        </span>
-                                    </a>
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-envelope fa-fw"></i> Message Sent-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-tasks fa-fw"></i> New Task-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>11:32 AM</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>11:13 AM</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>10:57 AM</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>9:49 AM</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <a href="#" class="list-group-item">-->
+                                    <!--                                        <i class="fa fa-money fa-fw"></i> Payment Received-->
+                                    <!--                                        <span class="pull-right text-muted small"><em>Yesterday</em>-->
+                                    <!--                                        </span>-->
+                                    <!--                                    </a>-->
                                 </div>
                                 <!-- /.list-group -->
-                                <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                                <a href="#" class="btn btn-default btn-block">Change Promotion</a>
                             </div>
                             <!-- /.panel-body -->
                         </div>

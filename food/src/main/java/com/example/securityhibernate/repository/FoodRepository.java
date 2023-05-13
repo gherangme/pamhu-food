@@ -10,7 +10,7 @@ import java.util.List;
 public interface FoodRepository extends JpaRepository<Food, Integer> {
 
     List<Food> findAll();
-    Food findByCategoryRestaurant_Id(int id);
+    List<Food> findByCategoryRestaurant_Id(int id);
     Food findById(int id);
 
 }

@@ -40,7 +40,7 @@ public class UserCheckoutController {
     public ResponseEntity<?> postInforCheckout(@RequestParam String token,
                                                @RequestParam double price) {
         ResponseData responseData = new ResponseData();
-        System.out.println(token);
+
         if (token != null) {
             getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
             totalPrice = price;
