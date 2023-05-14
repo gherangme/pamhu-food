@@ -58,15 +58,15 @@
 
 **ADMIN**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, user
+  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, chat, statistic, user, invoice
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, user
+  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, chat, statistic, user, invoice
   
 **MANAGER RESTAURANT**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistical
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, invoice
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, chat, category, food
+  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, chat, category, food, invoice
   
 **USER**
   - [ ] ***Read:*** <br>
