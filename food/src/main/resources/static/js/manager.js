@@ -44,12 +44,29 @@ $(document).ready(function () {
 
             // Show List Orders
             for (const i in data[2].data) {
-                const htmlListOrders = `<a href="#" class="list-group-item">#${data[2].data[i]["id"]} (${data[2].data[i]["date"]})
+                const htmlListOrders = `<a href="#" id="${data[2].data[i]["id"]}" class="list-group-item order-detail-btn">#${data[2].data[i]["id"]} (${data[2].data[i]["date"]})
                                         <span class="pull-right text-muted small"><em>${data[2].data[i]["totalPrice"]} VND</em>
                                         </span>
                                     </a>`
                 $('#list-orders').append(htmlListOrders)
             }
+
+            // Order-detail-btn
+            $('.order-detail-btn').click(function (e) {
+                e.preventDefault()
+                const id = $(this).attr('id')
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/manager/invoice/postIdOrdder',
+                    type: 'POST',
+                    data: {'idOrderByUser': id},
+                    headers: {'Authorization': 'Bearer ' + token},
+                    success: function (data) {
+                        if (data.data) {
+                            window.location.href="/manager-invoice-detail"
+                        }
+                    }
+                })
+            })
 
             // Show Promotion
             $('#name-coupon').html(data[0].data["couponDTO"]["name"])
@@ -66,6 +83,22 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data.statusCode === 200) {
                             window.location.href="/manager-food-detail"
+                        }
+                    }
+                })
+            })
+
+            $('.promotion-btn').click(function (e) {
+                e.preventDefault()
+                const id = data[0].data["couponDTO"]["id"]
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/manager/promotion/postIdPromotion',
+                    type: 'POST',
+                    data: {'id': id},
+                    headers: {'Authorization': 'Bearer ' + token},
+                    success: function (data) {
+                        if (data.data) {
+                            window.location.href="/manager-promotion-detail"
                         }
                     }
                 })

@@ -96,4 +96,14 @@ public class ResourcesController {
         return "manager-food-add";
     }
 
+    @GetMapping("/manager-invoice-detail")
+    public String invoice() {
+        return "manager-invoice-detail";
+    }
+
+    @GetMapping("/manager-promotion-detail")
+    public String managerPromotion() {
+        return "manager-promotion-detail";
+    }
+
 }

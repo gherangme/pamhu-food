@@ -1,5 +1,7 @@
 package com.example.securityhibernate.service.imp;
 
+import com.example.securityhibernate.dto.CouponDTO;
+import com.example.securityhibernate.dto.PromotionDTO;
 import com.example.securityhibernate.entity.Coupon;
 import com.example.securityhibernate.entity.Orders;
 import com.example.securityhibernate.entity.Restaurant;
@@ -7,8 +9,12 @@ import com.example.securityhibernate.repository.CouponRepository;
 import com.example.securityhibernate.repository.OrdersRepository;
 import com.example.securityhibernate.repository.RestaurantRepository;
 import com.example.securityhibernate.service.PromotionService;
+import com.example.securityhibernate.utils.JwtUtilsHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PromotionServiceImp implements PromotionService {
@@ -21,6 +27,9 @@ public class PromotionServiceImp implements PromotionService {
 
     @Autowired
     private OrdersRepository ordersRepository;
+
+    @Autowired
+    private JwtUtilsHelpers jwtUtilsHelpers;
 
     @Override
     public double checkPromotionCode(String promotionCode, int idRes, String username) {
@@ -37,6 +46,46 @@ public class PromotionServiceImp implements PromotionService {
         } catch (Exception e) {
             System.out.println("Error checkPromotionCode "+e.getMessage());
             return 0;
+        }
+    }
+
+    @Override
+    public CouponDTO getPromotionById(int id) {
+        CouponDTO couponDTO = new CouponDTO();
+        Coupon coupon = couponRepository.findById(id);
+        couponDTO.setId(coupon.getId());
+        couponDTO.setName(coupon.getName());
+        couponDTO.setVoucher(coupon.getVoucher());
+
+        return couponDTO;
+    }
+
+    @Override
+    public List<CouponDTO> getAllPromotion() {
+        List<CouponDTO> list = new ArrayList<>();
+        List<Coupon> couponList = couponRepository.findAll();
+        for (Coupon coupon: couponList) {
+            CouponDTO couponDTO = new CouponDTO();
+            couponDTO.setId(coupon.getId());
+            couponDTO.setName(coupon.getName());
+            couponDTO.setVoucher(coupon.getVoucher());
+
+            list.add(couponDTO);
+        }
+
+        return list;
+    }
+
+    @Override
+    public boolean updatePromotion(int id, String token) {
+        try {
+            Restaurant restaurant = restaurantRepository.findByUsers_Id(jwtUtilsHelpers.getIdUserByToken(token));
+            restaurant.setCoupon(couponRepository.findById(id));
+            restaurantRepository.save(restaurant);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error updatePromotion "+e.getMessage());
+            return false;
         }
     }
 }
