@@ -3,6 +3,7 @@ package com.example.securityhibernate.controller;
 import com.example.securityhibernate.payload.ResponseData;
 import com.example.securityhibernate.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ public class FoodController {
     @Autowired
     private FoodService foodService;
 
+//    @Cacheable("allFoods")
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         ResponseData responseData = new ResponseData();
