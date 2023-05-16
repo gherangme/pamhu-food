@@ -25,7 +25,7 @@
   
 ## Technology
 
-**1. Backend**
+**1. Back-end**
   - Java 11
   - Spring Boot 2.7
   - Spring MVC Model
@@ -38,12 +38,11 @@
 **3. Other Technology**
 - RESTful API
 - JSON Web Tokens
-- jQuery Ajax call API
+- JavaMail
+- OAuth 2.0 Google APIs
 - Gson
 - Thymeleaf
 - BCryptPasswordEncoder for Authen
-- JavaMail
-- OAuth 2.0 Google APIs (updating...)
 - Paypal integration (updating...)
 - Cache (updating...)
 - Queue (updating...)
@@ -54,6 +53,9 @@
   - Postman
   - Draw.io for ERD Diagram
   - Github
+
+**5. Front-end**
+  - jQuery Ajax call API
 ## Requirements
 
 **ADMIN**
@@ -64,13 +66,13 @@
   
 **MANAGER RESTAURANT**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat, statistic, invoice
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food, chat, statistic, invoice
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, chat, category, food, invoice
+  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, order, chat, category, food, invoice
   
 **USER**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, rating food, chat
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food, chat
   - [ ] ***Write:*** <br>
   &ensp; Login, signup, forgot password, profile, rating food, cart, checkout, chat <br>
 
