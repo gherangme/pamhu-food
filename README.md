@@ -43,7 +43,6 @@
 - Gson
 - Thymeleaf
 - BCryptPasswordEncoder for Authen
-- Paypal integration (updating...)
 - Cache (updating...)
 - Queue (updating...)
 
@@ -61,21 +60,21 @@
 
 **ADMIN**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, chat, statistic, user, invoice
+  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, statistic, user, invoice
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, chat, statistic, user, invoice
+  &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, statistic, user, invoice
   
 **MANAGER RESTAURANT**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food, chat, statistic, invoice
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food, statistic, invoice
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, order, chat, category, food, invoice
+  &ensp; Login, signup, forgot password, profile, restaurant, rating food, cart, checkout, order, category, food, invoice
   
 **USER**
   - [ ] ***Read:*** <br>
-  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food, chat
+  &ensp; Login, signup, forgot password, profile, restaurant, category, food, cart, checkout, order, rating food
   - [ ] ***Write:*** <br>
-  &ensp; Login, signup, forgot password, profile, rating food, cart, checkout, chat <br>
+  &ensp; Login, signup, forgot password, profile, rating food, cart, checkout <br>
 
 ## Contributor
 **1. Mentor:**
@@ -85,10 +84,7 @@
 - [Pham Ngoc Hung](https://github.com/gherangme) - **Back-end Java Developer | Database Designer**
 
 ## References
-[1] [Javatpoint - Spring Boot](https://www.javatpoint.com/spring-boot-tutorial) <br>
-[2] [Baeldung - Spring Boot](https://www.baeldung.com/spring-boot) <br>
-[3] [javadevjournal - Spring Security](https://www.javadevjournal.com/spring-security-tutorial/) </br>
-[4] [JSON Web Token for Java - jjwt](https://github.com/jwtk/jjwt) </br>
-[5] [Loda - Spring Boot](https://https://loda.me/) </br>
-[6] [Spring Boot OAuth2 Social](https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-1/) </br>
-[7] Cybersoft - Java20
+[1] [javadevjournal - Spring Security](https://www.javadevjournal.com/spring-security-tutorial/) </br>
+[2] [JSON Web Token for Java - jjwt](https://github.com/jwtk/jjwt) </br>
+[3] [Loda - Spring Boot](https://https://loda.me/) </br>
+[4] [Spring Boot OAuth2 Social](https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-1/) </br>
