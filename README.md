@@ -39,7 +39,7 @@
 - RESTful API
 - JSON Web Tokens
 - JavaMail
-- Spring OAuth2 Client, OAuth 2.0 Google APIs
+- Spring OAuth2 Client: OAuth 2.0 Google APIs, OAuth 2.0 GitHub APIs
 - Gson
 - Thymeleaf
 - BCryptPasswordEncoder for Authen
