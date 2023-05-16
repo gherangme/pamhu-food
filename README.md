@@ -55,6 +55,7 @@
   - Github
 
 **5. Front-end**
+  - HTML, CSS, js, Bootstrap4
   - jQuery Ajax call API
 ## Requirements
 
