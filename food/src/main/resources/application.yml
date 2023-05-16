@@ -31,6 +31,12 @@ spring:
             scope:
               - email
               - profile
+          github:
+            clientId:
+            clientSecret:
+            scope:
+              - user:email
+              - read:user
   servlet:
     multipart:
       max-file-size: 100MB

@@ -71,6 +71,7 @@ public class CustomSecurityConfig {
                     .userService(oauthUserService)
                 .and()
                     .successHandler(oAuth2AuthenticationSuccessHandler());
+//                .defaultSuccessUrl("/home");
 
         httpSecurity.addFilterBefore(customFilterJwt, UsernamePasswordAuthenticationFilter.class);
 

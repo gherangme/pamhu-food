@@ -46,12 +46,12 @@ public class SignupServiceImp implements SignupService {
     }
 
     @Override
-    public boolean signupByOAuth2Google(String username, String name) {
+    public boolean signupByOAuth2(String username, String name, Provider provider) {
         try {
             Users users = new Users();
             users.setFullname(name);
             users.setUsername(username);
-            users.setProvider(Provider.GOOGLE);
+            users.setProvider(provider);
 
             Roles roles = new Roles();
             roles.setId(3);

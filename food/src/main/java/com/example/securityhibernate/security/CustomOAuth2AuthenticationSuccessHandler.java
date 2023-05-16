@@ -1,5 +1,6 @@
 package com.example.securityhibernate.security;
 
+import com.example.securityhibernate.listenum.Provider;
 import com.example.securityhibernate.security.CustomOAuth2User;
 import com.example.securityhibernate.security.CustomUserDetails;
 import com.example.securityhibernate.security.CustomUserDetailsSerializer;
@@ -32,30 +33,41 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
         System.out.println(oauthUser.getAuthorities());
         System.out.println(oauthUser.getAttributes().toString());
+        System.out.println(oauthUser.getAttribute("login").toString());
         System.out.println(oauthUser.getEmail());
-
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(oauthUser.getEmail(), null, oauthUser.getAuthorities());
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
-        Gson gson = gsonBuilder.create();
-        String data = gson.toJson(token.getPrincipal());
-        System.out.println(data);
-
-        String email = oauthUser.getEmail();
-        String name = oauthUser.getName();
-
-        if (signupService.checkUser(email)) {
-            signupService.signupByOAuth2Google(email, name);
+        String username = null;
+        String name = null;
+        // Google
+        if (oauthUser.getEmail() != null) {
+            username = oauthUser.getEmail();
+            name = oauthUser.getName();
+            if (signupService.checkUser(username)) {
+                signupService.signupByOAuth2(username, name, Provider.GOOGLE);
+            }
+            createCookieOAuth2Login(username, response);
+        // Github
+        } else if (oauthUser.getAttribute("login").toString() != null) {
+            username = oauthUser.getAttribute("login").toString();
+            name = oauthUser.getName();
+            if (signupService.checkUser(username)) {
+                signupService.signupByOAuth2(username, name, Provider.GITHUB);
+            }
+            createCookieOAuth2Login(username, response);
         }
-
-        Cookie cookie = new Cookie("email", email);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
 
         response.sendRedirect("/home");
 
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    // Create Cookie
+    private void createCookieOAuth2Login(String username, HttpServletResponse response) {
+        Cookie cookie = new Cookie("username", username);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(4 * 60 * 60);
+        response.addCookie(cookie);
+        response.addCookie(cookie);
     }
 
 }

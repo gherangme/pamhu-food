@@ -33,8 +33,9 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/signinByOAuth2Google")
-    public ResponseEntity<?> signinByOAuth2Google(@CookieValue(value = "email") String email) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
+    public ResponseEntity<?> signinByOAuth2Google(@CookieValue(value = "username") String username) {
+        System.out.println(username);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
         System.out.println(token);
 
         Authentication authentication = authenticationManager.authenticate(token);
@@ -51,7 +52,7 @@ public class LoginController {
         String data = gson.toJson(authentication.getPrincipal());
 
         ResponseData responseData = new ResponseData();
-        responseData.setData(jwtUtilsHelpers.generateToken(data, email, loginService.getIdUserByUsername(email)));
+        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
         responseData.setDesc("Đăng nhập thành công");
 
         return new ResponseEntity<>(responseData, HttpStatus.OK);
