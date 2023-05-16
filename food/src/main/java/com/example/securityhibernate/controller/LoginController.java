@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/api/v1/login")
 public class LoginController {
@@ -29,6 +31,31 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @GetMapping("/signinByOAuth2Google")
+    public ResponseEntity<?> signinByOAuth2Google(@CookieValue(value = "email") String email) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
+        System.out.println(token);
+
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        // Pick up principal
+        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
+        Gson gson = gsonBuilder.create();
+
+        String data = gson.toJson(authentication.getPrincipal());
+
+        ResponseData responseData = new ResponseData();
+        responseData.setData(jwtUtilsHelpers.generateToken(data, email, loginService.getIdUserByUsername(email)));
+        responseData.setDesc("Đăng nhập thành công");
+
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username,

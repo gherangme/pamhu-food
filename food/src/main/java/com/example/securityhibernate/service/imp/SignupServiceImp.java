@@ -4,6 +4,7 @@ import com.example.securityhibernate.dto.SignupDTO;
 import com.example.securityhibernate.dto.UserDTO;
 import com.example.securityhibernate.entity.Roles;
 import com.example.securityhibernate.entity.Users;
+import com.example.securityhibernate.listenum.Provider;
 import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,27 @@ public class SignupServiceImp implements SignupService {
             users.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
             users.setAddress(signupDTO.getAddress());
             users.setPhone(signupDTO.getPhone());
+
+            Roles roles = new Roles();
+            roles.setId(3);
+            users.setRoles(roles);
+
+            userRepository.save(users);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error addUser service" + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean signupByOAuth2Google(String username, String name) {
+        try {
+            Users users = new Users();
+            users.setFullname(name);
+            users.setUsername(username);
+            users.setProvider(Provider.GOOGLE);
 
             Roles roles = new Roles();
             roles.setId(3);

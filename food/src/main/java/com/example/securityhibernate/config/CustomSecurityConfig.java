@@ -1,7 +1,6 @@
 package com.example.securityhibernate.config;
 
-import com.example.securityhibernate.security.CustomAuthentication;
-import com.example.securityhibernate.security.CustomFilterJwt;
+import com.example.securityhibernate.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class CustomSecurityConfig {
 
     @Autowired
-    private CustomAuthentication authProvider;
+    private CustomOAuth2UserService oauthUserService;
+
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
 
     @Autowired
     private CustomFilterJwt customFilterJwt;
@@ -61,11 +63,23 @@ public class CustomSecurityConfig {
                         .hasRole("ADMIN")
                     .antMatchers("/api/v1/manager/**")
                         .hasAnyRole("ADMIN", "MANAGER")
-                    .anyRequest().authenticated();
+                    .anyRequest().authenticated()
+                .and()
+                    .oauth2Login().
+                    loginPage("/login")
+                    .userInfoEndpoint()
+                    .userService(oauthUserService)
+                .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler());
 
         httpSecurity.addFilterBefore(customFilterJwt, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CustomOAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+        return new CustomOAuth2AuthenticationSuccessHandler();
     }
 
     @Bean

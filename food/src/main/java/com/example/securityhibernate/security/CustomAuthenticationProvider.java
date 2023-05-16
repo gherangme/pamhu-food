@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomAuthentication implements AuthenticationProvider {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
@@ -21,14 +21,25 @@ public class CustomAuthentication implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        if(loginService.checkLogin(username, password)){
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        try {
+            String password = authentication.getCredentials().toString();
+            if(loginService.checkLogin(username, password)){
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-            return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-        } else {
-            return null;
+                return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            if(loginService.checkLoginByOAuth2Google(username)){
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+                return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+            } else {
+                return null;
+            }
         }
+
     }
 
     @Override

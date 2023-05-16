@@ -1,5 +1,6 @@
 let token = localStorage.getItem('token')
 $(document).ready(function () {
+
     $('#test').click(function (e) {
         e.preventDefault()
         const username = $('#username').val()

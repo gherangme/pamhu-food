@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    console.log(token)
+
     $.ajax({
         method: 'GET',
         url: `http://localhost:8080/api/v1/restaurant/getAll`,

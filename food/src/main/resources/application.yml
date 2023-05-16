@@ -21,6 +21,16 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 
+            clientSecret: 
+            scope:
+              - email
+              - profile
   servlet:
     multipart:
       max-file-size: 100MB

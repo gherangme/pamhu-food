@@ -7,5 +7,6 @@ public interface SignupService {
 
     boolean singup(SignupDTO signupDTO);
     boolean checkUser(String username);
+    boolean signupByOAuth2Google(String username, String name);
 
 }

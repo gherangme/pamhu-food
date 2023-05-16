@@ -44,4 +44,9 @@ public class LoginServiceImp implements LoginService {
         }
     }
 
+    @Override
+    public boolean checkLoginByOAuth2Google(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
 }
