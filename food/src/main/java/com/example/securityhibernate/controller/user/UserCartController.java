@@ -46,7 +46,7 @@ public class UserCartController {
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
 
         if (idFood != 0) {
-            responseData.setData(idFood);
+            responseData.setData(true);
             responseData.setDesc("Lấy thành công id food");
         } else {
             responseData.setDesc("Lấy thất bại id food");

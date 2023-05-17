@@ -1,20 +1,14 @@
 package com.example.securityhibernate.security;
 
 import com.example.securityhibernate.listenum.Provider;
-import com.example.securityhibernate.security.CustomOAuth2User;
-import com.example.securityhibernate.security.CustomUserDetails;
-import com.example.securityhibernate.security.CustomUserDetailsSerializer;
 import com.example.securityhibernate.service.SignupService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.securityhibernate.utils.CookieHandle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,7 +27,7 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
         System.out.println(oauthUser.getAuthorities());
         System.out.println(oauthUser.getAttributes().toString());
-        System.out.println(oauthUser.getAttribute("login").toString());
+//        System.out.println(oauthUser.getAttribute("login").toString());
         System.out.println(oauthUser.getEmail());
         String username = null;
         String name = null;
@@ -44,7 +38,10 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
             if (signupService.checkUser(username)) {
                 signupService.signupByOAuth2(username, name, Provider.GOOGLE);
             }
-            createCookieOAuth2Login(username, response);
+            // Create Cookie
+            CookieHandle cookieHandle = new CookieHandle();
+            cookieHandle.createCookie("username", username, response);
+
         // Github
         } else if (oauthUser.getAttribute("login").toString() != null) {
             username = oauthUser.getAttribute("login").toString();
@@ -52,22 +49,14 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
             if (signupService.checkUser(username)) {
                 signupService.signupByOAuth2(username, name, Provider.GITHUB);
             }
-            createCookieOAuth2Login(username, response);
+            // Create Cookie
+            CookieHandle cookieHandle = new CookieHandle();
+            cookieHandle.createCookie("username", username, response);
         }
 
         response.sendRedirect("/home");
 
         super.onAuthenticationSuccess(request, response, authentication);
-    }
-
-    // Create Cookie
-    private void createCookieOAuth2Login(String username, HttpServletResponse response) {
-        Cookie cookie = new Cookie("username", username);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(4 * 60 * 60);
-        response.addCookie(cookie);
-        response.addCookie(cookie);
     }
 
 }

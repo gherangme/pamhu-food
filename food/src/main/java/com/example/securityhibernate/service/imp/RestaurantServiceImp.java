@@ -34,7 +34,21 @@ public class RestaurantServiceImp implements RestaurantService {
     @Override
     public List<RestaurantDTO> getAllRestaurant() {
         List<Restaurant> list = restaurantRepository.findAll();
+        List<RestaurantDTO> dtoList = getAllRestaurantsCommon(list);
+        return dtoList;
+    }
+
+    @Override
+    public List<RestaurantDTO> getAllPageHome() {
+        List<Restaurant> list = restaurantRepository.findAllPageHome();
+        List<RestaurantDTO> dtoList = getAllRestaurantsCommon(list);
+        return dtoList;
+    }
+
+    // Common All Restaurants
+    private List<RestaurantDTO> getAllRestaurantsCommon(List<Restaurant> list) {
         List<RestaurantDTO> dtoList = new ArrayList<>();
+
         for (Restaurant restaurant: list) {
             RestaurantDTO restaurantDTO = new RestaurantDTO();
             restaurantDTO.setId(restaurant.getId());

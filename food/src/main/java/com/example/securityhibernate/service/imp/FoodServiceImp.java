@@ -33,8 +33,30 @@ public class FoodServiceImp implements FoodService {
     private RestaurantRepository restaurantRepository;
 
     @Override
+    public List<FoodDTO> getAllFoodsByIdCategory(int idCategory) {
+        List<Food> list = foodRepository.getAllByIdCategory(idCategory);
+        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+
+        return dtoList;
+    }
+
+    @Override
+    public List<FoodDTO> getAllFoodsPageHome() {
+        List<Food> list = foodRepository.getAllPageHome();
+        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+
+        return dtoList;
+    }
+
+    @Override
     public List<FoodDTO> getAllFoods() {
         List<Food> list = foodRepository.findAll();
+        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+        return dtoList;
+    }
+
+    // Common All Foods
+    private List<FoodDTO> getAllFoodsCommon(List<Food> list) {
         List<FoodDTO> dtoList = new ArrayList<>();
         for (Food food: list) {
             FoodDTO foodDTO = new FoodDTO();

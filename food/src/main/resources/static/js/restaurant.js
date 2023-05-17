@@ -27,6 +27,7 @@ $(document).ready(function () {
                 $('#logout').click(function (e) {
                     e.preventDefault()
                     token = null;
+                    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     localStorage.removeItem('token');
                     window.location.href="/restaurant"
                 })

@@ -7,6 +7,7 @@ $(document).ready(function () {
         },
         success: function (data) {
             console.log(data)
+            $('#hey-subject').html('Hey '+data.data["name"]+',')
             $('.totalPrice-invoice').html(data.data["totalPrice"])
             $('.id-invoice').html('#'+data.data["id"])
             $('.date-invoice').html(data.data["date"])

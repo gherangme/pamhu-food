@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $.ajax({
         method: 'GET',
-        url: `http://localhost:8080/api/v1/restaurant/getAll`,
+        url: `http://localhost:8080/api/v1/restaurant/getAllPageHome`,
     }).done(function (data) {
         $.ajax({
             url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
@@ -30,15 +30,46 @@ $(document).ready(function () {
                 $('#logout').click(function (e) {
                     e.preventDefault()
                     token = null;
+                    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     localStorage.removeItem('token');
                     window.location.href = "/home"
                 })
             }
         })
 
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/category/getAllPageHome',
+            type: 'GET',
+            success: function (data) {
+                for (const i in data.data) {
+                    const htmlListCategory = `<a id="${data.data[i]["id"]}" href="#" class="text-decoration-none col-xl-2 col-md-4 mb-4 category-btn">
+                        <div class="rounded py-4 bg-white shadow-sm text-center">
+<!--                            <i class="mdi mdi-fire bg-danger text-white osahan-icon mx-auto rounded-pill"></i>-->
+                            <h6 class="mb-1 mt-3">${data.data[i]["name"]}</h6>
+                        </div>
+                    </a>`
+                    $('#list-category').append(htmlListCategory)
+                }
+
+                $('.category-btn').click(function (e) {
+                    e.preventDefault()
+                    const id = $(this).attr('id')
+
+                    $.ajax({
+                        url: 'http://localhost:8080/api/v1/food/postIdCategory',
+                        type: 'POST',
+                        data: {'id': id},
+                        success: function (data) {
+                            window.location.href = "/food"
+                        }
+                    })
+                })
+            }
+        })
+
         console.log(data.data)
 
-        for (let i = 0; i < 6; i++) {
+        for (const i in data.data) {
             const html = `<a id=${data.data[i]["id"]} href="detail.html" class="text-dark text-decoration-none col-xl-4 col-lg-12 col-md-12 restaurant-detail">
                         <div class="bg-white shadow-sm rounded d-flex align-items-center p-1 mb-4 osahan-list">
                             <div class="bg-light p-3 rounded">
@@ -83,10 +114,10 @@ $(document).ready(function () {
 
     $.ajax({
         method: 'GET',
-        url: `http://localhost:8080/api/v1/food/getAll`,
+        url: `http://localhost:8080/api/v1/food/getAllPageHome`,
     }).done(function (data) {
         console.log(data.data)
-        for (let i = 0; i < 6; i++) {
+        for (const i in data.data) {
             const html = `<a value="${data.data[i]["restaurantDTO"]["id"]}" id="${data.data[i]["id"]}" href="#" class="text-decoration-none col-xl-4 col-md-4 mb-4 food-detail" data-toggle="modal"
                        data-target="#myitemsModal">
                         <img src="/static/img/food/${data.data[i]["image"]}" class="img-fluid rounded">

@@ -7,5 +7,6 @@ import java.util.List;
 public interface RestaurantService {
 
     List<RestaurantDTO> getAllRestaurant();
+    List<RestaurantDTO> getAllPageHome();
 
 }

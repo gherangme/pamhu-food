@@ -34,53 +34,16 @@ public class LoginController {
 
     @GetMapping("/signinByOAuth2Google")
     public ResponseEntity<?> signinByOAuth2Google(@CookieValue(value = "username") String username) {
-        System.out.println(username);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
-        System.out.println(token);
-
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        // Pick up principal
-        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
-        Gson gson = gsonBuilder.create();
-
-        String data = gson.toJson(authentication.getPrincipal());
-
-        ResponseData responseData = new ResponseData();
-        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
-        responseData.setDesc("Đăng nhập thành công");
-
+        ResponseData responseData = loginCommon(token, username);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username,
                                     @RequestParam String password) {
-
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        // Pick up principal
-        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
-        Gson gson = gsonBuilder.create();
-
-        String data = gson.toJson(authentication.getPrincipal());
-
-        ResponseData responseData = new ResponseData();
-        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
-        responseData.setDesc("Đăng nhập thành công");
-
+        ResponseData responseData = loginCommon(token, username);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
@@ -95,6 +58,27 @@ public class LoginController {
             responseData.setStatusCode(400);
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+
+    private ResponseData loginCommon(UsernamePasswordAuthenticationToken token, String username) {
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        // Pick up principal
+        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
+        Gson gson = gsonBuilder.create();
+
+        String data = gson.toJson(authentication.getPrincipal());
+
+        ResponseData responseData = new ResponseData();
+        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
+        responseData.setDesc("Đăng nhập thành công");
+
+        return responseData;
     }
 
 }

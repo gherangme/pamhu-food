@@ -6,6 +6,33 @@ public class ResponseData {
     private String desc = "";
     private Object data;
 
+    public ResponseData() {
+    }
+
+    public ResponseData(String desc) {
+        this.desc = desc;
+    }
+
+    public ResponseData(String desc, int statusCode) {
+        this.desc = desc;
+        this.statusCode = statusCode;
+    }
+
+    public ResponseData(Object data) {
+        this.data = data;
+    }
+
+    public ResponseData(Object data, String desc) {
+        this.desc = desc;
+        this.data = data;
+    }
+
+    public ResponseData(Object data, String desc, int statusCode) {
+        this.desc = desc;
+        this.data = data;
+        this.statusCode = statusCode;
+    }
+
     public int getStatusCode() {
         return statusCode;
     }

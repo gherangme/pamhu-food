@@ -33,6 +33,7 @@ public class RatingFoodController {
         if (isSuccess) {
             responseData.setData(true);
             responseData.setDesc("Cập nhật đánh giá thành công");
+
         } else {
             responseData.setData(false);
             responseData.setDesc("Cập nhật đánh giá thất bại");

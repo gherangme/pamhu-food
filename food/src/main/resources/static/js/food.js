@@ -3,6 +3,7 @@ $(document).ready(function () {
         url: `http://localhost:8080/api/v1/food/getAll`,
         type: 'GET',
         success: function (data) {
+
             $.ajax({
                 url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
                 type: 'POST',
@@ -28,7 +29,7 @@ $(document).ready(function () {
                         e.preventDefault()
                         token = null;
                         localStorage.removeItem('token');
-                        window.location.href = "/food"
+                        window.location.href = "/home"
                     })
                 }
             })

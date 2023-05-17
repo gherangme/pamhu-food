@@ -106,4 +106,9 @@ public class ResourcesController {
         return "manager-promotion-detail";
     }
 
+    @GetMapping("/category")
+    public String category() {
+        return "category";
+    }
+
 }

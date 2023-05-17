@@ -1,5 +1,4 @@
 let idRestaurant = 0;
-
 $(document).ready(function () {
     $.ajax({
         method: 'GET',
@@ -82,8 +81,8 @@ $(document).ready(function () {
                                 </div>`
             $('#list-rating').append(htmlListRating)
             for (let j = 0; j < data[1].data[i]["star"]; j++) {
-                const htmlRatingStar= `<a href=""><span class="fa fa-star rating-color"></span></a>`
-                $('#rating-star-'+data[1].data[i]["id"]).append(htmlRatingStar)
+                const htmlRatingStar = `<a href=""><span class="fa fa-star rating-color"></span></a>`
+                $('#rating-star-' + data[1].data[i]["id"]).append(htmlRatingStar)
             }
         }
 
@@ -136,45 +135,46 @@ $(document).ready(function () {
                 headers: {'Authorization': 'Bearer ' + token},
                 data: {'id': id, 'token': token, 'star': star, 'comment': comment},
                 success: function (data) {
-                    console.log(data)
-                    const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
-                                        ${data.desc}
-                                      </div>`
-                    $('.comment-btn').append(alertCustom)
+                    if (data.data === true) {
+                            const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                                                ${data.desc}
+                                              </div>`
+                            $('.comment-btn').append(alertCustom)
 
-                    $('.custom-alert').css({
-                        'position': 'fixed',
-                        'top': 0,
-                        'left': 0,
-                        'width': '100%',
-                        'z-index': '9999'
-                    });
+                            $('.custom-alert').css({
+                                'position': 'fixed',
+                                'top': 0,
+                                'left': 0,
+                                'width': '100%',
+                                'z-index': '9999'
+                            });
 
-                    // Set time out
-                    setTimeout(function () {
-                        $(".alert").remove();
-                    }, 3000);
-                },
-                error: function (xhr, status, error) {
-                    const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                            // Set time out
+                            setTimeout(function () {
+                                $(".alert").remove();
+                            }, 3000);
+                    } else {
+                        const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
                                         Vui lòng đăng nhập trước khi thực hiện thao tác này.
                                       </div>`
-                    $('.comment-btn').append(alertCustom)
+                        $('.comment-btn').append(alertCustom)
 
-                    $('.custom-alert').css({
-                        'position': 'fixed',
-                        'top': 0,
-                        'left': 0,
-                        'width': '100%',
-                        'z-index': '9999'
-                    });
+                        $('.custom-alert').css({
+                            'position': 'fixed',
+                            'top': 0,
+                            'left': 0,
+                            'width': '100%',
+                            'z-index': '9999'
+                        });
 
-                    // Set time out
-                    setTimeout(function () {
-                        $(".alert").remove();
-                    }, 3000);
-                }
+                        // Set time out
+                        setTimeout(function () {
+                            $(".alert").remove();
+                        }, 3000);
+                    }
+                },
             })
+
         })
 
     })
@@ -193,26 +193,30 @@ function selectDish(data) {
             headers: {'Authorization': 'Bearer ' + token},
             data: {'idFoodByUser': id, 'token': token, 'idResByUser': data},
             success: function (data) {
-                window.location.href = "/cart"
-            },
-            error: function (xhr, status, error) {
-                const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
+                if (data.data === true) {
+                    window.location.href = "/cart"
+                } else {
+                    const alertCustom = `<div class="alert alert-info custom-alert" style="text-align: center">
                                         Vui lòng đăng nhập trước khi thực hiện thao tác này.
                                       </div>`
-                $('.select-dish').append(alertCustom)
+                    $('.select-dish').append(alertCustom)
 
-                $('.custom-alert').css({
-                    'position': 'fixed',
-                    'top': 0,
-                    'left': 0,
-                    'width': '100%',
-                    'z-index': '9999'
-                });
+                    $('.custom-alert').css({
+                        'position': 'fixed',
+                        'top': 0,
+                        'left': 0,
+                        'width': '100%',
+                        'z-index': '9999'
+                    });
 
-                // Set time out
-                setTimeout(function () {
-                    $(".alert").remove();
-                }, 3000);
+                    // Set time out
+                    setTimeout(function () {
+                        $(".alert").remove();
+                    }, 3000);
+                }
+            },
+            error: function (xhr, status, error) {
+
             }
         });
     })
