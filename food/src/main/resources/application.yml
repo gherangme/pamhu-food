@@ -32,8 +32,8 @@ spring:
               - email
               - profile
           github:
-            clientId: f3f20a42a26569979ff4
-            clientSecret: 95d92b17760c670dead06cc5d64147a0e258821d
+            clientId: 
+            clientSecret: 
             scope:
               - user:email
               - read:user
