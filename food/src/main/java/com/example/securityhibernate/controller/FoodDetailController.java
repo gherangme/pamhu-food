@@ -24,47 +24,40 @@ public class FoodDetailController {
     @Autowired
     private RatingFoodService ratingFoodService;
 
+    // Post Id food Detail
     @PostMapping("/postIdFoodDetail")
     public ResponseEntity<?> postIdFoodDetail(@RequestParam int id,
                                               @RequestParam int idResByUser) {
-        ResponseData responseData = new ResponseData();
         if (id != 0) {
             idFood = id;
             idRes = idResByUser;
-            responseData.setDesc("Lấy thành công id food");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Lấy thành công id food"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Lấy thất bại id food");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Lấy thất bại id food",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Get Infor Food By Id
     @GetMapping("/getFoodById")
     public ResponseEntity<?> getFoodById() {
         List<ResponseData> list = new ArrayList<>();
-        ResponseData responseData = new ResponseData();
-        ResponseData responseData1 = new ResponseData();
-        ResponseData responseData2 = new ResponseData();
         if (idFood != 0) {
-            responseData.setData(foodDetailService.getFoodById(idFood));
-            responseData.setDesc("Lấy thành công thông tin food");
-            list.add(responseData);
+            list.add(new ResponseData(foodDetailService.getFoodById(idFood),
+                    "Lấy thành công thông tin food"));
 
-            responseData1.setData(ratingFoodService.getAllRatingFoodByIdFood(idFood));
-            responseData1.setDesc("Lấy thành công thông tin đánh giá món ăn");
-            list.add(responseData1);
+            list.add(new ResponseData(ratingFoodService.getAllRatingFoodByIdFood(idFood),
+                    "Lấy thành công thông tin đánh giá món ăn"));
 
-            responseData2.setData(idRes);
-            responseData2.setDesc("Lấy thành công id res");
-            list.add(responseData2);
+            list.add(new ResponseData(idRes,
+                    "Lấy thành công id res"));
 
         } else {
-            responseData.setDesc("Lấy thất bại thông tin food");
-            responseData.setStatusCode(400);
-            list.add(responseData);
-
-            responseData1.setDesc("Lấy thất bại thông tin đánh giá món ăn");
-            responseData1.setStatusCode(400);
-            list.add(responseData1);
+            list.add(new ResponseData(false,
+                    "Lấy thất bại thông tin food",
+                    400));
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

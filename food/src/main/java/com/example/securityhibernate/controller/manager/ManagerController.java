@@ -30,30 +30,28 @@ public class ManagerController {
         return new ResponseEntity<>("Hello manager", HttpStatus.OK);
     }
 
+    // Get infor page manager
     @GetMapping("/getInforPageManager/{tokenByUser}")
     public ResponseEntity<?> getInforPageManager(@PathVariable String tokenByUser) {
         List<ResponseData> list = new ArrayList<>();
-        ResponseData responseData = new ResponseData();
-        ResponseData responseData1 = new ResponseData();
-        ResponseData responseData2 = new ResponseData();
         if (tokenByUser != null) {
-
             // Set Infor Page Manager
-            responseData.setData(managerService.getInforDashboardManager(jwtUtilsHelpers.
-                    getIdUserByToken(tokenByUser)));
-            list.add(responseData);
+            list.add(new ResponseData(managerService.getInforDashboardManager(jwtUtilsHelpers.getIdUserByToken(tokenByUser)),
+                    "Lấy thành công thông tin infor dashboard"));
 
             // Set Infor User
-            responseData1.setData(loginService.getFullNameByToken(tokenByUser));
-            list.add(responseData1);
+            list.add(new ResponseData(loginService.getFullNameByToken(tokenByUser),
+                    "Lấy thành công infor user"));
 
             // Set All Orders
-            responseData2.setData(managerService.getAllOrder(tokenByUser));
-            list.add(responseData2);
+            list.add(new ResponseData(managerService.getAllOrder(tokenByUser),
+                    "Lấy thành công all orders"));
+            return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
-            responseData.setDesc("Lấy thất bại thông tin Page manager");
+            list.add(new ResponseData("Lấy thất bại thông tin Page manager"));
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(list, HttpStatus.OK);
+
     }
 
 }

@@ -35,60 +35,59 @@ public class UserCartController {
         return new ResponseEntity<>("user", HttpStatus.OK);
     }
 
+    // Post id food
     @PostMapping("/postIdFood")
     public ResponseEntity<?> addItemToCart(@RequestParam int idFoodByUser,
                                            @RequestParam int idResByUser,
                                            @RequestParam String token) {
-        ResponseData responseData = new ResponseData();
-
         idFood = idFoodByUser;
         idRes = idResByUser;
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
+        System.out.println(idFoodByUser + idResByUser + token);
 
         if (idFood != 0) {
-            responseData.setData(true);
-            responseData.setDesc("Lấy thành công id food");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Lấy thành công id food"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Lấy thất bại id food");
-            responseData.setStatusCode(400);
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Lấy thất bại id food",
+                    400), HttpStatus.OK);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     // Get list foods
     @GetMapping("/getFoodById")
     public ResponseEntity<?> getFoodById() {
-        ResponseData responseData = new ResponseData();
-        if (idFood != 0) {
-            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
-            responseData.setDesc("Lấy thành công thông tin food");
-        } else {
-            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
-        }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+//        ResponseData responseData = new ResponseData();
+//        if (idFood != 0) {
+//            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
+//            responseData.setDesc("Lấy thành công thông tin food");
+//        } else {
+//            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
+//        }
+        return new ResponseEntity<>(new ResponseData(cartService.getListFoods(idFood, idRes, getUserNameByToken),
+                "Lấy thành công thông tin food"), HttpStatus.OK);
     }
 
     // Create order item in cart
     @PostMapping("/postOrderItem")
     public ResponseEntity<?> postOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
-        ResponseData responseData = new ResponseData();
         boolean isSuccess = orderService.saveOrder(getUserNameByToken,
                 orderItemDTO.getIdFood(), orderItemDTO.getAmount(), orderItemDTO.getPrice());
+
         if (isSuccess) {
-            responseData.setData(true);
-            responseData.setDesc("Lưu thành công");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Lưu thành công"), HttpStatus.OK);
         } else {
-            responseData.setData(false);
-            responseData.setDesc("Lưu thât bại");
-            responseData.setStatusCode(400);
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Lưu thât bại",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     // Delete order item in cart
     @DeleteMapping("/deleteOrderItem/{id}")
     public ResponseEntity<?> deleteOrderItem(@PathVariable("id") int id) {
-        ResponseData responseData = new ResponseData();
         boolean isSuccess = cartService.deleteItemOder(id, getUserNameByToken);
 
         if (id == idFood) {
@@ -96,14 +95,12 @@ public class UserCartController {
         }
 
         if (isSuccess) {
-            responseData.setData(true);
-            responseData.setDesc("Xoá thành công");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Xoá thành công"), HttpStatus.OK);
         } else {
-            responseData.setData(false);
-            responseData.setDesc("Xoá thất bại");
-            responseData.setStatusCode(400);
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Xoá thành công",
+                    400), HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 }

@@ -16,20 +16,18 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    // Get all categories page home
     @GetMapping("/getAllPageHome")
     public ResponseEntity<?> getAllPageHome() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(categoryService.getAllPageHome());
-        responseData.setDesc("Lấy thành công danh sách category Page Home");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(categoryService.getAllPageHome(),
+                "Lấy thành công danh sách category Page Home"), HttpStatus.OK);
     }
 
+    // Get all categories
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(categoryService.getAll());
-        responseData.setDesc("Lấy thành công danh sách category");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(categoryService.getAll(),
+                "Lấy thành công danh sách category"), HttpStatus.OK);
     }
 
 }

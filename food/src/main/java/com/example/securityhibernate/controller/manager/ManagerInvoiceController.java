@@ -11,31 +11,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/manager/invoice")
 public class ManagerInvoiceController {
 
-    int idOrder = 0;
+    private int idOrder = 0;
 
     @Autowired
     private InvoiceService invoiceService;
 
-    @PostMapping("/postIdOrdder")
-    public ResponseEntity<?> postIdOrdder(@RequestParam int idOrderByUser) {
-        ResponseData responseData = new ResponseData();
+    // Post Id order
+    @PostMapping("/postIdOrder")
+    public ResponseEntity<?> postIdOrder(@RequestParam int idOrderByUser) {
         if (idOrderByUser != 0) {
             idOrder = idOrderByUser;
-            responseData.setData(true);
-            responseData.setDesc("Lấy thành công id order");
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Lấy thành công id order"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Lấy thất bại id order");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Lấy thất bại id order",
+                    400), HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     @GetMapping("/getInforInvoiceById")
     public ResponseEntity<?> getInforInvoiceById() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(invoiceService.getInforInvoiceById(idOrder));
-        responseData.setDesc("Lấy thành công thông tin invoice");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(invoiceService.getInforInvoiceById(idOrder),
+                "Lấy thành công thông tin invoice"), HttpStatus.OK);
     }
 
 }

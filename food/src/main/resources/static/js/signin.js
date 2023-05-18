@@ -1,6 +1,5 @@
 let token = localStorage.getItem('token')
 $(document).ready(function () {
-
     $('#test').click(function (e) {
         e.preventDefault()
         const username = $('#username').val()
@@ -16,27 +15,29 @@ $(document).ready(function () {
             processData: false,
             success: function (data) {
                 localStorage.setItem('token', data.data)
-                window.location.href = "/home"
-            },
-            error: function () {
-                const alertCustom = `<div class="alert alert-danger custom-alert" style="text-align: center">
+                console.log()
+                if (data.statusCode === 200) {
+                    window.location.href = "/home"
+                } else {
+                    const alertCustom = `<div class="alert alert-danger custom-alert" style="text-align: center">
                                         Sai tài khoản hoặc mật khẩu, vui lòng kiểm tra lại.
                                       </div>`
-                $('#test').append(alertCustom)
+                    $('#test').append(alertCustom)
 
-                $('.custom-alert').css({
-                    'position': 'fixed',
-                    'top': 0,
-                    'left': 0,
-                    'width': '100%',
-                    'z-index': '9999'
-                });
+                    $('.custom-alert').css({
+                        'position': 'fixed',
+                        'top': 0,
+                        'left': 0,
+                        'width': '100%',
+                        'z-index': '9999'
+                    });
 
-                // Set time out
-                setTimeout(function(){
-                    $(".alert").remove();
-                }, 3000);
-            }
+                    // Set time out
+                    setTimeout(function () {
+                        $(".alert").remove();
+                    }, 3000);
+                }
+            },
         })
     })
 })

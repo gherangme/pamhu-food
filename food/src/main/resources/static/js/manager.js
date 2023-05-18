@@ -56,7 +56,7 @@ $(document).ready(function () {
                 e.preventDefault()
                 const id = $(this).attr('id')
                 $.ajax({
-                    url: 'http://localhost:8080/api/v1/manager/invoice/postIdOrdder',
+                    url: 'http://localhost:8080/api/v1/manager/invoice/postIdOrder',
                     type: 'POST',
                     data: {'idOrderByUser': id},
                     headers: {'Authorization': 'Bearer ' + token},

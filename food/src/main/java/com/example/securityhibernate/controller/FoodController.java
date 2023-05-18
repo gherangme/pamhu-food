@@ -12,41 +12,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/food")
 public class FoodController {
 
-    int idCategory = 0;
+    private int idCategory = 0;
 
     @Autowired
     private FoodService foodService;
 
+    // Post Id Cate
     @PostMapping("/postIdCategory")
     public ResponseEntity<?> postIdCategory(@RequestParam int id) {
-        ResponseData responseData = new ResponseData();
         if (id != 0) {
             idCategory = id;
-            responseData.setDesc("Lấy thành công id");
+            return new ResponseEntity<>(new ResponseData("Lấy thành công id"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Lấy thất bại id");
+            return new ResponseEntity<>(new ResponseData("Lấy thất bại id"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Get All Foods Page Home
     @GetMapping("/getAllPageHome")
     public ResponseEntity<?> getAllPageHome() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(foodService.getAllFoodsPageHome());
-        responseData.setDesc("Lấy thành công danh sách food Page Home");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(foodService.getAllFoodsPageHome(),
+                "Lấy thành công danh sách food Page Home"), HttpStatus.OK);
     }
 
+    // Get All Foods
 //    @Cacheable("allFoods")
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         ResponseData responseData = new ResponseData();
+
+        // Get All Foods
         if (idCategory == 0) {
             responseData.setData(foodService.getAllFoods());
             responseData.setDesc("Lấy thành công danh sách food");
+
+        // Get List Foods By Id Category
         } else {
             responseData.setData(foodService.getAllFoodsByIdCategory(idCategory));
-            responseData.setDesc("Lấy thành công danh sách food by category");
+            responseData.setDesc("Lấy thành công danh sách food by id category");
             idCategory = 0;
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);

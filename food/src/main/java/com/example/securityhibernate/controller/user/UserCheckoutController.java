@@ -21,8 +21,8 @@ import java.util.List;
 @RequestMapping("/api/v1/user/checkout")
 public class UserCheckoutController {
 
-    String getUserNameByToken = null;
-    double totalPrice = 0;
+    private String getUserNameByToken = null;
+    private double totalPrice = 0;
 
     @Autowired
     private CheckoutService checkoutService;
@@ -36,86 +36,79 @@ public class UserCheckoutController {
     @Autowired
     private PromotionService promotionService;
 
+    // Post infor checkout
     @PostMapping("/postInforCheckout")
     public ResponseEntity<?> postInforCheckout(@RequestParam String token,
                                                @RequestParam double price) {
-        ResponseData responseData = new ResponseData();
-
         if (token != null) {
             getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
             totalPrice = price;
-            responseData.setData(getUserNameByToken);
+            return new ResponseEntity<>(new ResponseData(getUserNameByToken,
+                    "Post thành công thông tin checkout"), HttpStatus.OK);
         } else {
-            responseData.setDesc("post thất bại infor checkout");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "post thất bại infor checkout",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Update voucher
     @PutMapping("/putVoucher")
     private ResponseEntity<?> putVoucher(@RequestParam String promotionCode,
                                          @RequestParam int idRes) {
         List<ResponseData> list = new ArrayList<>();
-        ResponseData responseData = new ResponseData();
-        responseData.setData(checkoutService.getUserByUsername(getUserNameByToken));
-        responseData.setDesc("Lấy thành công thông tin user");
-        list.add(responseData);
+        list.add(new ResponseData(checkoutService.getUserByUsername(getUserNameByToken),
+                "Lấy thành công thông tin user"));
 
-        ResponseData responseData1 = new ResponseData();
-        ResponseData responseData2 = new ResponseData();
         double promotion = promotionService.checkPromotionCode(promotionCode, idRes, getUserNameByToken);
-        System.out.println(promotion);
+
         if (promotion != 0) {
             totalPrice -= promotion;
-            responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
-            list.add(responseData1);
+            list.add(new ResponseData(checkoutService.getListFoodCheckout(getUserNameByToken),
+                    "Lấy thành công thông tin food checkout"));
 
-            responseData2.setData(Double.toString(totalPrice));
-            responseData2.setDesc("Giảm giá thành công");
-            list.add(responseData2);
+            list.add(new ResponseData(Double.toString(totalPrice),
+                    "Giảm giá thành công"));
         } else {
-            responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
-            list.add(responseData1);
+            list.add(new ResponseData(checkoutService.getListFoodCheckout(getUserNameByToken),
+                    "Lấy thành công thông tin food checkout"));
 
-            responseData2.setData(Double.toString(totalPrice));
-            responseData2.setDesc("Protion Code không hợp lệ");
-            responseData2.setStatusCode(400);
-            list.add(responseData2);
+            list.add(new ResponseData(Double.toString(totalPrice),
+                    "Protion Code không hợp lệ",
+                    400));
         }
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // Get infor checkout
     @GetMapping("/getInforCheckout")
     public ResponseEntity<?> getInforCheckout() {
         List<ResponseData> list = new ArrayList<>();
-        ResponseData responseData = new ResponseData();
-        responseData.setData(checkoutService.getUserByUsername(getUserNameByToken));
-        responseData.setDesc("Lấy thành công thông tin user");
-        list.add(responseData);
+        list.add(new ResponseData(checkoutService.getUserByUsername(getUserNameByToken),
+                "Lấy thành công thông tin user"));
 
-        ResponseData responseData1 = new ResponseData();
-        responseData1.setData(checkoutService.getListFoodCheckout(getUserNameByToken));
-        list.add(responseData1);
+        list.add(new ResponseData(checkoutService.getListFoodCheckout(getUserNameByToken),
+                "Lấy thành công thông tin food checkout"));
 
-        ResponseData responseData2 = new ResponseData();
-        responseData2.setData(Double.toString(totalPrice));
-        list.add(responseData2);
+        list.add(new ResponseData(Double.toString(totalPrice),
+                "Lấy thành công thông tin totalPrice"));
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // Checkout
     @PutMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody CheckoutDTO checkoutDTO) {
-        ResponseData responseData = new ResponseData();
         int isSuccess = checkoutService.checkout(checkoutDTO);
         if (isSuccess != 0) {
-            responseData.setDesc("Đặt hàng thành công, vui lòng kiểm tra mã đơn hàng trong email của bạn");
-            responseData.setData(sendEmailCheckout(isSuccess, checkoutDTO));
+            return new ResponseEntity<>(new ResponseData(sendEmailCheckout(isSuccess, checkoutDTO),
+                    "Đặt hàng thành công, vui lòng kiểm tra mã đơn hàng trong email của bạn"), HttpStatus.OK);
         } else {
-            responseData.setData(false);
-            responseData.setDesc("Đặt hàng thất bại");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Đặt hàng thất bại",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     // Send mail checkout

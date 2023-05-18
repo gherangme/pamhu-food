@@ -21,25 +21,21 @@ public class RatingFoodController {
     @Autowired
     private JwtUtilsHelpers jwtUtilsHelpers;
 
+    // Add New Rating Food
     @PostMapping("/postInforRatingFood")
     public ResponseEntity<?> postInforRatingFood(@RequestParam int id,
                                                   @RequestParam String comment,
                                                   @RequestParam int star,
                                                   @RequestParam String token) {
-        System.out.println(id+comment+star+token);
-        ResponseData responseData = new ResponseData();
         String username = jwtUtilsHelpers.getUsernameByToken(token);
         boolean isSuccess= ratingFoodService.addRatingFood(username, id, star, comment);
         if (isSuccess) {
-            responseData.setData(true);
-            responseData.setDesc("Cập nhật đánh giá thành công");
-
+            return new ResponseEntity<>(new ResponseData(true,
+                    "Cập nhật đánh giá thành công"), HttpStatus.OK);
         } else {
-            responseData.setData(false);
-            responseData.setDesc("Cập nhật đánh giá thất bại");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Cập nhật đánh giá thất bại"), HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
 }

@@ -32,21 +32,40 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/signinByOAuth2Google")
-    public ResponseEntity<?> signinByOAuth2Google(@CookieValue(value = "username") String username) {
+    // Sign in By OAuth 2
+    @GetMapping("/signinByOAuth2")
+    public ResponseEntity<?> signinByOAuth2(@CookieValue(value = "username") String username) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
         ResponseData responseData = loginCommon(token, username);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Sign in By Local
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username,
                                     @RequestParam String password) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-        ResponseData responseData = loginCommon(token, username);
+//        ResponseData responseData = loginCommon(token, username);
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        // Pick up principal
+        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
+        Gson gson = gsonBuilder.create();
+
+        String data = gson.toJson(authentication.getPrincipal());
+
+        ResponseData responseData = new ResponseData();
+        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
+        responseData.setDesc("Đăng nhập thành công");
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Get Infor User
     @PostMapping("/getInforUserByToken")
     public ResponseEntity<?> getInforUserByToken(@RequestParam String token) {
         ResponseData responseData = new ResponseData();
@@ -60,6 +79,13 @@ public class LoginController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity logout() {
+
+        return new ResponseEntity(new ResponseData(), HttpStatus.OK);
+    }
+
+    // Login common
     private ResponseData loginCommon(UsernamePasswordAuthenticationToken token, String username) {
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContext securityContext = SecurityContextHolder.getContext();

@@ -16,20 +16,18 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    // Get All Restaurant Page Home
     @GetMapping("/getAllPageHome")
     public ResponseEntity<?> getAllPageHome() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(restaurantService.getAllPageHome());
-        responseData.setDesc("Lấy thành công danh sách nhà hàng Page Home");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(restaurantService.getAllPageHome(),
+                "Lấy thành công danh sách nhà hàng Page Home"), HttpStatus.OK);
     }
 
+    // Get All Restaurant
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
-        ResponseData responseData = new ResponseData();
-        responseData.setData(restaurantService.getAllRestaurant());
-        responseData.setDesc("Lấy thành công danh sách nhà hàng");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(restaurantService.getAllRestaurant(),
+                "Lấy thành công danh sách nhà hàng"), HttpStatus.OK);
     }
 
 }

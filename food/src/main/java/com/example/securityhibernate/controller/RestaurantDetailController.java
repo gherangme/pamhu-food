@@ -15,31 +15,29 @@ import java.util.Map;
 @RequestMapping("/api/v1/restaurant-detail")
 public class RestaurantDetailController {
 
+    private int idRes = 0;
+
     @Autowired
     private RestaurantDetailService restaurantDetailService;
 
-    private int idRes = 0;
-
+    // Get Id Restaurant Detail
     @GetMapping("/getIdRestaurant/{id}")
     public ResponseEntity<?> postIdRestaurant(@PathVariable int id) {
         idRes = id;
-        ResponseData responseData = new ResponseData();
-        responseData.setData(idRes);
-        responseData.setDesc("Post thành công id restaurant");
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+
+        return new ResponseEntity<>(new ResponseData(idRes,
+                "Lấy thành công id restaurant"), HttpStatus.OK);
     }
 
+    // Get Infor Restaurant Detail By Id
     @GetMapping("/getRestaurantById")
     public ResponseEntity<?> getRestaurantById() {
         List<ResponseData> list = new ArrayList<>();
-        ResponseData responseData = new ResponseData();
-        responseData.setData(restaurantDetailService.getRestaurantDetailById(idRes));
-        responseData.setDesc("Lấy thành công res detail");
-        list.add(responseData);
-        ResponseData responseData1 = new ResponseData();
-        responseData1.setData(idRes);
-        responseData1.setDesc("Lấy thành công id res");
-        list.add(responseData1);
+        list.add(new ResponseData(restaurantDetailService.getRestaurantDetailById(idRes),
+                "Lấy thành công res detail"));
+
+        list.add(new ResponseData(idRes,
+                "Lấy thành công id res"));
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/api/v1/forgot")
 public class ForgotController {
 
-    String OTP = null;
-    String email = null;
+    private String OTP = null;
+    private String email = null;
 
     @Autowired
     private ForgotService forgotService;
@@ -26,35 +26,37 @@ public class ForgotController {
     @Autowired
     private EmailService emailService;
 
+    // Change Password
     @PutMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestParam String password, @RequestParam String OTPByUser) {
-        ResponseData responseData = new ResponseData();
+
         if (OTP.equals(OTPByUser)) {
-            responseData.setData(forgotService.changePassword(email, password));
-            responseData.setDesc("Thay đổi mật khẩu thành công, vui lòng đăng nhập lại");
+            return new ResponseEntity<>(new ResponseData(forgotService.changePassword(email, password),
+                    "Thay đổi mật khẩu thành công, vui lòng đăng nhập lại"), HttpStatus.OK);
         } else {
-            responseData.setDesc("OTP không hợp lệ");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "OTP không hợp lệ",
+                    400), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Check Exist User
     @PostMapping("/postUsername")
     public ResponseEntity<?> postUsername(@RequestParam String username) {
-        ResponseData responseData = new ResponseData();
         boolean isExist = forgotService.checkUsername(username);
         if (isExist) {
             email = username;
-            responseData.setData(emailService.sendSimpleMail(setEmailDTO(username)));
-            responseData.setDesc("Gửi OTP thành công");
+            return new ResponseEntity<>(new ResponseData(emailService.sendSimpleMail(setEmailDTO(username)),
+                    "Gửi OTP thành công"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Email không tồn tại, vui lòng kiểm tra lại");
-            responseData.setStatusCode(400);
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Email không tồn tại, vui lòng kiểm tra lại",
+                    400), HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Set Infor send Email
     private EmailDTO setEmailDTO(String email) {
 
         // Create OTP

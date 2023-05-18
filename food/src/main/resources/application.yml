@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: hungsmilecrz15@gmail.com
-    password:
+    password: ckgrjsjekcysqryp
     properties:
       mail:
         smtp:
@@ -26,14 +26,14 @@ spring:
       client:
         registration:
           google:
-            clientId: 
-            clientSecret:
+            clientId: 267232145852-s6hhlfvg7ue4e6uumjdk68fcb1dcfin6.apps.googleusercontent.com
+            clientSecret: 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
             scope:
               - email
               - profile
           github:
-            clientId: 
-            clientSecret: 
+            clientId: f3f20a42a26569979ff4
+            clientSecret: 95d92b17760c670dead06cc5d64147a0e258821d
             scope:
               - user:email
               - read:user

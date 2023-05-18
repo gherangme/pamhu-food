@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/api/v1/signup")
 public class SignupController {
 
-    SignupDTO signupDTOWaitOTP = null;
-    String OTP = null;
+    private SignupDTO signupDTOWaitOTP = null;
+    private String OTP = null;
 
     @Autowired
     private EmailService emailService;
@@ -28,31 +28,31 @@ public class SignupController {
     @Autowired
     private SignupService signupService;
 
+    // Add User
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestParam String OTPByUser) {
-        ResponseData responseData = new ResponseData();
         if (OTPByUser.equals(OTP)) {
-            responseData.setData(signupService.singup(signupDTOWaitOTP));
-            responseData.setDesc("Đăng ký thành công");
+            return new ResponseEntity<>(new ResponseData(signupService.singup(signupDTOWaitOTP),
+                    "Đăng ký thành công"), HttpStatus.OK);
         } else {
-            responseData.setData(false);
-            responseData.setDesc("Đăng ký thất bại");
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Đăng ký thất bại",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    // Post User Infor
     @PostMapping("/postUserInfor")
     public ResponseEntity<?> postUserInfor(@RequestBody SignupDTO signupDTO) {
-        ResponseData responseData = new ResponseData();
         if (signupService.checkUser(signupDTO.getUsername())) {
             signupDTOWaitOTP = signupDTO;
-            responseData.setData(emailService.sendSimpleMail(setEmailDTO(signupDTO.getUsername())));
-            responseData.setDesc("Gửi OTP thành công");
+            return new ResponseEntity<>(new ResponseData(emailService.sendSimpleMail(setEmailDTO(signupDTO.getUsername())),
+                    "Gửi OTP thành công"), HttpStatus.OK);
         } else {
-            responseData.setDesc("Email đã tồn tại, vui lòng nhập email khác.");
-            responseData.setStatusCode(400);
+            return new ResponseEntity<>(new ResponseData(false,
+                    "Email đã tồn tại, vui lòng nhập email khác.",
+                    400), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     //  Send OTP By Mail
