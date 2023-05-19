@@ -1,13 +1,12 @@
 package com.example.securityhibernate.service.imp;
 
 import com.example.securityhibernate.dto.CategoryDTO;
-import com.example.securityhibernate.dto.FoodDTO;
 import com.example.securityhibernate.dto.ManagerFoodDTO;
 import com.example.securityhibernate.entity.Category;
 import com.example.securityhibernate.entity.CategoryRestaurant;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.entity.Restaurant;
-import com.example.securityhibernate.listenum.FolderType;
+import com.example.securityhibernate.listenum.ImageFolderType;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.FileStorageService;
 import com.example.securityhibernate.service.ManagerFoodService;
@@ -97,7 +96,7 @@ public class ManagerFoodServiceImp implements ManagerFoodService {
     @Override
     public boolean deleteFoodById(int id) {
         try {
-            fileStorageService.removeFile(foodRepository.findById(id).getImage(), FolderType.food);
+            fileStorageService.removeFile(foodRepository.findById(id).getImage(), ImageFolderType.food);
             foodRepository.deleteById(id);
 
             return true;
@@ -116,11 +115,11 @@ public class ManagerFoodServiceImp implements ManagerFoodService {
             if (file != null) {
 
                 // Delete Old Image
-                fileStorageService.removeFile(food.getImage(), FolderType.food);
+                fileStorageService.removeFile(food.getImage(), ImageFolderType.food);
 
                 // Save New Image
                 food.setImage(file.getOriginalFilename());
-                fileStorageService.saveFiles(file, file.getOriginalFilename(), FolderType.food);
+                fileStorageService.saveFiles(file, file.getOriginalFilename(), ImageFolderType.food);
             }
 
             // Find id Res
@@ -152,7 +151,7 @@ public class ManagerFoodServiceImp implements ManagerFoodService {
             food.setImage(file.getOriginalFilename());
             food.setCategoryRestaurant(categoryRestaurant);
 
-            fileStorageService.saveFiles(file, file.getOriginalFilename(), FolderType.food);
+            fileStorageService.saveFiles(file, file.getOriginalFilename(), ImageFolderType.food);
             foodRepository.save(food);
 
             return true;

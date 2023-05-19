@@ -34,7 +34,7 @@ public class CartServiceImp implements CartService {
     private RestaurantRepository restaurantRepository;
 
     @Override
-    public List<FoodDTO> getListFoods(int idFood, int idRes, String username) {
+    public List<FoodDTO> addFoodToCart(int idFood, int idRes, String username) {
         List<FoodDTO> list = new ArrayList<>();
 
         Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
@@ -86,9 +86,22 @@ public class CartServiceImp implements CartService {
                         }
                     }
                 }
+
+            // Check cart when idRes, idFood = 0
+            } else if (idRes == 0) {
+                for (OrderItem orderItem1: orderItemList) {
+                    try {
+                        Food food1 = foodRepository.findById(orderItem1.getFood().getId());
+                        FoodDTO foodDTO1 = new FoodDTO();
+                        setFoodDTO(food1, foodDTO1, orderItem1.getAmount());
+                        list.add(foodDTO);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
             } else {
 
-                // Kiểm tra orderItem có đang chứa food hay không
+                // Kiểm tra orderItem có đang chứa food của nhà hàng khác hay không
                 if (orderItemRepository.findByOrders_Id(orders.getId()).size() > 0) {
                     return null;
                 } else {
@@ -129,6 +142,10 @@ public class CartServiceImp implements CartService {
                 FoodDTO foodDTO = new FoodDTO();
                 setFoodDTO(food, foodDTO, 1);
                 list.add(foodDTO);
+
+            // Check cart when idRes, idFood = 0
+            } else {
+                return null;
             }
         }
 

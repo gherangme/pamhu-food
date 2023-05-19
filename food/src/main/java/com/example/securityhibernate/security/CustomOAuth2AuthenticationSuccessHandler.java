@@ -1,6 +1,6 @@
 package com.example.securityhibernate.security;
 
-import com.example.securityhibernate.listenum.Provider;
+import com.example.securityhibernate.listenum.ProviderColumn;
 import com.example.securityhibernate.service.SignupService;
 import com.example.securityhibernate.utils.CookieHandle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
             username = oauthUser.getEmail();
             name = oauthUser.getName();
             if (signupService.checkUser(username)) {
-                signupService.signupByOAuth2(username, name, Provider.GOOGLE);
+                signupService.signupByOAuth2(username, name, ProviderColumn.GOOGLE);
             }
             // Create Cookie
             CookieHandle cookieHandle = new CookieHandle();
@@ -47,7 +47,7 @@ public class CustomOAuth2AuthenticationSuccessHandler extends SimpleUrlAuthentic
             username = oauthUser.getAttribute("login").toString();
             name = oauthUser.getName();
             if (signupService.checkUser(username)) {
-                signupService.signupByOAuth2(username, name, Provider.GITHUB);
+                signupService.signupByOAuth2(username, name, ProviderColumn.GITHUB);
             }
             // Create Cookie
             CookieHandle cookieHandle = new CookieHandle();

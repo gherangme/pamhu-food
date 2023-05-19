@@ -4,6 +4,7 @@ import com.example.securityhibernate.payload.ResponseData;
 import com.example.securityhibernate.security.CustomUserDetails;
 import com.example.securityhibernate.security.CustomUserDetailsSerializer;
 import com.example.securityhibernate.service.LoginService;
+import com.example.securityhibernate.utils.CookieHandle;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 @RestController
@@ -45,23 +47,7 @@ public class LoginController {
     public ResponseEntity<?> signin(@RequestParam String username,
                                     @RequestParam String password) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-//        ResponseData responseData = loginCommon(token, username);
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        // Fix Gson does not know how to serialize this object by default (Principal, Credentials, Authen, Details, Grant)
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        // Pick up principal
-        gsonBuilder.registerTypeAdapter(CustomUserDetails.class, new CustomUserDetailsSerializer());
-        Gson gson = gsonBuilder.create();
-
-        String data = gson.toJson(authentication.getPrincipal());
-
-        ResponseData responseData = new ResponseData();
-        responseData.setData(jwtUtilsHelpers.generateToken(data, username, loginService.getIdUserByUsername(username)));
-        responseData.setDesc("Đăng nhập thành công");
+        ResponseData responseData = loginCommon(token, username);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
@@ -80,9 +66,11 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity logout() {
-
-        return new ResponseEntity(new ResponseData(), HttpStatus.OK);
+    public ResponseEntity logout(HttpServletResponse response) {
+        CookieHandle cookieHandle = new CookieHandle();
+        cookieHandle.deleteCookie("username", response);
+        return new ResponseEntity<>(new ResponseData(true,
+                "Đăng xuất thành công"), HttpStatus.OK);
     }
 
     // Login common

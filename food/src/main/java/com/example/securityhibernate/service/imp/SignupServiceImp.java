@@ -1,10 +1,9 @@
 package com.example.securityhibernate.service.imp;
 
 import com.example.securityhibernate.dto.SignupDTO;
-import com.example.securityhibernate.dto.UserDTO;
 import com.example.securityhibernate.entity.Roles;
 import com.example.securityhibernate.entity.Users;
-import com.example.securityhibernate.listenum.Provider;
+import com.example.securityhibernate.listenum.ProviderColumn;
 import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class SignupServiceImp implements SignupService {
             users.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
             users.setAddress(signupDTO.getAddress());
             users.setPhone(signupDTO.getPhone());
-            users.setProvider(Provider.LOCAL);
+            users.setProvider(ProviderColumn.LOCAL);
 
             Roles roles = new Roles();
             roles.setId(3);
@@ -47,12 +46,12 @@ public class SignupServiceImp implements SignupService {
     }
 
     @Override
-    public boolean signupByOAuth2(String username, String name, Provider provider) {
+    public boolean signupByOAuth2(String username, String name, ProviderColumn providerColumn) {
         try {
             Users users = new Users();
             users.setFullname(name);
             users.setUsername(username);
-            users.setProvider(provider);
+            users.setProvider(providerColumn);
 
             Roles roles = new Roles();
             roles.setId(3);

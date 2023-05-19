@@ -18,6 +18,22 @@ $(document).ready(function () {
                                                            data-cfemail="1a7f627b776a767f5a7d777b737634797577">[logout]</a>
                     </p>`
                     $('#infor-user').append(htmlInforUser)
+
+                    $('#cart-btn').click(function (e) {
+                        e.preventDefault()
+
+                        $.ajax({
+                            url: `http://localhost:8080/api/v1/user/cart/postCheckCart/`+token,
+                            type: 'POST',
+                            data: {'token': token},
+                            headers: {'Authorization': 'Bearer ' + token},
+                            success: function (data) {
+                                if (data.data) {
+                                    window.location.href = "/cart"
+                                }
+                            }
+                        })
+                    })
                 } else {
                     const htmlInforUser = `<p class="mb-0 text-white">${data.data}</p>
                     <p class="mb-0 text-white-50 small"><a href="/login"
@@ -25,14 +41,28 @@ $(document).ready(function () {
                                                            data-cfemail="1a7f627b776a767f5a7d777b737634797577">[login]</a>
                     </p>`
                     $('#infor-user').append(htmlInforUser)
+
+                    $('#cart-btn').click(function (e) {
+                        e.preventDefault()
+                        window.location.href="/401"
+                    })
                 }
 
                 $('#logout').click(function (e) {
                     e.preventDefault()
-                    token = null;
-                    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    localStorage.removeItem('token');
-                    window.location.href = "/home"
+                    $.ajax({
+                        url: `http://localhost:8080/api/v1/login/logout`,
+                        type: 'GET',
+                        // data: {'token': token},
+                        success: function (data) {
+                            if (data.data) {
+                                token = null;
+                                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                localStorage.removeItem('token');
+                                window.location.href = "/home"
+                            }
+                        }
+                    })
                 })
             }
         })

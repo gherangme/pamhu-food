@@ -29,9 +29,23 @@ $(document).ready(function () {
 
                 $('#logout').click(function (e) {
                     e.preventDefault()
-                    token = null;
-                    localStorage.removeItem('token');
-                    window.location.href = "/home"
+                    $.ajax({
+                        url: `http://localhost:8080/api/v1/login/logout`,
+                        type: 'GET',
+                        // data: {'token': token},
+                        success: function (data) {
+                            if (data.data) {
+                                token = null;
+                                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                localStorage.removeItem('token');
+                                window.location.href = "/home"
+                            }
+                        }
+                    })
+                })
+
+                $('#cart-btn').click(function (e) {
+                    window.location.href="/cart"
                 })
             }
         })

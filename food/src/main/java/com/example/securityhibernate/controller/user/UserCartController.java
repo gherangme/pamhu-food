@@ -17,9 +17,9 @@ import java.util.Date;
 @RequestMapping("/api/v1/user/cart")
 public class UserCartController {
 
-    int idFood = 0;
-    int idRes = 0;
-    String getUserNameByToken = null;
+    private int idFood = 0;
+    private int idRes = 0;
+    private String getUserNameByToken = null;
 
     @Autowired
     private CartService cartService;
@@ -37,7 +37,7 @@ public class UserCartController {
 
     // Post id food
     @PostMapping("/postIdFood")
-    public ResponseEntity<?> addItemToCart(@RequestParam int idFoodByUser,
+    public ResponseEntity<?> postIdFood(@RequestParam int idFoodByUser,
                                            @RequestParam int idResByUser,
                                            @RequestParam String token) {
         idFood = idFoodByUser;
@@ -55,18 +55,32 @@ public class UserCartController {
         }
     }
 
-    // Get list foods
-    @GetMapping("/getFoodById")
-    public ResponseEntity<?> getFoodById() {
-//        ResponseData responseData = new ResponseData();
-//        if (idFood != 0) {
-//            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
-//            responseData.setDesc("Lấy thành công thông tin food");
-//        } else {
-//            responseData.setData(cartService.getListFoods(idFood, idRes, getUserNameByToken));
-//        }
-        return new ResponseEntity<>(new ResponseData(cartService.getListFoods(idFood, idRes, getUserNameByToken),
-                "Lấy thành công thông tin food"), HttpStatus.OK);
+    @PostMapping("/postCheckCart/{token}")
+    public ResponseEntity<?> postCheckCart(@PathVariable String token) {
+        System.out.println("test");
+        getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
+        idFood = 0;
+        return new ResponseEntity<>(new ResponseData(true,
+                "Post check cart thành công"), HttpStatus.OK);
+    }
+
+    // Get list foods when add cart
+    @GetMapping("/getFoodById/{token}")
+    public ResponseEntity<?> getFoodById(@PathVariable String token) {
+        getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
+        if (token != null) {
+            if (idFood != 0) {
+                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(idFood, idRes, getUserNameByToken),
+                        "Lấy thành công thông tin food"), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(idFood, idRes, getUserNameByToken),
+                        "Lấy thành công thông tin food",
+                        404), HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(new ResponseData("Lấy thất bại thông tin food",
+                    400), HttpStatus.OK);
+        }
     }
 
     // Create order item in cart

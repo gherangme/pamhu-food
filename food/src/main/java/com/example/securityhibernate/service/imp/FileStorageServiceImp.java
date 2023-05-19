@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.listenum.FolderType;
+import com.example.securityhibernate.listenum.ImageFolderType;
 import com.example.securityhibernate.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -36,14 +36,14 @@ public class FileStorageServiceImp implements FileStorageService {
         }
     }
 
-    private void setChildRoot(FolderType folderType){
-        childFolder = parentFolder + "/" + folderType.toString();
+    private void setChildRoot(ImageFolderType imageFolderType){
+        childFolder = parentFolder + "/" + imageFolderType.toString();
         childRoot =  Paths.get(childFolder);
     }
 
-    private void initChild(FolderType folderType){
+    private void initChild(ImageFolderType imageFolderType){
         try {
-            setChildRoot(folderType);
+            setChildRoot(imageFolderType);
             if(!Files.exists(childRoot)){
                 Files.createDirectories(childRoot);
             }
@@ -53,10 +53,10 @@ public class FileStorageServiceImp implements FileStorageService {
     }
 
     @Override
-    public boolean saveFiles(MultipartFile file, String newFileName, FolderType folderType) {
+    public boolean saveFiles(MultipartFile file, String newFileName, ImageFolderType imageFolderType) {
         try {
             initParent();
-            initChild(folderType);
+            initChild(imageFolderType);
             Files.copy(file.getInputStream(), childRoot.resolve(newFileName), StandardCopyOption.REPLACE_EXISTING);
             return true;
         }catch (Exception e){
@@ -66,9 +66,9 @@ public class FileStorageServiceImp implements FileStorageService {
     }
 
     @Override
-    public Resource load(String fileName, FolderType folderType) {
+    public Resource load(String fileName, ImageFolderType imageFolderType) {
         try {
-            setChildRoot(folderType);
+            setChildRoot(imageFolderType);
             Path file = childRoot.resolve(fileName);
             Resource resource = new UrlResource(file.toUri());
             if(resource.exists()|| resource.isReadable()){
@@ -83,10 +83,10 @@ public class FileStorageServiceImp implements FileStorageService {
     }
 
     @Override
-    public boolean removeFile(String fileName, FolderType folderType) {
+    public boolean removeFile(String fileName, ImageFolderType imageFolderType) {
         try {
             initParent();
-            initChild(folderType);
+            initChild(imageFolderType);
             Path pathFile = childRoot.resolve(fileName);
             Files.delete(pathFile);
             return true;

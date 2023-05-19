@@ -1,5 +1,5 @@
 package com.example.securityhibernate.listenum;
 
-public enum Provider {
+public enum ProviderColumn {
     LOCAL, GOOGLE, FACEBOOK, GITHUB
 }

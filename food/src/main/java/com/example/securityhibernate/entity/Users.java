@@ -1,6 +1,6 @@
 package com.example.securityhibernate.entity;
 
-import com.example.securityhibernate.listenum.Provider;
+import com.example.securityhibernate.listenum.ProviderColumn;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -28,7 +28,7 @@ public class Users {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    private Provider provider;
+    private ProviderColumn providerColumn;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -57,12 +57,12 @@ public class Users {
         this.listRestaurant = listRestaurant;
     }
 
-    public Provider getProvider() {
-        return provider;
+    public ProviderColumn getProvider() {
+        return providerColumn;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
+    public void setProvider(ProviderColumn providerColumn) {
+        this.providerColumn = providerColumn;
     }
 
     public String getPhone() {
