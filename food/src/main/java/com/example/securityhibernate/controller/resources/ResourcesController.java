@@ -114,4 +114,14 @@ public class ResourcesController {
         return "category";
     }
 
+    @GetMapping("/order")
+    public String orders() {
+        return "order";
+    }
+
+    @GetMapping("/order-detail")
+    public String orderDetail() {
+        return "order-detail";
+    }
+
 }

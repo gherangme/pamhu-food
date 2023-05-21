@@ -5,10 +5,19 @@ import java.util.List;
 public class OrderDetailDTO {
 
     private int id;
+    private RestaurantDTO restaurantDTO;
     private double totalPrice;
     private String date;
     private List<FoodDTO> foodDTOList;
     private CouponDTO couponDTO;
+
+    public RestaurantDTO getRestaurantDTO() {
+        return restaurantDTO;
+    }
+
+    public void setRestaurantDTO(RestaurantDTO restaurantDTO) {
+        this.restaurantDTO = restaurantDTO;
+    }
 
     public int getId() {
         return id;

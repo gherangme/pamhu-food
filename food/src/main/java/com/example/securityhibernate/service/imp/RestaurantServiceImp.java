@@ -5,6 +5,8 @@ import com.example.securityhibernate.dto.CategoryDTO;
 import com.example.securityhibernate.dto.CouponDTO;
 import com.example.securityhibernate.dto.RestaurantDTO;
 import com.example.securityhibernate.entity.*;
+import com.example.securityhibernate.mapper.CouponMapper;
+import com.example.securityhibernate.mapper.RestaurantMapper;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,12 @@ import java.util.List;
 
 @Service
 public class RestaurantServiceImp implements RestaurantService {
+
+    @Autowired
+    private RestaurantMapper restaurantMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -50,11 +58,7 @@ public class RestaurantServiceImp implements RestaurantService {
         List<RestaurantDTO> dtoList = new ArrayList<>();
 
         for (Restaurant restaurant: list) {
-            RestaurantDTO restaurantDTO = new RestaurantDTO();
-            restaurantDTO.setId(restaurant.getId());
-            restaurantDTO.setName(restaurant.getName());
-            restaurantDTO.setImage(restaurant.getImage());
-            restaurantDTO.setAddress(restaurant.getAddress());
+            RestaurantDTO restaurantDTO = restaurantMapper.convertEntityToDTO(restaurant);
 
             // Set rating restaurant
             List<RatingRestaurant> ratingRestaurant = ratingRestaurantRepository.findByRestaurant_Id(restaurant.getId());
@@ -74,11 +78,7 @@ public class RestaurantServiceImp implements RestaurantService {
 
             // Set infor Coupon
             Coupon coupon = couponRepository.findById(restaurant.getCoupon().getId());
-            CouponDTO couponDTO = new CouponDTO();
-            couponDTO.setId(coupon.getId());
-            couponDTO.setName(coupon.getName());
-            couponDTO.setVoucher(coupon.getVoucher());
-            restaurantDTO.setCouponDTO(couponDTO);
+            restaurantDTO.setCouponDTO(couponMapper.convertEntityToDTO(coupon));
 
             dtoList.add(restaurantDTO);
         }

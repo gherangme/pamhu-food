@@ -13,5 +13,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByRestaurant_IdAndStatus_Id(int idRes, int idStatus);
     Orders findByStatus_IdAndUsers_Username(int status, String username);
     Orders findByStatus_IdAndUsers_UsernameAndRestaurant_Id(int idStatus, String username, int idRes);
+    List<Orders> findByStatus_IdAndUsers_Id(int idStatus, int idUser);
 
 }

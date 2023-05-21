@@ -1,6 +1,7 @@
 package com.example.securityhibernate.service.imp;
 
 import com.example.securityhibernate.dto.RatingFoodDTO;
+import com.example.securityhibernate.dto.UserDTO;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.entity.RatingFood;
 import com.example.securityhibernate.repository.FoodRepository;
@@ -42,7 +43,9 @@ public class RatingFoodServiceImp implements RatingFoodService {
                 long millis=System.currentTimeMillis();
                 java.sql.Date date = new java.sql.Date(millis);
                 ratingFoodDTO.setDate(formatDate.formatDate(date));
-                ratingFoodDTO.setFullName(ratingFood.getUsers().getFullname());
+                UserDTO userDTO = new UserDTO();
+                userDTO.setFullName(ratingFood.getUsers().getFullname());
+                ratingFoodDTO.setUserDTO(userDTO);
 
                 dtoList.add(ratingFoodDTO);
             }

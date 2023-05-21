@@ -2,6 +2,8 @@ package com.example.securityhibernate.service.imp;
 
 import com.example.securityhibernate.dto.*;
 import com.example.securityhibernate.entity.*;
+import com.example.securityhibernate.mapper.CategoryMapper;
+import com.example.securityhibernate.mapper.CouponMapper;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.RestaurantDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,12 @@ import java.util.List;
 
 @Service
 public class RestaurantDetailServiceImp implements RestaurantDetailService {
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -46,11 +54,7 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
         restaurantDetailDTO.setAddress(restaurant.getAddress());
 
         Coupon coupon = couponRepository.findById(restaurant.getCoupon().getId());
-        CouponDTO couponDTO = new CouponDTO();
-        couponDTO.setId(coupon.getId());
-        couponDTO.setName(coupon.getName());
-        couponDTO.setVoucher(coupon.getVoucher());
-        restaurantDetailDTO.setCouponDTO(couponDTO);
+        restaurantDetailDTO.setCouponDTO(couponMapper.convertEntityToDTO(coupon));
 
         List<RatingRestaurant> ratingRestaurant = ratingRestaurantRepository.findByRestaurant_Id(restaurant.getId());
         float starRes = 0;
@@ -81,10 +85,7 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
                     foodDTO.setPrice(food.getPrice());
                     foodDTO.setImage(food.getImage());
 
-                    CategoryDTO categoryDTO = new CategoryDTO();
-                    categoryDTO.setId(food.getCategoryRestaurant().getCategory().getId());
-                    categoryDTO.setName(food.getCategoryRestaurant().getCategory().getName());
-                    foodDTO.setCategoryDTO(categoryDTO);
+                    foodDTO.setCategoryDTO(categoryMapper.convertEntityToDTO(food.getCategoryRestaurant().getCategory()));
 
                     List<RatingFood> ratingFoodList = ratingFoodRepository.findAllByFood_Id(food.getId());
                     if (ratingFoodList.size() > 0) {
@@ -108,10 +109,8 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
         // Set cateDTO by id res
         List<CategoryDTO> list = new ArrayList<>();
         for (CategoryRestaurant categoryRestaurant: list1) {
-            CategoryDTO categoryDTO = new CategoryDTO();
             Category category = categoryRepository.findById(categoryRestaurant.getCategory().getId());
-            categoryDTO.setId(category.getId());
-            categoryDTO.setName(category.getName());
+            CategoryDTO categoryDTO = categoryMapper.convertEntityToDTO(category);
 
             boolean exists = false;
 

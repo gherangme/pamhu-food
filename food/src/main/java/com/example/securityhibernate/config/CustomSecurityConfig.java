@@ -54,7 +54,7 @@ public class CustomSecurityConfig {
                                     // Link resources
                             "/401", "/403", "/404", "/signup", "/login", "/forgot", "/forgot-otp", "/home", "/otp",
                             "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout", "/food-detail", "/invoice",
-                            "/category",
+                            "/category", "/order", "/order-detail",
                             "/manager", "/manager-food-detail", "/manager-food-add", "/manager-invoice-detail", "/manager-promotion-detail")
                         .permitAll()
 

@@ -5,6 +5,7 @@ import com.example.securityhibernate.dto.PromotionDTO;
 import com.example.securityhibernate.entity.Coupon;
 import com.example.securityhibernate.entity.Orders;
 import com.example.securityhibernate.entity.Restaurant;
+import com.example.securityhibernate.mapper.CouponMapper;
 import com.example.securityhibernate.repository.CouponRepository;
 import com.example.securityhibernate.repository.OrdersRepository;
 import com.example.securityhibernate.repository.RestaurantRepository;
@@ -18,6 +19,9 @@ import java.util.List;
 
 @Service
 public class PromotionServiceImp implements PromotionService {
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Autowired
     private CouponRepository couponRepository;
@@ -51,13 +55,8 @@ public class PromotionServiceImp implements PromotionService {
 
     @Override
     public CouponDTO getPromotionById(int id) {
-        CouponDTO couponDTO = new CouponDTO();
         Coupon coupon = couponRepository.findById(id);
-        couponDTO.setId(coupon.getId());
-        couponDTO.setName(coupon.getName());
-        couponDTO.setVoucher(coupon.getVoucher());
-
-        return couponDTO;
+        return couponMapper.convertEntityToDTO(coupon);
     }
 
     @Override
@@ -65,14 +64,8 @@ public class PromotionServiceImp implements PromotionService {
         List<CouponDTO> list = new ArrayList<>();
         List<Coupon> couponList = couponRepository.findAll();
         for (Coupon coupon: couponList) {
-            CouponDTO couponDTO = new CouponDTO();
-            couponDTO.setId(coupon.getId());
-            couponDTO.setName(coupon.getName());
-            couponDTO.setVoucher(coupon.getVoucher());
-
-            list.add(couponDTO);
+            list.add(couponMapper.convertEntityToDTO(coupon));
         }
-
         return list;
     }
 

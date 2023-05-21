@@ -8,7 +8,25 @@ public class RestaurantDTO {
     private String address;
     private String image;
     private String cate = "Nhiều loại";
+    private String description;
     private CouponDTO couponDTO;
+    private UserDTO userDTO;
+
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getCate() {
         return cate;

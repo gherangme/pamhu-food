@@ -7,8 +7,17 @@ public class RatingFoodDTO {
     private int id;
     private String comment;
     private int star;
-    private String fullName;
+    private UserDTO userDTO;
+    private FoodDTO foodDTO;
     private String date;
+
+    public FoodDTO getFoodDTO() {
+        return foodDTO;
+    }
+
+    public void setFoodDTO(FoodDTO foodDTO) {
+        this.foodDTO = foodDTO;
+    }
 
     public int getId() {
         return id;
@@ -34,12 +43,12 @@ public class RatingFoodDTO {
         this.star = star;
     }
 
-    public String getFullName() {
-        return fullName;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     public String getDate() {

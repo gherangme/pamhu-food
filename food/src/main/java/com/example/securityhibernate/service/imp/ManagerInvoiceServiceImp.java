@@ -6,7 +6,7 @@ import com.example.securityhibernate.entity.OrderItem;
 import com.example.securityhibernate.entity.Orders;
 import com.example.securityhibernate.entity.Users;
 import com.example.securityhibernate.repository.*;
-import com.example.securityhibernate.service.InvoiceService;
+import com.example.securityhibernate.service.ManagerInvoiceService;
 import com.example.securityhibernate.utils.FormatDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class InvoiceServiceImp implements InvoiceService {
+public class ManagerInvoiceServiceImp implements ManagerInvoiceService {
 
     @Autowired
     private OrdersRepository ordersRepository;

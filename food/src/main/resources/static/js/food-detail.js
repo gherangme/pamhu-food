@@ -79,7 +79,7 @@ $(document).ready(function () {
                                     <a class="pull-left" href="#"><i style="margin-right: 13px;"
                                             class="mdi mdi-account-circle-outline h1"></i></a>
                                     <div class="media-body">
-                                        <h6 class="media-heading">${data[1].data[i]["fullName"]}</h6>
+                                        <h6 class="media-heading">${data[1].data[i]["userDTO"]["fullName"]}</h6>
                                         <div id="rating-star-${data[1].data[i]["id"]}">
 <!--                                            <a href=""><span class="fa fa-star checked"></span></a>-->
 <!--                                            <a href=""><span class="fa fa-star checked"></span></a>-->
