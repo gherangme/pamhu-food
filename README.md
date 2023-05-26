@@ -12,7 +12,7 @@
 
 ## Description
 - Application help Vietnamese people to create and manage food order, feedback for food quality.
-- This project started from 13-02-2023 to present.
+- This project started from 20-04-2023 to present.
 
 ## Preview Screenshot
 <div>
