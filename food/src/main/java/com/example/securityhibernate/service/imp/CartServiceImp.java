@@ -94,7 +94,7 @@ public class CartServiceImp implements CartService {
                         Food food1 = foodRepository.findById(orderItem1.getFood().getId());
                         FoodDTO foodDTO1 = new FoodDTO();
                         setFoodDTO(food1, foodDTO1, orderItem1.getAmount());
-                        list.add(foodDTO);
+                        list.add(foodDTO1);
                     } catch (Exception e) {
                         return null;
                     }

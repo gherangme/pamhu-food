@@ -20,6 +20,38 @@
     <link href="/static/vendor/mdi-icons/css/materialdesignicons.min.css" rel="stylesheet">
 
     <link href="/static/css/custom.css" rel="stylesheet">
+
+    <style type="text/css">
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+
+        .pagination a:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .pagination a:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+    </style>
 </head>
 <body id="page-top">
 
@@ -52,7 +84,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="orders.html">
+            <a class="nav-link" href="#" id="order-btn">
                 <i class="mdi mdi-book-open"></i>
                 <span>Orders</span></a>
         </li>
@@ -246,7 +278,8 @@
 <!--                                class="mdi mdi-motorbike ml-2 mr-2"></i>45 - 55 min</p>-->
 <!--                    </a>-->
                 </div>
-
+                <div class="pagination p-0">
+                </div>
 <!--                <div class="row">-->
 
 <!--                    <a href="#" class="text-decoration-none text-dark col-lg-3 col-md-6 mb-4" data-toggle="modal"-->

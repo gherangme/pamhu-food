@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class FoodController {
 
     private int idCategory = 0;
+    private int pageNumber = 1;
 
     @Autowired
     private FoodService foodService;
@@ -26,6 +27,13 @@ public class FoodController {
         } else {
             return new ResponseEntity<>(new ResponseData("Lấy thất bại id"), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/postPageNumber")
+    public ResponseEntity<?> postPageNumber(@RequestParam int page) {
+        pageNumber = page;
+        return new ResponseEntity<>(new ResponseData(true,
+                "Lấy thành công thông tin số trang"), HttpStatus.OK);
     }
 
     // Get All Foods Page Home
@@ -43,7 +51,7 @@ public class FoodController {
 
         // Get All Foods
         if (idCategory == 0) {
-            responseData.setData(foodService.getAllFoods());
+            responseData.setData(foodService.getAllFoods(pageNumber));
             responseData.setDesc("Lấy thành công danh sách food");
 
         // Get List Foods By Id Category

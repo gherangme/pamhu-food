@@ -8,6 +8,6 @@ public interface FoodService {
 
     List<FoodDTO> getAllFoodsByIdCategory(int idCategory);
     List<FoodDTO> getAllFoodsPageHome();
-    List<FoodDTO> getAllFoods();
+    List<FoodDTO> getAllFoods(int pageNumber);
 
 }

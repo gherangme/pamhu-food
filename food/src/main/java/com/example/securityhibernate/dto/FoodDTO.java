@@ -12,6 +12,24 @@ public class FoodDTO {
     private RestaurantDTO restaurantDTO;
     private int ratingNumber = 0;
     private float star = 5;
+    private int pageNumber = 1;
+    private int totalPage = 1;
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
 
     public int getAmount() {
         return amount;

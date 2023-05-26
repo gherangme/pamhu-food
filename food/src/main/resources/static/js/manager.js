@@ -24,8 +24,7 @@ $(document).ready(function () {
             for (const i in data[0].data["foodDTOList"]) {
                 const htmlListFood = `<a id="${data[0].data["foodDTOList"][i]["id"]}" href="#" class="list-group-item edit-food"><span>
                                         ${data[0].data["foodDTOList"][i]["name"]} 
-                                        (${data[0].data["foodDTOList"][i]["categoryDTO"]["name"]})<em class="pull-right text-muted small">${data[0].data["foodDTOList"][i]["price"]} VND</em>
-                                        
+                                        <em class="pull-right text-muted small">${data[0].data["foodDTOList"][i]["price"]} VND</em>
                                         </span>
                                     </a>`
                 $('#list-food').append(htmlListFood)

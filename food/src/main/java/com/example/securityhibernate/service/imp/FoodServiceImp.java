@@ -35,7 +35,7 @@ public class FoodServiceImp implements FoodService {
     @Override
     public List<FoodDTO> getAllFoodsByIdCategory(int idCategory) {
         List<Food> list = foodRepository.getAllByIdCategory(idCategory);
-        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+        List<FoodDTO> dtoList = getAllFoodsCommon(list, 0, 0);
 
         return dtoList;
     }
@@ -43,20 +43,27 @@ public class FoodServiceImp implements FoodService {
     @Override
     public List<FoodDTO> getAllFoodsPageHome() {
         List<Food> list = foodRepository.getAllPageHome();
-        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+        List<FoodDTO> dtoList = getAllFoodsCommon(list, 0, 0);
 
         return dtoList;
     }
 
     @Override
-    public List<FoodDTO> getAllFoods() {
+    public List<FoodDTO> getAllFoods(int pageNumber) {
         List<Food> list = foodRepository.findAll();
-        List<FoodDTO> dtoList = getAllFoodsCommon(list);
+        int totalPage = (int) Math.ceil(list.size() / 12);
+        List<Food> listByPageNumber = new ArrayList<>();
+        for (int i = (pageNumber - 1) * 12; i < pageNumber * 12; i++) {
+            if (list.get(0) != null) {
+                listByPageNumber.add(list.get(i));
+            }
+        }
+        List<FoodDTO> dtoList = getAllFoodsCommon(listByPageNumber, pageNumber, totalPage);
         return dtoList;
     }
 
     // Common All Foods
-    private List<FoodDTO> getAllFoodsCommon(List<Food> list) {
+    private List<FoodDTO> getAllFoodsCommon(List<Food> list, int pageNumber, int totalPage) {
         List<FoodDTO> dtoList = new ArrayList<>();
         for (Food food: list) {
             FoodDTO foodDTO = new FoodDTO();
@@ -64,6 +71,8 @@ public class FoodServiceImp implements FoodService {
             foodDTO.setName(food.getName());
             foodDTO.setImage(food.getImage());
             foodDTO.setPrice(food.getPrice());
+            foodDTO.setPageNumber(pageNumber);
+            foodDTO.setTotalPage(totalPage);
 
             // Set cate DTO
             CategoryDTO categoryDTO = new CategoryDTO();

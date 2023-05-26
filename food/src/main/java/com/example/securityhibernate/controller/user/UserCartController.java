@@ -67,13 +67,14 @@ public class UserCartController {
     // Get list foods when add cart
     @GetMapping("/getFoodById/{token}")
     public ResponseEntity<?> getFoodById(@PathVariable String token) {
+        System.out.println(token);
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
         if (token != null) {
             if (idFood != 0) {
                 return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(idFood, idRes, getUserNameByToken),
                         "Lấy thành công thông tin food"), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(idFood, idRes, getUserNameByToken),
+                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(0, 0, getUserNameByToken),
                         "Lấy thành công thông tin food",
                         404), HttpStatus.OK);
             }

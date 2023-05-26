@@ -1,5 +1,16 @@
 $(document).ready(function () {
     $.ajax({
+        url: 'http://localhost:8080/api/v1/manager/getInforPageManager/' + token,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function (data) {
+            $('#name-manager').html(data[1].data)
+        }
+    })
+
+    $.ajax({
         url: 'http://localhost:8080/api/v1/manager/food/getFoodAdd',
         type: 'GET',
         headers: {

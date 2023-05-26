@@ -3,7 +3,6 @@ $(document).ready(function () {
         url: `http://localhost:8080/api/v1/food/getAll`,
         type: 'GET',
         success: function (data) {
-
             $.ajax({
                 url: `http://localhost:8080/api/v1/login/getInforUserByToken`,
                 type: 'POST',
@@ -65,6 +64,30 @@ $(document).ready(function () {
                     </a>`
                 $('#list-food').append(html)
             }
+            for (let i = 1; i <= data.data[0]["totalPage"]; i++) {
+                let htmlBtnPage
+                console.log(data.data[0]["pageNumber"])
+                if (i === data.data[0]["pageNumber"]) {
+                    htmlBtnPage = `<a class="page-btn active" id="${i}" style="margin-bottom: 10px;" href="#">${i}</a>`
+                } else {
+                    htmlBtnPage = `<a class="page-btn" id="${i}" style="margin-bottom: 10px;" href="#">${i}</a>`
+                }
+                $('.pagination').append(htmlBtnPage)
+            }
+            $('.page-btn').click(function (e) {
+                e.preventDefault()
+                const page = $(this).attr('id')
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/food/postPageNumber`,
+                    type: 'POST',
+                    data: {'page': page},
+                    success: function (data) {
+                        if (data.data) {
+                            window.location.href = "/food"
+                        }
+                    }
+                })
+            })
 
             foodDetail()
 
@@ -73,6 +96,22 @@ $(document).ready(function () {
                 window.location.href = "/food"
             })
         }
+    })
+
+    $('#order-btn').click(function (e) {
+        e.preventDefault()
+        $.ajax({
+            type: 'GET',
+            url: `http://localhost:8080/api/v1/user/order/getTokenUser/` + token,
+            headers: {'Authorization': 'Bearer ' + token},
+            success: function (data) {
+                if (data.data) {
+                    window.location.href = "/order"
+                } else {
+                    window.location.href = "/401"
+                }
+            }
+        })
     })
 })
 

@@ -79,5 +79,21 @@ $(document).ready(function () {
                 })
             }
         })
+
+        $('#order-btn').click(function (e) {
+            e.preventDefault()
+            $.ajax({
+                type: 'GET',
+                url: `http://localhost:8080/api/v1/user/order/getTokenUser/` + token,
+                headers: {'Authorization': 'Bearer ' + token},
+                success: function (data) {
+                    if (data.data) {
+                        window.location.href = "/order"
+                    } else {
+                        window.location.href = "/401"
+                    }
+                }
+            })
+        })
     })
 })
