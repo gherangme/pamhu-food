@@ -21,7 +21,7 @@
 </div>
 
 ## Video Demo
-- Updating
+- [Video here](https://www.youtube.com/watch?v=4DB370uUyZk)
   
 ## Technology
 
@@ -58,7 +58,7 @@
   - jQuery Ajax call API
 ## Requirements
 
-**ADMIN**
+**ADMIN** (Updating...)
   - [ ] ***Read:*** <br>
   &ensp; Login, signup, forgot password, profile, all restaurants, categories, food, cart, checkout, rating food, statistic, user, invoice
   - [ ] ***Write:*** <br>
