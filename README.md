@@ -25,7 +25,7 @@
   - Java 11
   - Spring Boot 2.7
   - Spring MVC Model
-  - Spring Data, Hibernate
+  - Spring Data JPA
   - Spring Security
 
 **2. Database**
