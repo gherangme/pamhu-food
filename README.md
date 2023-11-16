@@ -39,8 +39,8 @@
 - Gson
 - Thymeleaf
 - BCryptPasswordEncoder for Authen
-- Cache (updating...)
-- Queue (updating...)
+- Redis Cache
+- Kafka Queue (updating...)
 
 **4. Tool**
   - Visual Studio Code
