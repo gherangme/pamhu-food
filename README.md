@@ -4,7 +4,6 @@
 ## Table of Contents
 - [Description](#description)
 - [Preview Screenshot](#preview-screenshot)
-- [Video Demo](#video-demo)
 - [Technology](#technology)
 - [Functional requirements](#requirements)
 - [Contributors](#contributors)
@@ -19,9 +18,6 @@
   <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%201.png"><br><br>
   <img src="https://github.com/gherangme/pamhu-food/blob/f0f1dbba006c2ddfddbfa1b299aede262785820a/food/preview%20screenshot/checkout.png">
 </div>
-
-## Video Demo
-- [Video here](https://www.youtube.com/watch?v=4DB370uUyZk)
   
 ## Technology
 
@@ -76,7 +72,7 @@
   - [ ] ***Write:*** <br>
   &ensp; Login, signup, forgot password, profile, rating food, cart, checkout <br>
 
-## Contributor
+## Contributors
 **1. Mentor:**
 - Che Cong Binh
 
