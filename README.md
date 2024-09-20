@@ -3,7 +3,6 @@
 
 ## Table of Contents
 - [Description](#description)
-- [Preview Screenshot](#preview-screenshot)
 - [Technology](#technology)
 - [Functional requirements](#requirements)
 - [Contributors](#contributors)
@@ -12,12 +11,6 @@
 ## Description
 - Application help Vietnamese people to create and manage food order, feedback for food quality.
 - This project started from 20-04-2023 to present.
-
-## Preview Screenshot
-<div>
-  <img src="https://raw.githubusercontent.com/gherangme/pamhu-food/main/food/preview%20screenshot/Screenshot%201.png"><br><br>
-  <img src="https://github.com/gherangme/pamhu-food/blob/f0f1dbba006c2ddfddbfa1b299aede262785820a/food/preview%20screenshot/checkout.png">
-</div>
   
 ## Technology
 
