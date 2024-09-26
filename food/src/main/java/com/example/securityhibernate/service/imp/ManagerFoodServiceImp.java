@@ -1,16 +1,19 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CategoryDTO;
-import com.example.securityhibernate.dto.ManagerFoodDTO;
+import com.example.securityhibernate.dto.request.CategoryDTO;
+import com.example.securityhibernate.dto.response.ManagerFoodDTO;
 import com.example.securityhibernate.entity.Category;
 import com.example.securityhibernate.entity.CategoryRestaurant;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.entity.Restaurant;
-import com.example.securityhibernate.listenum.ImageFolderType;
+import com.example.securityhibernate.enums.ImageFolderType;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.FileStorageService;
 import com.example.securityhibernate.service.ManagerFoodService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,28 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ManagerFoodServiceImp implements ManagerFoodService {
 
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private CategoryRestaurantRepository categoryRestaurantRepository;
-
-    @Autowired
-    private FileStorageService fileStorageService;
-
-    @Autowired
-    private JwtUtilsHelpers jwtUtilsHelpers;
-
-    @Autowired
-    private UserRepository userRepository;
+    FoodRepository foodRepository;
+    RestaurantRepository restaurantRepository;
+    CategoryRepository categoryRepository;
+    CategoryRestaurantRepository categoryRestaurantRepository;
+    FileStorageService fileStorageService;
+    JwtUtilsHelpers jwtUtilsHelpers;
+    UserRepository userRepository;
 
     @Override
     public ManagerFoodDTO getFoodAdd(int idUser) {
@@ -49,7 +41,6 @@ public class ManagerFoodServiceImp implements ManagerFoodService {
         List<CategoryRestaurant> list = categoryRestaurantRepository
                 .findAllByRestaurant_Id(restaurantRepository.findByUsers_Id(idUser).getId());
 
-        // Set List Cate Of Res
         for (CategoryRestaurant categoryRestaurant: list) {
             Category category = categoryRepository.findById(categoryRestaurant.getCategory().getId());
 

@@ -1,7 +1,7 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.SignupDTO;
-import com.example.securityhibernate.listenum.ProviderColumn;
+import com.example.securityhibernate.dto.request.SignupDTO;
+import com.example.securityhibernate.enums.ProviderColumn;
 
 public interface SignupService {
 

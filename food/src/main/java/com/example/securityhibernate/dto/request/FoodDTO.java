@@ -1,4 +1,6 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.request;
+
+import com.example.securityhibernate.dto.response.CategaryRestaurantDTO;
 
 public class FoodDTO {
 

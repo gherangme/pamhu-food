@@ -1,6 +1,5 @@
 package com.example.securityhibernate.repository;
 
-import com.example.securityhibernate.dto.FoodDTO;
 import com.example.securityhibernate.entity.Food;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

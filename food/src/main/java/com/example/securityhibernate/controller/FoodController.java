@@ -1,63 +1,56 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.FoodService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/food")
+@RequestMapping("/foods")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FoodController {
 
-    private int idCategory = 0;
-    private int pageNumber = 1;
+    int idCategory = 0;
+    int pageNumber = 1;
 
     @Autowired
-    private FoodService foodService;
+    FoodService foodService;
 
-    // Post Id Cate
-    @PostMapping("/postIdCategory")
-    public ResponseEntity<?> postIdCategory(@RequestParam int id) {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> getIdFood(@PathVariable int id) {
         if (id != 0) {
             idCategory = id;
-            return new ResponseEntity<>(new ResponseData("Lấy thành công id"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData("Lấy thất bại id"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/postPageNumber")
-    public ResponseEntity<?> postPageNumber(@RequestParam int page) {
-        pageNumber = page;
-        return new ResponseEntity<>(new ResponseData(true,
-                "Lấy thành công thông tin số trang"), HttpStatus.OK);
+    @PostMapping("/{idPage}")
+    public ResponseEntity<?> postPageNumber(@RequestParam int idPage) {
+        pageNumber = idPage;
+        return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
     }
 
-    // Get All Foods Page Home
-    @GetMapping("/getAllPageHome")
-    public ResponseEntity<?> getAllPageHome() {
-        return new ResponseEntity<>(new ResponseData(foodService.getAllFoodsPageHome(),
-                "Lấy thành công danh sách food Page Home"), HttpStatus.OK);
+    @GetMapping("/getAllInformation")
+    public ResponseEntity<?> getAllInformation() {
+        return new ResponseEntity<>(new ResponseData(foodService.getAllFoodsPageHome()), HttpStatus.OK);
     }
 
-    // Get All Foods
 //    @Cacheable("allFoods")
-    @GetMapping("/getAll")
-    public ResponseEntity<?> getAll() {
+    @GetMapping("/getAllFoods")
+    public ResponseEntity<?> getAllFoods() {
         ResponseData responseData = new ResponseData();
 
-        // Get All Foods
         if (idCategory == 0) {
             responseData.setData(foodService.getAllFoods(pageNumber));
-            responseData.setDesc("Lấy thành công danh sách food");
 
-        // Get List Foods By Id Category
         } else {
             responseData.setData(foodService.getAllFoodsByIdCategory(idCategory));
-            responseData.setDesc("Lấy thành công danh sách food by id category");
             idCategory = 0;
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);

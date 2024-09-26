@@ -1,10 +1,11 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.CategoryDTO;
+import com.example.securityhibernate.dto.request.CategoryDTO;
 import com.example.securityhibernate.entity.Category;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Mapper
 public class CategoryMapper {
 
     public CategoryDTO convertEntityToDTO(Category category) {

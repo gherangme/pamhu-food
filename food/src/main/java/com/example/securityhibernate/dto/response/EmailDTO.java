@@ -1,4 +1,4 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.response;
 
 public class EmailDTO {
 

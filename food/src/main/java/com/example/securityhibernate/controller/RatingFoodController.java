@@ -1,8 +1,10 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.RatingFoodService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/rating-food")
+@RequestMapping("/rating-foods")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RatingFoodController {
 
     @Autowired
-    private RatingFoodService ratingFoodService;
+    RatingFoodService ratingFoodService;
 
     @Autowired
-    private JwtUtilsHelpers jwtUtilsHelpers;
+    JwtUtilsHelpers jwtUtilsHelpers;
 
     // Add New Rating Food
     @PostMapping("/postInforRatingFood")

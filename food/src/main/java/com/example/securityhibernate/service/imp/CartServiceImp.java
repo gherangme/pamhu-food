@@ -1,7 +1,7 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CategoryDTO;
-import com.example.securityhibernate.dto.FoodDTO;
+import com.example.securityhibernate.dto.request.CategoryDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.entity.keys.KeyOrderItem;
 import com.example.securityhibernate.repository.*;
@@ -39,7 +39,6 @@ public class CartServiceImp implements CartService {
 
         Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
 
-        // Check tồn tại order
         if (orders != null) {
             OrderItem orderItem = orderItemRepository.findByFood_IdAndOrders_Id(idFood, orders.getId());
             List<OrderItem> orderItemList = orderItemRepository.findByOrders_Id(orders.getId());
@@ -47,19 +46,15 @@ public class CartServiceImp implements CartService {
             Food food = foodRepository.findById(idFood);
             FoodDTO foodDTO = new FoodDTO();
 
-            // Check idRes có giống idRes trong order hay không
             if (orders.getRestaurant().getId() == idRes) {
 
-                // Check orderItem tồn tại
                 if (orderItem != null) {
 
-                    // Check food có tồn tại trong orderItem hay không
                     if (food != null) {
                         setFoodDTO(food, foodDTO, orderItem.getAmount());
                         list.add(foodDTO);
                     }
 
-                    // Lấy thông tin orderItem
                     for (OrderItem orderItem1 : orderItemList) {
                         if (orderItem1.getFood().getId() != idFood) {
                             food = foodRepository.findById(orderItem1.getFood().getId());
@@ -70,13 +65,11 @@ public class CartServiceImp implements CartService {
                     }
                 } else {
 
-                    // Thêm food mới
                     if (food != null) {
                         setFoodDTO(food, foodDTO, 1);
                         list.add(foodDTO);
                     }
 
-                    // Lấy thông tin orderItem
                     for (OrderItem orderItem1 : orderItemList) {
                         if (orderItem1.getFood().getId() != idFood) {
                             food = foodRepository.findById(orderItem1.getFood().getId());
@@ -87,7 +80,6 @@ public class CartServiceImp implements CartService {
                     }
                 }
 
-            // Check cart when idRes, idFood = 0
             } else if (idRes == 0) {
                 for (OrderItem orderItem1: orderItemList) {
                     try {
@@ -101,7 +93,6 @@ public class CartServiceImp implements CartService {
                 }
             } else {
 
-                // Kiểm tra orderItem có đang chứa food của nhà hàng khác hay không
                 if (orderItemRepository.findByOrders_Id(orders.getId()).size() > 0) {
                     return null;
                 } else {
@@ -116,17 +107,14 @@ public class CartServiceImp implements CartService {
 
         } else {
 
-            // Tạo Order và OrderItem mới
             if (idRes != 0) {
 
-                // Create Orders
                 Orders order = new Orders();
                 order.setUsers(userRepository.findByUsername(username));
                 order.setStatus(statusRepository.findById(1));
                 order.setRestaurant(restaurantRepository.findById(idRes));
                 ordersRepository.save(order);
 
-                // Create Order Item
                 OrderItem orderItem = new OrderItem();
                 Food food = foodRepository.findById(idFood);
                 orderItem.setFood(food);
@@ -143,7 +131,6 @@ public class CartServiceImp implements CartService {
                 setFoodDTO(food, foodDTO, 1);
                 list.add(foodDTO);
 
-            // Check cart when idRes, idFood = 0
             } else {
                 return null;
             }
@@ -152,7 +139,6 @@ public class CartServiceImp implements CartService {
         return list;
     }
 
-    // Delete orderItem
     @Override
     public boolean deleteItemOder(int idFood, String username) {
         Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);

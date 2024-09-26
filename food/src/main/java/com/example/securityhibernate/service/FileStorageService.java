@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.listenum.ImageFolderType;
+import com.example.securityhibernate.enums.ImageFolderType;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 

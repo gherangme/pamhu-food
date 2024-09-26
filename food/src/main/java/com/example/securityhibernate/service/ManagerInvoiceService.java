@@ -1,9 +1,9 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.InvoiceDTO;
+import com.example.securityhibernate.dto.response.InvoiceDTO;
 
 public interface ManagerInvoiceService {
 
-    InvoiceDTO getInforInvoiceById(int id);
+    InvoiceDTO getInvoiceById(int id);
 
 }

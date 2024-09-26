@@ -1,6 +1,6 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.CategaryRestaurantDTO;
+import com.example.securityhibernate.dto.response.CategaryRestaurantDTO;
 import com.example.securityhibernate.entity.CategoryRestaurant;
 import com.example.securityhibernate.repository.CategoryRepository;
 import com.example.securityhibernate.repository.RestaurantRepository;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Mapper
 public class CategoryRestaurantMapper {
 
     @Autowired

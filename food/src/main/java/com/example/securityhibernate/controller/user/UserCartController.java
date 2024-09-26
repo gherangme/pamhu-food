@@ -1,107 +1,89 @@
 package com.example.securityhibernate.controller.user;
 
-import com.example.securityhibernate.dto.OrderItemDTO;
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.OrderItemDTO;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.CartService;
 import com.example.securityhibernate.service.OrderService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 @RestController
-@RequestMapping("/api/v1/user/cart")
+@RequestMapping("/users/carts")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCartController {
 
-    private int idFood = 0;
-    private int idRes = 0;
-    private String getUserNameByToken = null;
+    int idFood = 0;
+    int idRes = 0;
+    String getUserNameByToken = null;
 
     @Autowired
-    private CartService cartService;
+    CartService cartService;
 
     @Autowired
-    private OrderService orderService;
+    OrderService orderService;
 
     @Autowired
-    private JwtUtilsHelpers jwtUtilsHelpers;
+    JwtUtilsHelpers jwtUtilsHelpers;
 
-    @GetMapping("")
-    public ResponseEntity<?> user() {
-        return new ResponseEntity<>("user", HttpStatus.OK);
-    }
-
-    // Post id food
-    @PostMapping("/postIdFood")
-    public ResponseEntity<?> postIdFood(@RequestParam int idFoodByUser,
+    @PostMapping("/{idFoodRequest}")
+    public ResponseEntity<?> getIdFood(@RequestParam int idFoodRequest,
                                            @RequestParam int idResByUser,
                                            @RequestParam String token) {
-        idFood = idFoodByUser;
+        idFood = idFoodRequest;
         idRes = idResByUser;
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
-        System.out.println(idFoodByUser + idResByUser + token);
 
         if (idFood != 0) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Lấy thành công id food"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Lấy thất bại id food",
-                    400), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.OK);
         }
     }
 
-    @PostMapping("/postCheckCart/{token}")
-    public ResponseEntity<?> postCheckCart(@PathVariable String token) {
-        System.out.println("test");
+    @GetMapping("/{token}")
+    public ResponseEntity<?> getCart(@PathVariable String token) {
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
         idFood = 0;
-        return new ResponseEntity<>(new ResponseData(true,
-                "Post check cart thành công"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
     }
 
-    // Get list foods when add cart
-    @GetMapping("/getFoodById/{token}")
-    public ResponseEntity<?> getFoodById(@PathVariable String token) {
+    @GetMapping("/getFood/{token}")
+    public ResponseEntity<?> getFood(@PathVariable String token) {
         System.out.println(token);
         getUserNameByToken = jwtUtilsHelpers.getUsernameByToken(token);
         if (token != null) {
             if (idFood != 0) {
-                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(idFood, idRes, getUserNameByToken),
-                        "Lấy thành công thông tin food"), HttpStatus.OK);
+                return new ResponseEntity<>(new ResponseData(cartService
+                        .addFoodToCart(idFood, idRes, getUserNameByToken)), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new ResponseData(cartService.addFoodToCart(0, 0, getUserNameByToken),
-                        "Lấy thành công thông tin food",
-                        404), HttpStatus.OK);
+                return new ResponseEntity<>(new ResponseData(cartService
+                        .addFoodToCart(0, 0, getUserNameByToken)), HttpStatus.BAD_REQUEST);
             }
         } else {
-            return new ResponseEntity<>(new ResponseData("Lấy thất bại thông tin food",
-                    400), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
         }
     }
 
     // Create order item in cart
-    @PostMapping("/postOrderItem")
-    public ResponseEntity<?> postOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
+    @PostMapping("/orderItem")
+    public ResponseEntity<?> getOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
         boolean isSuccess = orderService.saveOrder(getUserNameByToken,
                 orderItemDTO.getIdFood(), orderItemDTO.getAmount(), orderItemDTO.getPrice());
 
         if (isSuccess) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Lưu thành công"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Lưu thât bại",
-                    400), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.BAD_REQUEST);
         }
     }
 
     // Delete order item in cart
-    @DeleteMapping("/deleteOrderItem/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deleteOrderItem(@PathVariable("id") int id) {
         boolean isSuccess = cartService.deleteItemOder(id, getUserNameByToken);
 
@@ -110,12 +92,9 @@ public class UserCartController {
         }
 
         if (isSuccess) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Xoá thành công"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Xoá thành công",
-                    400), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.BAD_REQUEST);
         }
     }
 }

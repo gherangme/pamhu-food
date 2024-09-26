@@ -1,6 +1,6 @@
 package com.example.securityhibernate.entity;
 
-import com.example.securityhibernate.listenum.ProviderColumn;
+import com.example.securityhibernate.enums.ProviderColumn;
 
 import javax.persistence.*;
 import java.util.Set;

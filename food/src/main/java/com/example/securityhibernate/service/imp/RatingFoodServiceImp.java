@@ -1,14 +1,16 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.RatingFoodDTO;
-import com.example.securityhibernate.dto.UserDTO;
-import com.example.securityhibernate.entity.Food;
+import com.example.securityhibernate.dto.response.RatingFoodDTO;
+import com.example.securityhibernate.dto.request.UserDTO;
 import com.example.securityhibernate.entity.RatingFood;
 import com.example.securityhibernate.repository.FoodRepository;
 import com.example.securityhibernate.repository.RatingFoodRepository;
 import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.RatingFoodService;
 import com.example.securityhibernate.utils.FormatDate;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +19,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RatingFoodServiceImp implements RatingFoodService {
 
-    @Autowired
-    private RatingFoodRepository ratingFoodRepository;
-
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    RatingFoodRepository ratingFoodRepository;
+    FoodRepository foodRepository;
+    UserRepository userRepository;
 
     @Override
     public List<RatingFoodDTO> getAllRatingFoodByIdFood(int id) {

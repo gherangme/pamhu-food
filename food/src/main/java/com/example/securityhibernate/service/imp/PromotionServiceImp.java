@@ -1,7 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CouponDTO;
-import com.example.securityhibernate.dto.PromotionDTO;
+import com.example.securityhibernate.dto.request.CouponDTO;
 import com.example.securityhibernate.entity.Coupon;
 import com.example.securityhibernate.entity.Orders;
 import com.example.securityhibernate.entity.Restaurant;
@@ -11,6 +10,9 @@ import com.example.securityhibernate.repository.OrdersRepository;
 import com.example.securityhibernate.repository.RestaurantRepository;
 import com.example.securityhibernate.service.PromotionService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PromotionServiceImp implements PromotionService {
 
-    @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
     private CouponRepository couponRepository;
-
-    @Autowired
     private RestaurantRepository restaurantRepository;
-
-    @Autowired
     private OrdersRepository ordersRepository;
-
-    @Autowired
     private JwtUtilsHelpers jwtUtilsHelpers;
 
     @Override
@@ -60,7 +55,7 @@ public class PromotionServiceImp implements PromotionService {
     }
 
     @Override
-    public List<CouponDTO> getAllPromotion() {
+    public List<CouponDTO> getAllPromotions() {
         List<CouponDTO> list = new ArrayList<>();
         List<Coupon> couponList = couponRepository.findAll();
         for (Coupon coupon: couponList) {

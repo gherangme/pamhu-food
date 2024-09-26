@@ -1,13 +1,16 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.dto.InvoiceDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.response.InvoiceDTO;
 import com.example.securityhibernate.entity.OrderItem;
 import com.example.securityhibernate.entity.Orders;
 import com.example.securityhibernate.entity.Users;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.ManagerInvoiceService;
 import com.example.securityhibernate.utils.FormatDate;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,34 +18,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ManagerInvoiceServiceImp implements ManagerInvoiceService {
 
-    @Autowired
-    private OrdersRepository ordersRepository;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CouponRepository couponRepository;
+    OrdersRepository ordersRepository;
+    OrderItemRepository orderItemRepository;
+    FoodRepository foodRepository;
+    UserRepository userRepository;
+    CouponRepository couponRepository;
 
     @Override
-    public InvoiceDTO getInforInvoiceById(int id) {
+    public InvoiceDTO getInvoiceById(int id) {
         InvoiceDTO invoiceDTO = new InvoiceDTO();
 
-        // Set Order
         Orders orders = ordersRepository.findById(id);
         invoiceDTO.setId(orders.getId());
         invoiceDTO.setDate(new FormatDate().formatDate(orders.getCreateDate()));
         invoiceDTO.setTotalPrice(orders.getTotalPrice());
 
-        // Set List Food
         List<FoodDTO> foodDTOList = new ArrayList<>();
         List<OrderItem> list = orderItemRepository.findByOrders_Id(id);
         for (OrderItem orderItem: list) {
@@ -54,13 +48,11 @@ public class ManagerInvoiceServiceImp implements ManagerInvoiceService {
         }
         invoiceDTO.setFoodDTOList(foodDTOList);
 
-        // Set User
         Users users = userRepository.findByUsername(orders.getUsers().getUsername());
         invoiceDTO.setName(users.getFullname());
         invoiceDTO.setAddress(users.getAddress());
         invoiceDTO.setPhone(users.getPhone());
 
-        // Set coupon
         try {
             invoiceDTO.setVoucher(couponRepository.findById(orders.getCoupon().getId()).getVoucher());
         } catch (Exception e) {

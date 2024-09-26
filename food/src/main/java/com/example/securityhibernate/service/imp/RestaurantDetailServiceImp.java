@@ -1,11 +1,16 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.*;
+import com.example.securityhibernate.dto.request.CategoryDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.RestaurantDetailDTO;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.mapper.CategoryMapper;
 import com.example.securityhibernate.mapper.CouponMapper;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.RestaurantDetailService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,36 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RestaurantDetailServiceImp implements RestaurantDetailService {
 
-    @Autowired
-    private CategoryMapper categoryMapper;
+    CategoryMapper categoryMapper;
+    CouponMapper couponMapper;
+    RestaurantRepository restaurantRepository;
+    CategoryRestaurantRepository categoryRestaurantRepository;
+    CategoryRepository categoryRepository;
+    FoodRepository foodRepository;
+    RatingFoodRepository ratingFoodRepository;
+    CouponRepository couponRepository;
+    RatingRestaurantRepository ratingRestaurantRepository;
 
-    @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private CategoryRestaurantRepository categoryRestaurantRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
-    private RatingFoodRepository ratingFoodRepository;
-
-    @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private RatingRestaurantRepository ratingRestaurantRepository;
-
-    // Get information restaurant detail
     @Override
     public RestaurantDetailDTO getRestaurantDetailById(int id) {
         RestaurantDetailDTO restaurantDetailDTO = new RestaurantDetailDTO();
@@ -65,7 +54,6 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
 
         restaurantDetailDTO.setDesc(restaurant.getDesc());
 
-        // Set cate string
         List<CategoryRestaurant> list1 = categoryRestaurantRepository
                 .findAllByRestaurant_Id(restaurant.getId());
         if (list1.size()<2) {
@@ -73,7 +61,6 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
                     .findById(list1.get(0).getCategory().getId()).getName());
         }
 
-        // Set list food
         List<FoodDTO> dtoList = new ArrayList<>();
         for (CategoryRestaurant categoryRestaurant: list1) {
             List<Food> foodList = foodRepository.findByCategoryRestaurant_Id(categoryRestaurant.getId());
@@ -103,10 +90,8 @@ public class RestaurantDetailServiceImp implements RestaurantDetailService {
             }
         }
 
-        // Set number dishes
         restaurantDetailDTO.setDishes(dtoList.size());
 
-        // Set cateDTO by id res
         List<CategoryDTO> list = new ArrayList<>();
         for (CategoryRestaurant categoryRestaurant: list1) {
             Category category = categoryRepository.findById(categoryRestaurant.getCategory().getId());

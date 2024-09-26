@@ -1,6 +1,6 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.security.CustomUserDetails;
 import com.example.securityhibernate.security.CustomUserDetailsSerializer;
 import com.example.securityhibernate.service.LoginService;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/v1/login")
+@RequestMapping("/log-in")
 public class LoginController {
 
     @Autowired
@@ -34,7 +34,6 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    // Sign in By OAuth 2
     @GetMapping("/signinByOAuth2")
     public ResponseEntity<?> signinByOAuth2(@CookieValue(value = "username") String username) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
@@ -42,7 +41,6 @@ public class LoginController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    // Sign in By Local
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username,
                                     @RequestParam String password) {
@@ -51,7 +49,6 @@ public class LoginController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    // Get Infor User
     @PostMapping("/getInforUserByToken")
     public ResponseEntity<?> getInforUserByToken(@RequestParam String token) {
         ResponseData responseData = new ResponseData();

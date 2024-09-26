@@ -1,6 +1,6 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.request;
 
-public class StatusDTO {
+public class CategoryDTO {
 
     private int id;
     private String name;

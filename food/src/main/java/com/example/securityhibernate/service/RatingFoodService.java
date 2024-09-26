@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.RatingFoodDTO;
+import com.example.securityhibernate.dto.response.RatingFoodDTO;
 
 import java.util.List;
 

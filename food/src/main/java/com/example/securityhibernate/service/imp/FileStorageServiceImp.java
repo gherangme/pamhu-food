@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.listenum.ImageFolderType;
+import com.example.securityhibernate.enums.ImageFolderType;
 import com.example.securityhibernate.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

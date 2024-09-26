@@ -1,13 +1,13 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.ManagerDTO;
-import com.example.securityhibernate.dto.OrderDetailDTO;
+import com.example.securityhibernate.dto.response.ManagerDTO;
+import com.example.securityhibernate.dto.response.OrderDetailDTO;
 
 import java.util.List;
 
 public interface ManagerService {
 
-    ManagerDTO getInforDashboardManager(int idUser);
-    List<OrderDetailDTO> getAllOrder(String token);
+    ManagerDTO getDashboardManager(int idUser);
+    List<OrderDetailDTO> getAllOrders(String token);
 
 }

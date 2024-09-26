@@ -1,10 +1,11 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.CouponDTO;
+import com.example.securityhibernate.dto.request.CouponDTO;
 import com.example.securityhibernate.entity.Coupon;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Mapper
 public class CouponMapper {
 
     public CouponDTO convertEntityToDTO(Coupon coupon) {

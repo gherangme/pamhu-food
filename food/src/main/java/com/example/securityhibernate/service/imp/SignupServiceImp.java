@@ -1,9 +1,9 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.SignupDTO;
+import com.example.securityhibernate.dto.request.SignupDTO;
 import com.example.securityhibernate.entity.Roles;
 import com.example.securityhibernate.entity.Users;
-import com.example.securityhibernate.listenum.ProviderColumn;
+import com.example.securityhibernate.enums.ProviderColumn;
 import com.example.securityhibernate.repository.UserRepository;
 import com.example.securityhibernate.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;

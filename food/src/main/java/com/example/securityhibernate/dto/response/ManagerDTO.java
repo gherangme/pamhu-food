@@ -1,4 +1,9 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.response;
+
+import com.example.securityhibernate.dto.request.CategoryDTO;
+import com.example.securityhibernate.dto.request.CouponDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.RestaurantDetailDTO;
 
 import java.util.List;
 

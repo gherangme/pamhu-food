@@ -1,6 +1,6 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.RatingFoodDTO;
+import com.example.securityhibernate.dto.response.RatingFoodDTO;
 import com.example.securityhibernate.entity.RatingFood;
 import com.example.securityhibernate.repository.FoodRepository;
 import com.example.securityhibernate.repository.UserRepository;

@@ -1,6 +1,6 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,24 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    // Get all categories page home
-    @GetMapping("/getAllPageHome")
-    public ResponseEntity<?> getAllPageHome() {
-        return new ResponseEntity<>(new ResponseData(categoryService.getAllPageHome(),
-                "Lấy thành công danh sách category Page Home"), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<?> getAllCategories() {
+        return new ResponseEntity<>(new ResponseData(categoryService.getAllCategories()), HttpStatus.OK);
     }
 
-    // Get all categories
-    @GetMapping("/getAll")
-    public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(new ResponseData(categoryService.getAll(),
-                "Lấy thành công danh sách category"), HttpStatus.OK);
+    @GetMapping("/getAllInformation")
+    public ResponseEntity<?> getAllInformation() {
+        return new ResponseEntity<>(new ResponseData(categoryService.getAllPageHome()), HttpStatus.OK);
     }
 
 }

@@ -1,9 +1,7 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.CategaryRestaurantDTO;
-import com.example.securityhibernate.dto.CategoryDTO;
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.entity.CategoryRestaurant;
+import com.example.securityhibernate.dto.response.CategaryRestaurantDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
 import com.example.securityhibernate.entity.Food;
 import com.example.securityhibernate.repository.CategoryRestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;

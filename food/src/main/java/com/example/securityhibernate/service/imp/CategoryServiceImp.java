@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CategoryDTO;
+import com.example.securityhibernate.dto.request.CategoryDTO;
 import com.example.securityhibernate.entity.Category;
 import com.example.securityhibernate.mapper.CategoryMapper;
 import com.example.securityhibernate.repository.CategoryRepository;
@@ -28,13 +28,12 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> getAll() {
+    public List<CategoryDTO> getAllCategories() {
         List<Category> categoryList = categoryRepository.findAll();
         List<CategoryDTO> list = getAllCategoryCommon(categoryList);
         return list;
     }
 
-    // Common All Category
     private List<CategoryDTO> getAllCategoryCommon(List<Category> categoryList) {
         List<CategoryDTO> list = new ArrayList<>();
         for (Category category: categoryList) {

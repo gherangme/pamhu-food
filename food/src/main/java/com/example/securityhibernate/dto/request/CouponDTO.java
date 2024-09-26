@@ -1,9 +1,10 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.request;
 
-public class CategoryDTO {
+public class CouponDTO {
 
     private int id;
     private String name;
+    private double voucher;
 
     public int getId() {
         return id;
@@ -19,5 +20,13 @@ public class CategoryDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getVoucher() {
+        return voucher;
+    }
+
+    public void setVoucher(double voucher) {
+        this.voucher = voucher;
     }
 }

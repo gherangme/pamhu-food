@@ -20,6 +20,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CustomSecurityConfig {
 
+    private final String[] PUBLIC_ENDPOINTS = {"/api/v1/login/**", "/api/v1/signup/**", "/api/v1/forgot/**",
+            "/api/v1/food/**", "/api/v1/food-detail/**",
+            "/api/v1/category/**",
+            "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
+            "/401", "/403", "/404", "/signup", "/login", "/forgot", "/forgot-otp", "/home", "/otp",
+            "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout", "/food-detail", "/invoice",
+            "/category", "/order", "/order-detail",
+            "/manager", "/manager-food-detail", "/manager-food-add", "/manager-invoice-detail", "/manager-promotion-detail"
+            };
+    private final String[] ADMIN_ENDPOINTS = {"/api/v1/admin/**"};
+    private final String[] MANAGER_ENDPOINTS = {"/api/v1/manager/**"};
+
     @Autowired
     private CustomOAuth2UserService oauthUserService;
 
@@ -45,25 +57,15 @@ public class CustomSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                                    // Link api
-                    .antMatchers("/api/v1/login/**", "/api/v1/signup/**", "/api/v1/forgot/**",
-                            "/api/v1/food/**", "/api/v1/food-detail/**",
-                            "/api/v1/category/**",
-                            "/api/v1/restaurant/**", "/api/v1/restaurant-detail/**",
-
-                                    // Link resources
-                            "/401", "/403", "/404", "/signup", "/login", "/forgot", "/forgot-otp", "/home", "/otp",
-                            "/food", "/restaurant", "/restaurant-detail", "/cart", "/checkout", "/food-detail", "/invoice",
-                            "/category", "/order", "/order-detail",
-                            "/manager", "/manager-food-detail", "/manager-food-add", "/manager-invoice-detail", "/manager-promotion-detail")
+                    .antMatchers(PUBLIC_ENDPOINTS)
                         .permitAll()
 
                     .antMatchers("/", "/resources/**", "/static/**", "/oauth/**", "/cdn-cgi/**",
                             "/**/*.css.map", "/**/*.css", "/**/*.js","/**/*.js.map", "/","/**/*.png","/**/*.jpg", "/**/*.woff2")
                         .permitAll()
-                    .antMatchers("/api/v1/admin/**")
+                    .antMatchers(ADMIN_ENDPOINTS)
                         .hasRole("ADMIN")
-                    .antMatchers("/api/v1/manager/**")
+                    .antMatchers(MANAGER_ENDPOINTS)
                         .hasAnyRole("ADMIN", "MANAGER")
                     .anyRequest().authenticated()
                 .and()

@@ -19,7 +19,6 @@ public class TestRedis implements CommandLineRunner {
 
         Set<String> keys = template.keys("*");
 
-        // In ra tất cả các key
         keys.forEach(System.out::println);
     }
 

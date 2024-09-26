@@ -1,9 +1,13 @@
 package com.example.securityhibernate.controller.manager;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.LoginService;
 import com.example.securityhibernate.service.ManagerFoodService;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,36 +18,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/manager/food")
+@RequestMapping("/managers/foods")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ManagerFoodController {
 
-    private int idFoodDetail = 0;
-    private String token = null;
+    @NonFinal
+    int idFoodDetail = 0;
+    @NonFinal
+    String token = null;
 
-    @Autowired
-    private ManagerFoodService managerFoodService;
+    ManagerFoodService managerFoodService;
+    JwtUtilsHelpers jwtUtilsHelpers;
+    LoginService loginService;
 
-    @Autowired
-    private JwtUtilsHelpers jwtUtilsHelpers;
-
-    @Autowired
-    private LoginService loginService;
-
-    // Post id food
-    @PostMapping("/postIdFoodDetail")
-    public ResponseEntity<?> postIdFoodDetail(@RequestParam int idFood, @RequestParam String tokenOfUser) {
+    @GetMapping("/{idFood}")
+    public ResponseEntity<?> getFood(@PathVariable int idFood, @RequestParam String tokenOfUser) {
         if (tokenOfUser != null) {
             idFoodDetail = idFood;
             token = tokenOfUser;
-            return new ResponseEntity<>(new ResponseData("Lấy thành công thông tin id food, token"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData("Lấy thất bại id food, token",
-                    400), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
         }
 
     }
 
-    // Update Food
     @PutMapping("/updateFood")
     public ResponseEntity<?> updateFood(@RequestParam String name,
                                         @RequestParam double price,
@@ -52,75 +52,51 @@ public class ManagerFoodController {
         boolean isSucces = managerFoodService.updateFood(idFoodDetail, name, idCate ,price, file, token);
 
         if (isSucces) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Cập nhật thành công"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Cập nhật thất bại",
-                    400), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.OK);
         }
     }
 
-    // Delete Food
-    @DeleteMapping("/deleteFoodById")
-    private ResponseEntity<?> deleteFoodById() {
-        boolean isSucces = managerFoodService.deleteFoodById(idFoodDetail);
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteFood(@PathVariable int id) {
+        boolean isSucces = managerFoodService.deleteFoodById(id);
 
         if (isSucces) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Xoá thành công"),HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Xoá thất bại",
-                    400),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(false),HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Add Food
     @PostMapping("/addFood")
-    public ResponseEntity<?> addFood(@RequestParam String name,
+    public ResponseEntity<?> createFood(@RequestParam String name,
                                      @RequestParam double price,
                                      @RequestParam int idCate,
                                      @RequestParam MultipartFile file) {
         boolean isSuccess = managerFoodService.addFood(name, idCate, price, file, token);
-
         if (isSuccess) {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Thêm thành công món ăn"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(false,
-                    "Thêm thất bại món ăn",
-                    400), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Get Food Add
-    @GetMapping("/getFoodAdd")
-    public ResponseEntity<?> getFoodAdd() {
+    @GetMapping("/getAllFoods")
+    public ResponseEntity<?> getAllFoods() {
         List<ResponseData> list = new ArrayList<>();
         if (token != null) {
-
-            // Set infor User
-            list.add(new ResponseData(loginService.getFullNameByToken(token),
-                    "Lấy thành công thông tin user"));
-
-            // Set infor Food Add
-            list.add(new ResponseData(managerFoodService.getFoodAdd(jwtUtilsHelpers.getIdUserByToken(token)),
-                    "Lấy thành công thông tin foodd"));
-
+            list.add(new ResponseData(loginService.getFullNameByToken(token)));
+            list.add(new ResponseData(managerFoodService.getFoodAdd(jwtUtilsHelpers.getIdUserByToken(token))));
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
-            list.add(new ResponseData(false,
-                    "Lấy thất bại thông tin food detail",
-                    400));
-
+            list.add(new ResponseData(false));
             return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Get Food Detail
-    @GetMapping("/getFoodDetailById")
-    public ResponseEntity<?> getFoodDetailById() {
+    @GetMapping("/getDetails")
+    public ResponseEntity<?> getDetails() {
         List<ResponseData> list = new ArrayList<>();
         if (token != null) {
 
@@ -131,9 +107,7 @@ public class ManagerFoodController {
             list.add(new ResponseData(managerFoodService.getFoodDetailById(idFoodDetail, jwtUtilsHelpers.getIdUserByToken(token))));
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
-            list.add(new ResponseData(false,
-                    "Lấy thất bại thông tin food detail",
-                    400));
+            list.add(new ResponseData(false));
             return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
         }
     }

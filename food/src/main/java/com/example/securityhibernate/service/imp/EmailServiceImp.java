@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.EmailDTO;
+import com.example.securityhibernate.dto.response.EmailDTO;
 import com.example.securityhibernate.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

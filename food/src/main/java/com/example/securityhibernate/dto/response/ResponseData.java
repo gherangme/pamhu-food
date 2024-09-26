@@ -1,4 +1,4 @@
-package com.example.securityhibernate.payload;
+package com.example.securityhibernate.dto.response;
 
 public class ResponseData {
 

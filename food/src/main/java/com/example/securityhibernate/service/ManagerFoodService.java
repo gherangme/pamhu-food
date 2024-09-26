@@ -1,7 +1,6 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.dto.ManagerFoodDTO;
+import com.example.securityhibernate.dto.response.ManagerFoodDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ManagerFoodService {

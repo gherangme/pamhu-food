@@ -1,6 +1,7 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.response;
 
-import java.util.Date;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.UserDTO;
 
 public class RatingFoodDTO {
 

@@ -1,11 +1,14 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.CheckoutDTO;
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.dto.UserDTO;
+import com.example.securityhibernate.dto.response.CheckoutDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.UserDTO;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.CheckoutService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,22 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CheckoutServiceImp implements CheckoutService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private OrdersRepository ordersRepository;
-
-    @Autowired
-    private StatusRepository statusRepository;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
-    private FoodRepository foodRepository;
+    UserRepository userRepository;
+    OrdersRepository ordersRepository;
+    StatusRepository statusRepository;
+    OrderItemRepository orderItemRepository;
+    FoodRepository foodRepository;
 
     @Override
     public UserDTO getUserByUsername(String username) {
@@ -47,14 +43,12 @@ public class CheckoutServiceImp implements CheckoutService {
     @Override
     public int checkout(CheckoutDTO checkoutDTO) {
         try {
-            // Set thông tin user thay đổi trong checkout
             Users users = userRepository.findByUsername(checkoutDTO.getUsername());
             users.setFullname(checkoutDTO.getFullName());
             users.setAddress(checkoutDTO.getAddress());
             users.setPhone(checkoutDTO.getPhone());
             userRepository.save(users);
 
-            // Set status khi order thành công
             Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, checkoutDTO.getUsername());
             orders.setTotalPrice(checkoutDTO.getTotalPrice());
             Status status = statusRepository.findById(2);

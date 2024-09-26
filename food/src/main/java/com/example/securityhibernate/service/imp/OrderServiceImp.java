@@ -1,11 +1,18 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.*;
+import com.example.securityhibernate.dto.request.CouponDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.RestaurantDTO;
+import com.example.securityhibernate.dto.response.InvoiceDTO;
+import com.example.securityhibernate.dto.response.OrderDetailDTO;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.entity.keys.KeyOrderItem;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.OrderService;
 import com.example.securityhibernate.utils.FormatDate;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +23,19 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderServiceImp implements OrderService {
 
-    @Autowired
-    private OrdersRepository ordersRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
+    OrdersRepository ordersRepository;
+    UserRepository userRepository;
+    OrderItemRepository orderItemRepository;
+    FoodRepository foodRepository;
+    CouponRepository couponRepository;
+    RestaurantRepository restaurantRepository;
 
     @Override
-    public List<OrderDetailDTO> getAllOrderByIdUser(int idUser) {
+    public List<OrderDetailDTO> getAllOrdersByIdUser(int idUser) {
         List<OrderDetailDTO> list = new ArrayList<>();
         List<Orders> ordersList = ordersRepository.findByStatus_IdAndUsers_Id(2, idUser);
         for (Orders orders : ordersList) {
@@ -46,14 +44,12 @@ public class OrderServiceImp implements OrderService {
             orderDetailDTO.setTotalPrice(orders.getTotalPrice());
             orderDetailDTO.setDate(new FormatDate().formatDate(orders.getCreateDate()));
 
-            // Set restaurant
             Restaurant restaurant = restaurantRepository.findById(orders.getRestaurant().getId());
             RestaurantDTO restaurantDTO = new RestaurantDTO();
             restaurantDTO.setId(restaurant.getId());
             restaurantDTO.setName(restaurant.getName());
             orderDetailDTO.setRestaurantDTO(restaurantDTO);
 
-            // Set coupon
             try {
                 Coupon coupon = couponRepository.findById(orders.getCoupon().getId());
                 CouponDTO couponDTO = new CouponDTO();
@@ -65,7 +61,6 @@ public class OrderServiceImp implements OrderService {
 
             }
 
-            // Set list food
             List<FoodDTO> foodDTOList = new ArrayList<>();
             List<OrderItem> orderItemList = orderItemRepository.findByOrders_Id(orders.getId());
             for (OrderItem orderItem : orderItemList) {
@@ -86,27 +81,21 @@ public class OrderServiceImp implements OrderService {
     public boolean saveOrder(String username, int idFood, int amount, double price) {
 
         try {
-            // Lấy ngày hiện tại
             LocalDate currentDate = LocalDate.now();
 
-            // Chuyển đổi từ LocalDate sang Date
             Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Orders orders = ordersRepository.findByStatus_IdAndUsers_Username(1, username);
 
-            // check exist orders
             if (orders == null) {
                 Orders orders1 = new Orders();
                 orders1.setCreateDate(date);
                 orders1.setUsers(userRepository.findByUsername(username));
 
-                // save order
                 orders1 = ordersRepository.save(orders1);
 
-                // save order item
                 saveOrderItem(orders1, idFood, price, amount);
                 return true;
             } else {
-                // save order item
                 saveOrderItem(orders, idFood, price, amount);
                 return true;
             }
@@ -117,16 +106,14 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public InvoiceDTO getInforInvoiceById(int id) {
+    public InvoiceDTO getInvoiceById(int id) {
         InvoiceDTO invoiceDTO = new InvoiceDTO();
 
-        // Set Order
         Orders orders = ordersRepository.findById(id);
         invoiceDTO.setId(orders.getId());
         invoiceDTO.setDate(new FormatDate().formatDate(orders.getCreateDate()));
         invoiceDTO.setTotalPrice(orders.getTotalPrice());
 
-        // Set List Food
         List<FoodDTO> foodDTOList = new ArrayList<>();
         List<OrderItem> list = orderItemRepository.findByOrders_Id(id);
         for (OrderItem orderItem : list) {
@@ -138,13 +125,11 @@ public class OrderServiceImp implements OrderService {
         }
         invoiceDTO.setFoodDTOList(foodDTOList);
 
-        // Set User
         Users users = userRepository.findByUsername(orders.getUsers().getUsername());
         invoiceDTO.setName(users.getFullname());
         invoiceDTO.setAddress(users.getAddress());
         invoiceDTO.setPhone(users.getPhone());
 
-        // Set coupon
         try {
             invoiceDTO.setVoucher(couponRepository.findById(orders.getCoupon().getId()).getVoucher());
         } catch (Exception e) {

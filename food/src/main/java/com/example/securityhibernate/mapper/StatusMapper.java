@@ -1,6 +1,6 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.StatusDTO;
+import com.example.securityhibernate.dto.request.StatusDTO;
 import com.example.securityhibernate.entity.Status;
 import org.springframework.stereotype.Component;
 

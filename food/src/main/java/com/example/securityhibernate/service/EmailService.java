@@ -1,6 +1,6 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.EmailDTO;
+import com.example.securityhibernate.dto.response.EmailDTO;
 
 public interface EmailService {
 

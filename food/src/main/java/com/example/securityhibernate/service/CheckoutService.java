@@ -1,8 +1,8 @@
 package com.example.securityhibernate.service;
 
-import com.example.securityhibernate.dto.CheckoutDTO;
-import com.example.securityhibernate.dto.FoodDTO;
-import com.example.securityhibernate.dto.UserDTO;
+import com.example.securityhibernate.dto.response.CheckoutDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.UserDTO;
 
 import java.util.List;
 

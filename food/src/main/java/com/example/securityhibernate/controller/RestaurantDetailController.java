@@ -1,7 +1,9 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.RestaurantDetailService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,36 +11,30 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/restaurant-detail")
+@RequestMapping("/restaurant-details")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RestaurantDetailController {
 
-    private int idRes = 0;
+    int idRes = 0;
 
     @Autowired
-    private RestaurantDetailService restaurantDetailService;
+    RestaurantDetailService restaurantDetailService;
 
-    // Get Id Restaurant Detail
-    @GetMapping("/getIdRestaurant/{id}")
-    public ResponseEntity<?> postIdRestaurant(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getIdRestaurant(@PathVariable int id) {
         idRes = id;
 
         return new ResponseEntity<>(new ResponseData(idRes,
                 "Lấy thành công id restaurant"), HttpStatus.OK);
     }
 
-    // Get Infor Restaurant Detail By Id
-    @GetMapping("/getRestaurantById")
-    public ResponseEntity<?> getRestaurantById() {
+    @GetMapping
+    public ResponseEntity<?> getRestaurantDetail() {
         List<ResponseData> list = new ArrayList<>();
-        list.add(new ResponseData(restaurantDetailService.getRestaurantDetailById(idRes),
-                "Lấy thành công res detail"));
-
-        list.add(new ResponseData(idRes,
-                "Lấy thành công id res"));
-
+        list.add(new ResponseData(restaurantDetailService.getRestaurantDetailById(idRes)));
+        list.add(new ResponseData(idRes));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

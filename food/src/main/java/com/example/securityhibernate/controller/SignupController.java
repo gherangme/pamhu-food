@@ -1,11 +1,12 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.dto.EmailDTO;
-import com.example.securityhibernate.dto.SignupDTO;
-import com.example.securityhibernate.dto.UserDTO;
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.EmailDTO;
+import com.example.securityhibernate.dto.request.SignupDTO;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.EmailService;
 import com.example.securityhibernate.service.SignupService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +17,23 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api/v1/signup")
+@RequestMapping("/sign-up")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class SignupController {
 
-    private SignupDTO signupDTOWaitOTP = null;
-    private String OTP = null;
+    SignupDTO waitingOTP = null;
+    String OTP = null;
 
     @Autowired
-    private EmailService emailService;
+    EmailService emailService;
 
     @Autowired
-    private SignupService signupService;
+    SignupService signupService;
 
-    // Add User
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestParam String OTPByUser) {
         if (OTPByUser.equals(OTP)) {
-            return new ResponseEntity<>(new ResponseData(signupService.singup(signupDTOWaitOTP),
+            return new ResponseEntity<>(new ResponseData(signupService.singup(waitingOTP),
                     "Đăng ký thành công"), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new ResponseData(false,
@@ -41,12 +42,11 @@ public class SignupController {
         }
     }
 
-    // Post User Infor
-    @PostMapping("/postUserInfor")
-    public ResponseEntity<?> postUserInfor(@RequestBody SignupDTO signupDTO) {
+    @PostMapping("/otp")
+    public ResponseEntity<?> createOTP(@Valid @RequestBody SignupDTO signupDTO) {
         if (signupService.checkUser(signupDTO.getUsername())) {
-            signupDTOWaitOTP = signupDTO;
-            return new ResponseEntity<>(new ResponseData(emailService.sendSimpleMail(setEmailDTO(signupDTO.getUsername())),
+            waitingOTP = signupDTO;
+            return new ResponseEntity<>(new ResponseData(emailService.sendSimpleMail(sendEmail(signupDTO.getUsername())),
                     "Gửi OTP thành công"), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new ResponseData(false,
@@ -55,17 +55,14 @@ public class SignupController {
         }
     }
 
-    //  Send OTP By Mail
-    private EmailDTO setEmailDTO(String email) {
+    private EmailDTO sendEmail(String email) {
 
-        // Create OTP
         Random random = new Random();
         OTP = Integer.toString(
                 random.ints(1000, 9999)
                         .findFirst()
                         .getAsInt());
 
-        // Set expire time for OTP
         Date now = new Date();
         Date expireTime = new Date(now.getTime() + TimeUnit.MINUTES.toMillis(5));
 
@@ -73,7 +70,6 @@ public class SignupController {
             OTP = null;
         }
 
-        // Set emailDTO
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setMsgBody("Your OTP is " + OTP + ". Please enter in 5 minutes.");
         emailDTO.setRecipient(email);

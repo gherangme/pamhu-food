@@ -1,8 +1,10 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.FoodDetailService;
 import com.example.securityhibernate.service.RatingFoodService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,52 +14,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/food-detail")
+@RequestMapping("/food-details")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FoodDetailController {
 
     int idFood = 0;
     int idRes = 0;
 
     @Autowired
-    private FoodDetailService foodDetailService;
+    FoodDetailService foodDetailService;
 
     @Autowired
-    private RatingFoodService ratingFoodService;
+    RatingFoodService ratingFoodService;
 
-    // Post Id food Detail
-    @PostMapping("/postIdFoodDetail")
-    public ResponseEntity<?> postIdFoodDetail(@RequestParam int id,
+    @PostMapping("/{idFoodDetail}")
+    public ResponseEntity<?> postIdFoodDetail(@PathVariable int idFoodDetail,
                                               @RequestParam int idResByUser) {
-        if (id != 0) {
-            idFood = id;
+        if (idFoodDetail != 0) {
+            idFood = idFoodDetail;
             idRes = idResByUser;
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Lấy thành công id food"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseData(true,
-                    "Lấy thất bại id food",
-                    400), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseData(false), HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Get Infor Food By Id
-    @GetMapping("/getFoodById")
-    public ResponseEntity<?> getFoodById() {
+    @GetMapping
+    public ResponseEntity<?> getAllFoodDetails() {
         List<ResponseData> list = new ArrayList<>();
         if (idFood != 0) {
-            list.add(new ResponseData(foodDetailService.getFoodById(idFood),
-                    "Lấy thành công thông tin food"));
+            list.add(new ResponseData(foodDetailService.getFoodById(idFood)));
 
-            list.add(new ResponseData(ratingFoodService.getAllRatingFoodByIdFood(idFood),
-                    "Lấy thành công thông tin đánh giá món ăn"));
+            list.add(new ResponseData(ratingFoodService.getAllRatingFoodByIdFood(idFood)));
 
-            list.add(new ResponseData(idRes,
-                    "Lấy thành công id res"));
+            list.add(new ResponseData(idRes));
 
         } else {
-            list.add(new ResponseData(false,
-                    "Lấy thất bại thông tin food",
-                    400));
+            list.add(new ResponseData(false));
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

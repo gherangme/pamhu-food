@@ -1,9 +1,11 @@
 package com.example.securityhibernate.controller;
 
-import com.example.securityhibernate.dto.EmailDTO;
-import com.example.securityhibernate.payload.ResponseData;
+import com.example.securityhibernate.dto.response.EmailDTO;
+import com.example.securityhibernate.dto.response.ResponseData;
 import com.example.securityhibernate.service.EmailService;
 import com.example.securityhibernate.service.ForgotService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +16,18 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api/v1/forgot")
-public class ForgotController {
+@RequestMapping("/password")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PasswordController {
 
-    private String OTP = null;
-    private String email = null;
-
-    @Autowired
-    private ForgotService forgotService;
+    String OTP = null;
+    String email = null;
 
     @Autowired
-    private EmailService emailService;
+    ForgotService forgotService;
+
+    @Autowired
+    EmailService emailService;
 
     // Change Password
     @PutMapping("/changePassword")

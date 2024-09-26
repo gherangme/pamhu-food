@@ -1,8 +1,7 @@
 package com.example.securityhibernate.mapper;
 
-import com.example.securityhibernate.dto.CouponDTO;
-import com.example.securityhibernate.dto.RestaurantDTO;
-import com.example.securityhibernate.dto.UserDTO;
+import com.example.securityhibernate.dto.request.RestaurantDTO;
+import com.example.securityhibernate.dto.request.UserDTO;
 import com.example.securityhibernate.entity.Coupon;
 import com.example.securityhibernate.entity.Restaurant;
 import com.example.securityhibernate.repository.CouponRepository;

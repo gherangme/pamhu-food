@@ -1,11 +1,19 @@
 package com.example.securityhibernate.service.imp;
 
-import com.example.securityhibernate.dto.*;
+import com.example.securityhibernate.dto.request.CategoryDTO;
+import com.example.securityhibernate.dto.request.CouponDTO;
+import com.example.securityhibernate.dto.request.FoodDTO;
+import com.example.securityhibernate.dto.request.RestaurantDetailDTO;
+import com.example.securityhibernate.dto.response.ManagerDTO;
+import com.example.securityhibernate.dto.response.OrderDetailDTO;
 import com.example.securityhibernate.entity.*;
 import com.example.securityhibernate.repository.*;
 import com.example.securityhibernate.service.ManagerService;
 import com.example.securityhibernate.utils.FormatDate;
 import com.example.securityhibernate.utils.JwtUtilsHelpers;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,37 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ManagerServiceImp implements ManagerService {
 
-    @Autowired
     private RestaurantRepository restaurantRepository;
-
-    @Autowired
     private RatingRestaurantRepository ratingRestaurantRepository;
-
-    @Autowired
     private OrdersRepository ordersRepository;
-
-    @Autowired
     private CategoryRestaurantRepository categoryRestaurantRepository;
-
-    @Autowired
     private FoodRepository foodRepository;
-
-    @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
     private CouponRepository couponRepository;
-
-    @Autowired
     private JwtUtilsHelpers jwtUtilsHelpers;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
-    public List<OrderDetailDTO> getAllOrder(String token) {
+    public List<OrderDetailDTO> getAllOrders(String token) {
         List<OrderDetailDTO> dtoList = new ArrayList<>();
         Restaurant restaurant = restaurantRepository.findByUsers_Id(userRepository
                 .findByUsername(jwtUtilsHelpers.getUsernameByToken(token))
@@ -64,10 +57,9 @@ public class ManagerServiceImp implements ManagerService {
     }
 
     @Override
-    public ManagerDTO getInforDashboardManager(int idUser) {
+    public ManagerDTO getDashboardManager(int idUser) {
         ManagerDTO managerDTO = new ManagerDTO();
 
-        // Set Infor Res
         Restaurant restaurant = restaurantRepository.findByUsers_Id(idUser);
         RestaurantDetailDTO restaurantDetailDTO = new RestaurantDetailDTO();
         restaurantDetailDTO.setName(restaurant.getName());
@@ -75,7 +67,6 @@ public class ManagerServiceImp implements ManagerService {
         restaurantDetailDTO.setImage(restaurant.getImage());
         restaurantDetailDTO.setDesc(restaurant.getDesc());
 
-        // Set Rating Res
         List<RatingRestaurant> ratingRestaurant = ratingRestaurantRepository.findByRestaurant_Id(restaurant.getId());
         float starRes = 0;
         for (RatingRestaurant ratingRestaurant1: ratingRestaurant) {
@@ -84,7 +75,6 @@ public class ManagerServiceImp implements ManagerService {
         restaurantDetailDTO.setRating(starRes / ratingRestaurant.size());
         managerDTO.setRestaurantDetailDTO(restaurantDetailDTO);
 
-        // Set Coupon of Res
         Coupon coupon = couponRepository.findById(restaurant.getCoupon().getId());
         CouponDTO couponDTO = new CouponDTO();
         couponDTO.setId(coupon.getId());
@@ -92,7 +82,6 @@ public class ManagerServiceImp implements ManagerService {
         couponDTO.setVoucher(coupon.getVoucher());
         managerDTO.setCouponDTO(couponDTO);
 
-        // Set Total Income
         List<Orders> list = ordersRepository.findByRestaurant_IdAndStatus_Id(restaurant.getId(), 2);
         if (list.size() > 0) {
             double totalIncome = 0;
@@ -104,15 +93,12 @@ public class ManagerServiceImp implements ManagerService {
             managerDTO.setTotalIncome(0);
         }
 
-        // Set Total Orders
         managerDTO.setTotalOrders(list.size());
 
-        // Set Total Category of Res
         List<CategoryRestaurant> list1 = categoryRestaurantRepository
                 .findAllByRestaurant_Id(restaurant.getId());
         managerDTO.setTotalCategorys(list1.size());
 
-        // Set Total Foods of Res
         List<FoodDTO> list2 = new ArrayList<>();
         List<CategoryDTO> list3 = new ArrayList<>();
         for (CategoryRestaurant categoryRestaurant: list1) {
@@ -130,7 +116,6 @@ public class ManagerServiceImp implements ManagerService {
                 categoryDTO.setName(category.getName());
                 foodDTO.setCategoryDTO(categoryDTO);
 
-                // Kiểm tra chưa tồn tại thì thêm vào
                 if (!list3.contains(categoryDTO)) {
                     list3.add(categoryDTO);
                 }
@@ -140,10 +125,8 @@ public class ManagerServiceImp implements ManagerService {
         }
         managerDTO.setTotalFoods(list2.size());
 
-        // Set List Foods of Res
         managerDTO.setFoodDTOList(list2);
 
-        // Set List Cate of Res
         managerDTO.setCategoryDTOList(list3);
 
         return managerDTO;

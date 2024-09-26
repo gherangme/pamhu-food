@@ -1,4 +1,4 @@
-package com.example.securityhibernate.dto;
+package com.example.securityhibernate.dto.request;
 
 import java.util.List;
 

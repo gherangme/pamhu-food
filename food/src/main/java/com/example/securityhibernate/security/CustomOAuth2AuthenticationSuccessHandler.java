@@ -1,6 +1,6 @@
 package com.example.securityhibernate.security;
 
-import com.example.securityhibernate.listenum.ProviderColumn;
+import com.example.securityhibernate.enums.ProviderColumn;
 import com.example.securityhibernate.service.SignupService;
 import com.example.securityhibernate.utils.CookieHandle;
 import org.springframework.beans.factory.annotation.Autowired;
